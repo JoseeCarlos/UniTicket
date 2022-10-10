@@ -1,5 +1,5 @@
 class User():
-    def __init__(self, userId=None, firstName=None, firstSurname=None, secondSurname=None, userName=None, password=None, email=None, role=None,is_active=None, created_at=None, updated_at=None):
+    def __init__(self, userId=None, firstName=None, firstSurname=None, secondSurname=None, userName=None, password=None, email=None, role=None,status=None, createDate=None, updateDate=None):
         self.userId = userId
         self.firstName = firstName
         self.firstSurname = firstSurname
@@ -8,9 +8,9 @@ class User():
         self.password = password
         self.email = email
         self.role = role
-        self.is_active = is_active
-        self.created_at = created_at
-        self.updated_at = updated_at
+        self.status = status
+        self.createDate = createDate
+        self.updateDate = updateDate
 
     
     def to_JSON(self):
@@ -23,9 +23,9 @@ class User():
             "password": self.password,
             "email": self.email,
             "role": self.role,
-            "is_active": self.is_active,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at
+            "status": self.status,
+            "createDate": self.createDate,
+            "updateDate": self.updateDate
 
         }
 
