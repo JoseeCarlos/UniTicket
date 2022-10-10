@@ -85,13 +85,13 @@ const Employee = () => {
         const index = findIndexById(employee.id);
 
         _employees[index] = _employee;
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Employee Updated', life: 3000 });
+        toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Empleado Actualizado', life: 3000 });
       }
       else {
         _employee.id = createId();
         _employee.image = 'employee-placeholder.svg';
         _employees.push(_employee);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Employee Created', life: 3000 });
+        toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Empleado Creado', life: 3000 });
       }
 
       setEmployees(_employees);
@@ -115,7 +115,7 @@ const Employee = () => {
     setEmployees(_employees);
     setDeleteEmployeeDialog(false);
     setEmployee(emptyEmployee);
-    toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Employee Deleted', life: 3000 });
+    toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Empleado Eliminado', life: 3000 });
   }
 
   const findIndexById = (id) => {
@@ -145,14 +145,6 @@ const Employee = () => {
 
   const confirmDeleteSelected = () => {
     setDeleteEmployeesDialog(true);
-  }
-
-  const deleteSelectedEmployees = () => {
-    let _employees = employees.filter(val => !selectedEmployees.includes(val));
-    setEmployees(_employees);
-    setDeleteEmployeesDialog(false);
-    setSelectedEmployees(null);
-    toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Employees Deleted', life: 3000 });
   }
 
   const onCategoryChange = (e) => {
@@ -200,8 +192,8 @@ const Employee = () => {
   const nameBodyTemplate = (rowData) => {
     return (
       <>
-        <span className="p-column-title">Name</span>
-        {rowData.name}
+        <span className="p-column-title">Nombre</span>
+        {rowData.name} {rowData.lastName} {rowData.secondLastName}
       </>
     );
   }
@@ -209,38 +201,49 @@ const Employee = () => {
   const imageBodyTemplate = (rowData) => {
     return (
       <>
-        <span className="p-column-title">Image</span>
+        <span className="p-column-title">Imagen</span>
         <img src={`assets/demo/images/product/${rowData.image}`} alt={rowData.image} className="shadow-2" width="100" />
       </>
     )
   }
 
-  const priceBodyTemplate = (rowData) => {
+  const phoneBodyTemplate = (rowData) => {
     return (
       <>
-        <span className="p-column-title">Price</span>
-        {formatCurrency(rowData.price)}
+        <span className="p-column-title">Celular</span>
+        {rowData.phone}
       </>
     );
   }
 
-  const categoryBodyTemplate = (rowData) => {
+  const emailBodyTemplate = (rowData) => {
     return (
       <>
-        <span className="p-column-title">Category</span>
-        {rowData.category}
+        <span className="p-column-title">Correo</span>
+        {rowData.email}
       </>
     );
   }
 
-  const ratingBodyTemplate = (rowData) => {
+
+  const roleBodyTemplate = (rowData) => {
     return (
       <>
-        <span className="p-column-title">Reviews</span>
-        <Rating value={rowData.rating} readonly cancel={false} />
+        <span className="p-column-title">Nombre</span>
+        {rowData.role}
       </>
     );
   }
+
+  const areaBodyTemplate = (rowData) => {
+    return (
+      <>
+        <span className="p-column-title">Área</span>
+        {rowData.area}
+      </>
+    );
+  }
+
 
   const statusBodyTemplate = (rowData) => {
     return (
@@ -263,7 +266,7 @@ const Employee = () => {
 
   const header = (
     <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-      <h5 className="m-0">Lista de empleados <i className='pi pi-plus icn' onClick={openNew}></i></h5>
+      <h5 className="m-0">Administración de empleados <i className='pi pi-plus icn' onClick={openNew}></i></h5>
       <div className='filters'>
         <span className="block mt-2 md:mt-0 p-input-icon-left">
           <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="name" placeholder="Estado del empleado" />
@@ -278,20 +281,14 @@ const Employee = () => {
 
   const employeeDialogFooter = (
     <>
-      <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
-      <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveEmployee} />
+      <Button label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
+      <Button label="Guardar" icon="pi pi-check" className="p-button-text" onClick={saveEmployee} />
     </>
   );
   const deleteEmployeeDialogFooter = (
     <>
       <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteEmployeeDialog} />
-      <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteEmployee} />
-    </>
-  );
-  const deleteEmployeesDialogFooter = (
-    <>
-      <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteEmployeesDialog} />
-      <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedEmployees} />
+      <Button label="Si" icon="pi pi-check" className="p-button-text" onClick={deleteEmployee} />
     </>
   );
 
@@ -306,13 +303,13 @@ const Employee = () => {
             dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
             currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} Empleados"
-            globalFilter={globalFilter} emptyMessage="No employees found." header={header} responsiveLayout="scroll">
+            globalFilter={globalFilter} emptyMessage="Empleado no encontrado." header={header} responsiveLayout="scroll">
             <Column field="name" header="Nombre Completo" sortable body={nameBodyTemplate} headerStyle={{ width: '50%', minWidth: '10rem' }}></Column>
             <Column header="Image" body={imageBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
-            <Column field="price" header="Celular" body={priceBodyTemplate} sortable headerStyle={{ width: '14%', minWidth: '8rem' }}></Column>
-            <Column field="category" header="Correo" sortable body={categoryBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
-            <Column field="rating" header="Rol" body={ratingBodyTemplate} sortable headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
-            <Column field="rating" header="Area" body={ratingBodyTemplate} sortable headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+            <Column field="price" header="Celular" body={phoneBodyTemplate} sortable headerStyle={{ width: '14%', minWidth: '8rem' }}></Column>
+            <Column field="email" header="Correo" sortable body={emailBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+            <Column field="role" header="Rol" body={roleBodyTemplate} sortable headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+            <Column field="area" header="Area" body={areaBodyTemplate} sortable headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
             <Column body={actionBodyTemplate}></Column>
           </DataTable>
 
