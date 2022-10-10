@@ -19,6 +19,8 @@ const Employee = () => {
   let emptyEmployee = {
     id: null,
     name: '',
+    lastName: '',
+    secondLastName: '',
     image: null,
     description: '',
     category: null,
@@ -175,25 +177,25 @@ const Employee = () => {
     setEmployee(_employee);
   }
 
-  const leftToolbarTemplate = () => {
-    return (
-      <React.Fragment>
-        <div className="my-2">
-          <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew} />
-          <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedEmployees || !selectedEmployees.length} />
-        </div>
-      </React.Fragment>
-    )
-  }
+  // const leftToolbarTemplate = () => {
+  //   return (
+  //     <React.Fragment>
+  //       <div className="my-2">
+  //         <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew} />
+  //         <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedEmployees || !selectedEmployees.length} />
+  //       </div>
+  //     </React.Fragment>
+  //   )
+  // }
 
-  const rightToolbarTemplate = () => {
-    return (
-      <React.Fragment>
-        <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="mr-2 inline-block" />
-        <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
-      </React.Fragment>
-    )
-  }
+  // const rightToolbarTemplate = () => {
+  //   return (
+  //     <React.Fragment>
+  //       <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="mr-2 inline-block" />
+  //       <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+  //     </React.Fragment>
+  //   )
+  // }
 
   const nameBodyTemplate = (rowData) => {
     return (
@@ -252,22 +254,23 @@ const Employee = () => {
   const actionBodyTemplate = (rowData) => {
     return (
       <div className="actions">
-        <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editEmployee(rowData)} />
-        <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeleteEmployee(rowData)} />
+        <Button icon="pi pi-pencil" className="action-dt" onClick={() => editEmployee(rowData)} />
+        <Button icon="pi pi-trash" className="action-dt" onClick={() => confirmDeleteEmployee(rowData)} />
+        <Button icon="pi pi-eye" className="action-dt" onClick={() => editEmployee(rowData)} />
       </div>
     );
   }
 
   const header = (
     <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-      <h5 className="m-0">Lista de empleados</h5>
+      <h5 className="m-0">Lista de empleados <i className='pi pi-plus icn' onClick={openNew}></i></h5>
       <div className='filters'>
         <span className="block mt-2 md:mt-0 p-input-icon-left">
           <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="name" placeholder="Estado del empleado" />
         </span>
         <span className="block mt-2 md:mt-0 p-input-icon-left">
           <i className="pi pi-search" />
-          <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
+          <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar empleado..." />
         </span>
       </div>
     </div>
@@ -297,14 +300,13 @@ const Employee = () => {
       <div className="col-12">
         <div className="card">
           <Toast ref={toast} />
-          <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+          {/* <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar> */}
 
           <DataTable ref={dt} value={employees} selection={selectedEmployees} onSelectionChange={(e) => setSelectedEmployees(e.value)}
             dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} employees"
+            currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} Empleados"
             globalFilter={globalFilter} emptyMessage="No employees found." header={header} responsiveLayout="scroll">
-            <Column selectionMode="single" headerStyle={{ width: '3rem' }}></Column>
             <Column field="name" header="Nombre Completo" sortable body={nameBodyTemplate} headerStyle={{ width: '50%', minWidth: '10rem' }}></Column>
             <Column header="Image" body={imageBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
             <Column field="price" header="Celular" body={priceBodyTemplate} sortable headerStyle={{ width: '14%', minWidth: '8rem' }}></Column>
@@ -314,48 +316,42 @@ const Employee = () => {
             <Column body={actionBodyTemplate}></Column>
           </DataTable>
 
-          <Dialog visible={employeeDialog} style={{ width: '450px' }} header="Employee Details" modal className="p-fluid" footer={employeeDialogFooter} onHide={hideDialog}>
+          <Dialog visible={employeeDialog} style={{ width: '450px' }} header="Empleado" modal className="p-fluid" footer={employeeDialogFooter} onHide={hideDialog}>
             {employee.image && <img src={`assets/demo/images/employee/${employee.image}`} alt={employee.image} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
             <div className="field">
-              <label htmlFor="name">Name</label>
+              <label htmlFor="name">Nombre</label>
               <InputText id="name" value={employee.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.name })} />
-              {submitted && !employee.name && <small className="p-invalid">Name is required.</small>}
+              {submitted && !employee.name && <small className="p-invalid">El nombre es requerido.</small>}
             </div>
-            <div className="field">
-              <label htmlFor="description">Description</label>
-              <InputTextarea id="description" value={employee.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
-            </div>
-
-            <div className="field">
-              <label className="mb-3">Category</label>
-              <div className="formgrid grid">
-                <div className="field-radiobutton col-6">
-                  <RadioButton inputId="category1" name="category" value="Accessories" onChange={onCategoryChange} checked={employee.category === 'Accessories'} />
-                  <label htmlFor="category1">Accessories</label>
-                </div>
-                <div className="field-radiobutton col-6">
-                  <RadioButton inputId="category2" name="category" value="Clothing" onChange={onCategoryChange} checked={employee.category === 'Clothing'} />
-                  <label htmlFor="category2">Clothing</label>
-                </div>
-                <div className="field-radiobutton col-6">
-                  <RadioButton inputId="category3" name="category" value="Electronics" onChange={onCategoryChange} checked={employee.category === 'Electronics'} />
-                  <label htmlFor="category3">Electronics</label>
-                </div>
-                <div className="field-radiobutton col-6">
-                  <RadioButton inputId="category4" name="category" value="Fitness" onChange={onCategoryChange} checked={employee.category === 'Fitness'} />
-                  <label htmlFor="category4">Fitness</label>
-                </div>
-              </div>
-            </div>
-
             <div className="formgrid grid">
               <div className="field col">
-                <label htmlFor="price">Price</label>
-                <InputNumber id="price" value={employee.price} onValueChange={(e) => onInputNumberChange(e, 'price')} mode="currency" currency="USD" locale="en-US" />
+                <label htmlFor="lastName">Apellido Paterno</label>
+                <InputText id="lastName" value={employee.lastName} onChange={(e) => onInputChange(e, 'lastName')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.lastName })} />
+                {submitted && !employee.name && <small className="p-invalid">El apellido paterno es requerido.</small>}
               </div>
               <div className="field col">
-                <label htmlFor="quantity">Quantity</label>
-                <InputNumber id="quantity" value={employee.quantity} onValueChange={(e) => onInputNumberChange(e, 'quantity')} integeronly />
+                <label htmlFor="secondLastName">Apellido Materno</label>
+                <InputText id="secondLastName" value={employee.secondLastName} onChange={(e) => onInputChange(e, 'secondLastName')} />
+              </div>
+            </div>
+            <div className="field">
+              <label htmlFor="phone">Celular</label>
+              <InputText id="phone" value={employee.phone} onChange={(e) => onInputChange(e, 'phone')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.phone })} />
+              {submitted && !employee.phone && <small className="p-invalid">El número de celular es requerido.</small>}
+            </div>
+            <div className="field">
+              <label htmlFor="email">Correo</label>
+              <InputText id="email" value={employee.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.email })} />
+              {submitted && !employee.email && <small className="p-invalid">El correo es requerido.</small>}
+            </div>
+            <div className="formgrid grid">
+              <div className="field col">
+                <label htmlFor="role">Rol</label>
+                <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="role" placeholder="Seleccione el rol" />
+              </div>
+              <div className="field col">
+                <label htmlFor="area">Área</label>
+                <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="area" placeholder="Seleccione la área" />
               </div>
             </div>
           </Dialog>
@@ -363,14 +359,7 @@ const Employee = () => {
           <Dialog visible={deleteEmployeeDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteEmployeeDialogFooter} onHide={hideDeleteEmployeeDialog}>
             <div className="flex align-items-center justify-content-center">
               <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-              {employee && <span>Are you sure you want to delete <b>{employee.name}</b>?</span>}
-            </div>
-          </Dialog>
-
-          <Dialog visible={deleteEmployeesDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteEmployeesDialogFooter} onHide={hideDeleteEmployeesDialog}>
-            <div className="flex align-items-center justify-content-center">
-              <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-              {employee && <span>Are you sure you want to delete the selected employees?</span>}
+              {employee && <span>Estás seguro de que desea elimiar al empleado <b>{employee.name}</b>?</span>}
             </div>
           </Dialog>
         </div>
