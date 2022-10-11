@@ -1,6 +1,6 @@
 from ast import Try
 from flask import Blueprint, jsonify, request
-# from models.EmployeeModel import EmployeeModel 
+from models.EmployeeModel import EmployeeModel 
 from models.entities.Employee import Employee
 
 main = Blueprint('employee', __name__)
@@ -8,9 +8,10 @@ main = Blueprint('employee', __name__)
 @main.route('/', methods=['GET'])
 def get_employeeS():
     try:
-        return jsonify('employeeS')
-    except Exception as e:
-        return jsonify({'error': str(e)})
+        employee = EmployeeModel.get_employees()
+        return jsonify(employee)
+    except Exception as ex:
+        return jsonify({'error': str(ex)}), 500
 
 @main.route('/<id>', methods=['GET'])
 def get_employee(id):
