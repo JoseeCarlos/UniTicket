@@ -7199,5 +7199,10 @@ input:focus {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
 
+.orders-subtable button {
+  width: auto !important;
+  gap: 1rem;
+  padding: 5px 10px 5px 10px !important;
 }
