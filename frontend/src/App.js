@@ -34,6 +34,7 @@ import EmptyPage from './admin/pages/EmptyPage';
 import TimelineDemo from './admin/pages/TimelineDemo';
 import Employee from './admin/pages/Employee';
 import Campus from './admin/pages/Campus';
+import Quejas from './admin/pages/Complaint';
 
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
@@ -163,6 +164,7 @@ const App = () => {
                 { label: 'Usuarios', icon: 'pi pi-fw pi-id-card', to: '/' },
                 { label: 'Empleados', icon: 'pi pi-fw pi-id-card', to: '/employee' },
                 { label: 'Campus', icon: 'pi pi-fw pi-id-card', to: '/campus' },
+                { label: 'Quejas', icon: 'pi pi-fw pi-id-card', to: '/quejas' },
                 { label: 'Sedes', icon: 'pi pi-fw pi-id-card', to: '/formlayout' },
                 { label: 'Mesas', icon: 'pi pi-fw pi-check-square', to: '/input' },
                 { label: "Quejas", icon: "pi pi-fw pi-bookmark", to: "/floatlabel" },
@@ -319,6 +321,7 @@ const App = () => {
                     <Route path="/documentation" component={Documentation} />
                     <Route path="/employee" component={Employee} />
                     <Route path="/campus" component={Campus} />
+                    <Route path="/quejas" component={Quejas} />
                 </div>
 
                 <AppFooter layoutColorMode={layoutColorMode} />
