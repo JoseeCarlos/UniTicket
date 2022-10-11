@@ -1,21 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { Toast } from 'primereact/toast';
+import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Button } from 'primereact/button';
-import { FileUpload } from 'primereact/fileupload';
+import { Dropdown } from 'primereact/dropdown';
 import { Rating } from 'primereact/rating';
-import { Toolbar } from 'primereact/toolbar';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { RadioButton } from 'primereact/radiobutton';
-import { InputNumber } from 'primereact/inputnumber';
+import { PickList } from 'primereact/picklist';
+import { OrderList } from 'primereact/orderlist';
+import { Toast } from 'primereact/toast';
+import { FileUpload } from 'primereact/fileupload';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { CampusService } from '../service/CampusService';
-import { Dropdown } from 'primereact/dropdown';
 
-const Campus = () => {
+const ListDemo = () => {
+
   let emptyCampus = {
     id: null,
     name: '',
@@ -27,31 +25,66 @@ const Campus = () => {
     create_date: 0
   };
 
-  const [campuss, setCampuss] = useState(null);
-  const [campusDialog, setCampusDialog] = useState(false);
-  const [deleteCampusDialog, setDeleteCampusDialog] = useState(false);
-  const [deleteCampussDialog, setDeleteCampussDialog] = useState(false);
-  const [campus, setCampus] = useState(emptyCampus);
-  const [selectedCampuss, setSelectedCampuss] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [globalFilter, setGlobalFilter] = useState(null);
-  const [dropdownValue, setDropdownValue] = useState(null);
-  const toast = useRef(null);
-  const dt = useRef(null);
-
   const dropdownValues = [
     { name: 'Habilitado', code: '1' },
     { name: 'Inhabilitado', code: '0' }
   ];
 
+  const listValue = [
+    { name: 'San Francisco', code: 'SF' },
+    { name: 'London', code: 'LDN' },
+    { name: 'Paris', code: 'PRS' },
+    { name: 'Istanbul', code: 'IST' },
+    { name: 'Berlin', code: 'BRL' },
+    { name: 'Barcelona', code: 'BRC' },
+    { name: 'Rome', code: 'RM' },
+  ];
+
+  const [dataviewValue, setDataviewValue] = useState(null);
+  const [layout, setLayout] = useState('grid');
+  const [sortKey, setSortKey] = useState(null);
+  const [sortOrder, setSortOrder] = useState(null);
+  const [sortField, setSortField] = useState(null);
+  const [campuss, setCampuss] = useState(null);
+  const [campusDialog, setCampusDialog] = useState(false);
+  const [deleteCampusDialog, setDeleteCampusDialog] = useState(false);
+  const [deleteCampussDialog, setDeleteCampussDialog] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [campus, setCampus] = useState(emptyCampus);
+  const [dropdownValue, setDropdownValue] = useState(null);
+  const toast = useRef(null);
+  const dt = useRef(null);
+
+  const sortOptions = [
+    { label: 'Habilitado', value: '1' },
+    { label: 'Deshabilitado', value: '0' }
+  ];
+
+  const sortCity = [
+    { label: 'La Paz', value: '1' },
+    { label: 'Cochabamba', value: '0' }
+  ];
+
   useEffect(() => {
     const campusService = new CampusService();
-    campusService.getCampuss().then(data => setCampuss(data));
+    campusService.getCampuss().then(data => setDataviewValue(data) );
+
   }, []);
 
-  const formatCurrency = (value) => {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-  }
+  const onSortChange = (event) => {
+    const value = event.value;
+
+    if (value.indexOf('!') === 0) {
+      setSortOrder(-1);
+      setSortField(value.substring(1, value.length));
+      setSortKey(value);
+    }
+    else {
+      setSortOrder(1);
+      setSortField(value);
+      setSortKey(value);
+    }
+  };
 
   const openNew = () => {
     setCampus(emptyCampus);
@@ -148,77 +181,74 @@ const Campus = () => {
     setCampus(_campus);
   }
 
-  // const leftToolbarTemplate = () => {
-  //   return (
-  //     <React.Fragment>
-  //       <div className="my-2">
-  //         <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew} />
-  //         <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedCampuss || !selectedCampuss.length} />
-  //       </div>
-  //     </React.Fragment>
-  //   )
-  // }
-
-  // const rightToolbarTemplate = () => {
-  //   return (
-  //     <React.Fragment>
-  //       <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="mr-2 inline-block" />
-  //       <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
-  //     </React.Fragment>
-  //   )
-  // }
-
-  const nameBodyTemplate = (rowData) => {
-    return (
-      <>
-        <span className="p-column-title">Nombre</span>
-        {rowData.name}
-      </>
-    );
-  }
-
-  const imageBodyTemplate = (rowData) => {
-    return (
-      <>
-        <span className="p-column-title">Image</span>
-        <img src={`assets/demo/images/product/${rowData.image}`} alt={rowData.image} className="shadow-2" width="100" />
-      </>
-    )
-  }
-
-  const cityBodyTemplate = (rowData) => {
-    return (
-      <>
-        <span className="p-column-title">Ciudad</span>
-        {rowData.city}
-      </>
-    );
-  }
-
-  const actionBodyTemplate = (rowData) => {
-    return (
-      <div className="actions">
-        <Button icon="pi pi-pencil" className="action-dt" onClick={() => editCampus(rowData)} />
-        <Button icon="pi pi-trash" className="action-dt" onClick={() => confirmDeleteCampus(rowData)} />
-        <Button icon="pi pi-eye" className="action-dt" onClick={() => editCampus(rowData)} />
+  const dataviewHeader = (
+    <div className="grid grid-nogutter">
+      <div className="col-6">
+        <div className="grid grid-nogutter">
+          <div className='col-6' style={{ textAlign: 'left' }}>
+            <Dropdown value={sortKey} options={sortOptions} optionLabel="label" placeholder="Seleccionar estado" onChange={onSortChange} />
+          </div>
+          <div className='col-6' style={{ textAlign: 'left' }}>
+            <Dropdown value={sortKey} options={sortCity} optionLabel="label" placeholder="Seleccionar ciudad" onChange={onSortChange} />
+          </div>
+        </div>
       </div>
-    );
-  }
-
-  const header = (
-    <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-      <h5 className="m-0">Administración de los campus <i className='pi pi-plus icn' onClick={openNew}></i></h5>
-      <div className='filters'>
-        <span className="block mt-2 md:mt-0 p-input-icon-left">
-          <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="name" placeholder="Estado del campus" />
-        </span>
-        <span className="block mt-2 md:mt-0 p-input-icon-left">
-          <i className="pi pi-search" />
-          <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar campus..." />
-        </span>
+      <div className="col-6" style={{ textAlign: 'right' }}>
+        <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} />
       </div>
     </div>
   );
+
+  const dataviewListItem = (data) => {
+    return (
+      <div className="col-12">
+        <div className="flex flex-column md:flex-row align-items-center p-3 w-full">
+          <img src={`assets/demo/images/product/${data.image}`} alt={data.name} className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
+          <div className="flex-1 text-center md:text-left">
+            <div className="font-bold text-2xl">{data.name}</div>
+            <div className="mb-3">{data.description}</div>
+          </div>
+          <div className="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
+            <Button icon="pi pi-pencil" className="mb-2 align-self-center md:align-self-end action-dt" onClick={() => editCampus(data.id)} />
+            <Button icon="pi pi-trash" className="action-dt mb-2" onClick={() => confirmDeleteCampus(data.id)} />
+            <Button icon="pi pi-eye" className="action-dt" onClick={() => editCampus(data.id)} />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const dataviewGridItem = (data) => {
+    return (
+      <div className="col-12 md:col-4">
+        <div className="card m-3 border-1 surface-border">
+          <div className="text-center">
+            <img src={`assets/demo/images/product/${data.image}`} alt={data.name} className="w-9 shadow-2 my-3 mx-0" />
+            <div className="text-2xl font-bold">{data.name}</div>
+            <div className="mb-3">{data.description}</div>
+          </div>
+          <div className="actions">
+            <Button icon="pi pi-pencil" className="action-dt" onClick={() => editCampus(data)} />
+            <Button icon="pi pi-trash" className="action-dt" onClick={() => confirmDeleteCampus(data)} />
+            <Button icon="pi pi-eye" className="action-dt" onClick={() => editCampus(data)} />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const itemTemplate = (data, layout) => {
+    if (!data) {
+      return;
+    }
+
+    if (layout === 'list') {
+      return dataviewListItem(data);
+    }
+    else if (layout === 'grid') {
+      return dataviewGridItem(data);
+    }
+  };
 
   const campusDialogFooter = (
     <>
@@ -237,27 +267,17 @@ const Campus = () => {
     toast.current.show({ severity: 'info', summary: 'Success', detail: 'Archivo subido', life: 3000 });
   }
 
-  const chooseOptions = { icon: 'pi pi-fw pi-images', className:'p-button-upload' };
+  const chooseOptions = { icon: 'pi pi-fw pi-images', className: 'p-button-upload' };
   const uploadOptions = { icon: 'pi pi-fw pi-cloud-upload', className: 'p-button-upload' };
   const cancelOptions = { icon: 'pi pi-fw pi-times', className: 'p-button-upload' };
 
   return (
-    <div className="grid crud-demo">
+    <div className="grid list-demo">
       <div className="col-12">
         <div className="card">
+          <h5>Administración de los Campus <i className='pi pi-plus icn' onClick={openNew}></i></h5>
           <Toast ref={toast} />
-          {/* <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar> */}
-
-          <DataTable ref={dt} value={campuss} selection={selectedCampuss} onSelectionChange={(e) => setSelectedCampuss(e.value)}
-            dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive"
-            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} Campus"
-            globalFilter={globalFilter} emptyMessage="Campus no encontrado." header={header} responsiveLayout="scroll">
-            <Column field="name" header="Campus" sortable body={nameBodyTemplate} headerStyle={{ width: '40%', minWidth: '10rem' }}></Column>
-            <Column header="Image" body={imageBodyTemplate} headerStyle={{ width: '20%', minWidth: '10rem' }}></Column>
-            <Column field="city" header="Ciudad" body={cityBodyTemplate} sortable headerStyle={{ width: '20%', minWidth: '8rem' }}></Column>
-            <Column body={actionBodyTemplate} headerStyle={{ width: '20%', minWidth: '8rem' }}></Column>
-          </DataTable>
+          <DataView value={dataviewValue} layout={layout} paginator rows={9} sortOrder={sortOrder} sortField={sortField} itemTemplate={itemTemplate} header={dataviewHeader}></DataView>
 
           <Dialog visible={campusDialog} style={{ width: '450px' }} header="Campus" modal className="p-fluid" footer={campusDialogFooter} onHide={hideDialog}>
             {campus.image && <img src={`assets/demo/images/campus/${campus.image}`} alt={campus.image} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
@@ -265,7 +285,7 @@ const Campus = () => {
               <div className="col-12">
                 <div className="card">
                   <h5>Imagen</h5>
-                  <FileUpload name="demo[]" url="./upload.php" onUpload={onUpload} accept="image/*" maxFileSize={10000000} chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions}/>
+                  <FileUpload name="demo[]" url="./upload.php" onUpload={onUpload} accept="image/*" maxFileSize={10000000} chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />
                 </div>
               </div>
             </div>
@@ -286,17 +306,17 @@ const Campus = () => {
           <Dialog visible={deleteCampusDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteCampusDialogFooter} onHide={hideDeleteCampusDialog}>
             <div className="flex align-items-center justify-content-center">
               <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-              {campus && <span>Estás seguro de que desea elimiar al empleado <b>{campus.name}</b>?</span>}
+              {campus && <span>Estás seguro de que desea elimiar el campus <b>{campus.name}</b>?</span>}
             </div>
           </Dialog>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 const comparisonFn = function (prevProps, nextProps) {
   return prevProps.location.pathname === nextProps.location.pathname;
 };
 
-export default React.memo(Campus, comparisonFn);
+export default React.memo(ListDemo, comparisonFn);

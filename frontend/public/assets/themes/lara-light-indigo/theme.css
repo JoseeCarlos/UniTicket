@@ -1236,8 +1236,10 @@
 .p-inputtext:enabled:focus {
   outline: 0 none;
   outline-offset: 0;
-  box-shadow: 0 0 0 0.1rem var(--primary-uni);;
-  border-color: var(--primary-uni);;
+  box-shadow: 0 0 0 0.1rem var(--primary-uni);
+  ;
+  border-color: var(--primary-uni);
+  ;
 }
 
 .p-inputtext.p-invalid.p-component {
@@ -1784,8 +1786,8 @@
 }
 
 .p-selectbutton .p-button.p-highlight:hover {
-  background: #4F46E5;
-  border-color: #4F46E5;
+  background: var(--primary-uni-2);
+  border-color: var(--primary-uni-2);
   color: #ffffff;
 }
 
@@ -3110,7 +3112,7 @@
   gap: 2rem;
 }
 
-.p-datatable .p-datatable-header .icn {
+.icn {
   background-color: var(--primary-uni);
   color: var(--white);
   padding: 5px;
@@ -3120,7 +3122,7 @@
   transition: all 500ms ease;
 }
 
-.p-datatable .p-datatable-header .icn:hover {
+.icn:hover {
   background-color: var(--white);
   color: var(--primary-uni);
   border: 1px solid var(--primary-uni);
@@ -7189,4 +7191,13 @@ input:focus {
 .p-fileupload span .p-button-label,
 .p-fileupload button .p-button-label {
   display: none;
+}
+
+.actions {
+  width: 100%;
+  padding: 0 80px 0 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
 }
