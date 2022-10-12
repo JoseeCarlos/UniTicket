@@ -29,13 +29,31 @@
 
             &.layout-static-sidebar-inactive {
                 .layout-sidebar {
-                    transform: translateX(-100%);
-                    left: 0;
+                    width: 100px;
+                    padding-right: 5px;
+                    left: 2rem;
                 }
 
                 .layout-main-container {
-                    margin-left: 0;
+                    margin-left: 9rem;
                     padding-left: 2rem;
+                }
+
+                .layout-menu .layout-menuitem-category {
+                    div {
+                        display: none;
+                    }
+                }
+
+                ul li a {
+                    span {
+                        display: none;
+                    }
+
+                    i {
+                        font-size: 22px;
+                    }
+
                 }
             }
         }

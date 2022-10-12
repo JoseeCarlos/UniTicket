@@ -35,6 +35,9 @@ import TimelineDemo from './admin/pages/TimelineDemo';
 import Employee from './admin/pages/Employee';
 import Campus from './admin/pages/Campus';
 import Quejas from './admin/pages/Complaint';
+import GeneralReport from './admin/pages/GeneralReport';
+import GenerateReport from './admin/pages/GenerateReport';
+
 
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
@@ -159,16 +162,24 @@ const App = () => {
 
     const menu = [
         {
-            label: 'ADMINISTRACION', icon: 'pi pi-fw pi-sitemap',
+            label: 'ADMINISTRACIÓN', icon: 'pi pi-fw pi-sitemap',
             items: [
-                { label: 'Usuarios', icon: 'pi pi-fw pi-id-card', to: '/' },
+                { label: 'Usuarios', icon: 'pi pi-fw pi-users', to: '/' },
                 { label: 'Empleados', icon: 'pi pi-fw pi-id-card', to: '/employee' },
-                { label: 'Campus', icon: 'pi pi-fw pi-id-card', to: '/campus' },
-                { label: 'Quejas', icon: 'pi pi-fw pi-id-card', to: '/quejas' },
+                { label: 'Campus', icon: 'pi pi-fw pi-home', to: '/campus' },
+                { label: 'Quejas', icon: 'pi pi-fw pi-comments', to: '/quejas' },
                 { label: 'Sedes', icon: 'pi pi-fw pi-id-card', to: '/formlayout' },
                 { label: 'Mesas', icon: 'pi pi-fw pi-check-square', to: '/input' },
-                { label: "Quejas", icon: "pi pi-fw pi-bookmark", to: "/floatlabel" },
-                { label: "Reportes", icon: "pi pi-fw pi-exclamation-circle", to: "invalidstate" },
+                { label: 'Quejas', icon: "pi pi-fw pi-bookmark", to: "/floatlabel" },
+                { label: 'Reportes', icon: "pi pi-fw pi-exclamation-circle", to: "invalidstate" },
+                {
+                    label: 'Reportes', icon: 'pi pi-fw pi-exclamation-circle',
+                    items: [
+
+                        { label: 'General', icon: 'pi pi-fw pi-chart-bar', to: '/generalReport' },
+                        { label: 'Generar', icon: 'pi pi-fw pi-book', to: '/generateReport' },
+                    ]
+                },
                 { label: 'Button', icon: 'pi pi-fw pi-mobile', to: '/button' },
                 { label: 'Table', icon: 'pi pi-fw pi-table', to: '/table' },
                 { label: 'List', icon: 'pi pi-fw pi-list', to: '/list' },
@@ -322,6 +333,8 @@ const App = () => {
                     <Route path="/employee" component={Employee} />
                     <Route path="/campus" component={Campus} />
                     <Route path="/quejas" component={Quejas} />
+                    <Route path="/generalReport" component={GeneralReport} />
+                    <Route path="/generateReport" component={GenerateReport} />
                 </div>
 
                 <AppFooter layoutColorMode={layoutColorMode} />
