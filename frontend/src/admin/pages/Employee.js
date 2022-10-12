@@ -48,13 +48,9 @@ const Employee = () => {
   ];
 
   useEffect(() => {
-    fetch('/api/employee/')
-      .then((res) => res.json())
-      .then((data) => {
-        setEmployees(data);
-        console.log(data);
-      }
-      );
+    const employeeService = new EmployeeService();
+    employeeService.getEmployees().then(data => setEmployees(data));
+      
   }, []);
 
   const formatCurrency = (value) => {

@@ -3,11 +3,13 @@ import axios from 'axios';
 export class EmployeeService {
 
     getEmployeesSmall() {
-        return axios.get('assets/demo/data/products-small.json').then(res => res.data.data);
+        return fetch('/api/employee/').then(res => res.json()).then(data => data);
     }
 
     getEmployees() {
-        return axios.get('assets/demo/data/products.json').then(res => res.data.data);
+        return fetch('/api/employee/').then(res => res.json()).then(data => data);
+
+
     }
 
     getEmployeessWithOrdersSmall() {
