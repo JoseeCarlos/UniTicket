@@ -48,8 +48,13 @@ const Employee = () => {
   ];
 
   useEffect(() => {
-    const employeeService = new EmployeeService();
-    employeeService.getEmployees().then(data => setEmployees(data));
+    fetch('/api/employee/')
+      .then((res) => res.json())
+      .then((data) => {
+        setEmployees(data);
+        console.log(data);
+      }
+      );
   }, []);
 
   const formatCurrency = (value) => {
@@ -193,7 +198,7 @@ const Employee = () => {
     return (
       <>
         <span className="p-column-title">Nombre</span>
-        {rowData.name} {rowData.lastName} {rowData.secondLastName}
+        {rowData.firstName} {rowData.firstSurname} {rowData.secondSurname}
       </>
     );
   }
@@ -202,7 +207,7 @@ const Employee = () => {
     return (
       <>
         <span className="p-column-title">Imagen</span>
-        <img src={`assets/demo/images/product/${rowData.image}`} alt={rowData.image} className="shadow-2" width="100" />
+        <img src={`assets/layout/images/default.jpg`} className="shadow-2" width="100" />
       </>
     )
   }
@@ -211,7 +216,7 @@ const Employee = () => {
     return (
       <>
         <span className="p-column-title">Celular</span>
-        {rowData.phone}
+        {rowData.phoneNumber}
       </>
     );
   }
@@ -230,7 +235,7 @@ const Employee = () => {
     return (
       <>
         <span className="p-column-title">Nombre</span>
-        {rowData.role}
+        {rowData.role===1 ? 'Administrador' : 'Supervisor'}
       </>
     );
   }
@@ -317,24 +322,24 @@ const Employee = () => {
             {employee.image && <img src={`assets/demo/images/employee/${employee.image}`} alt={employee.image} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
             <div className="field">
               <label htmlFor="name">Nombre</label>
-              <InputText id="name" value={employee.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.name })} />
-              {submitted && !employee.name && <small className="p-invalid">El nombre es requerido.</small>}
+              <InputText id="name" value={employee.firstName} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.name })} />
+              {submitted && !employee.firstName && <small className="p-invalid">El nombre es requerido.</small>}
             </div>
             <div className="formgrid grid">
               <div className="field col">
                 <label htmlFor="lastName">Apellido Paterno</label>
-                <InputText id="lastName" value={employee.lastName} onChange={(e) => onInputChange(e, 'lastName')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.lastName })} />
-                {submitted && !employee.name && <small className="p-invalid">El apellido paterno es requerido.</small>}
+                <InputText id="lastName" value={employee.firstSurname} onChange={(e) => onInputChange(e, 'lastName')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.lastName })} />
+                {submitted && !employee.firstSurname && <small className="p-invalid">El apellido paterno es requerido.</small>}
               </div>
               <div className="field col">
                 <label htmlFor="secondLastName">Apellido Materno</label>
-                <InputText id="secondLastName" value={employee.secondLastName} onChange={(e) => onInputChange(e, 'secondLastName')} />
+                <InputText id="secondLastName" value={employee.secondSurname} onChange={(e) => onInputChange(e, 'secondLastName')} />
               </div>
             </div>
             <div className="field">
               <label htmlFor="phone">Celular</label>
-              <InputText id="phone" value={employee.phone} onChange={(e) => onInputChange(e, 'phone')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.phone })} />
-              {submitted && !employee.phone && <small className="p-invalid">El número de celular es requerido.</small>}
+              <InputText id="phone" value={employee.phoneNumber} onChange={(e) => onInputChange(e, 'phone')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.phone })} />
+              {submitted && !employee.phoneNumber && <small className="p-invalid">El número de celular es requerido.</small>}
             </div>
             <div className="field">
               <label htmlFor="email">Correo</label>

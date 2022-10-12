@@ -1,8 +1,6 @@
 from flask import jsonify
 from database.db import get_connection
-from .entities.Employee import Employee
-from .entities.User import User
-from .entities.Area import Area
+from .entities.SelectModel import SelectModel
 import json
 
 
@@ -11,9 +9,9 @@ class EmployeeModel():
         def get_employees(self):
             try:
                 connection = get_connection()
-                data = [User, Employee, Area]
+                employees = []
                 with connection.cursor() as cursor:
-                    ssswcursor.execute("""SELECT U.userId, U.firstName, U.firstSurname, U.secondSurname, U.email, E.phoneNumber,E.role, AR.name
+                    cursor.execute("""SELECT U.userId, U.firstName, U.firstSurname, U.secondSurname, U.email, E.phoneNumber,E.role, AR.name
                                         FROM user U 
                                         INNER JOIN employee E ON E.employeeId=U.userId
                                         INNER JOIN asignation A ON A.employeeId=E.employeeId
@@ -23,10 +21,10 @@ class EmployeeModel():
                                         WHERE U.status=1 
                                     """)
                     for row in cursor.fetchall():
-                        data[0]=(User(row[0], row[1], row[2], row[3], row[4]))
+                        employees.append(SelectModel(userId=row[0], firstName=row[1], firstSurname=row[2], secondSurname=row[3], email=row[4], phoneNumber=row[5], role=row[6], area=row[7]).to_JSON())
 
                 connection.close()
-                return json.dumps(data, default=str)
+                return employees
             except Exception as ex:
                 raise Exception(ex)
         

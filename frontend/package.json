@@ -4,6 +4,7 @@
     "homepage": ".",
     "private": false,
     "license": "MIT",
+    "proxy": "http://localhost:5000",
     "dependencies": {
         "@fullcalendar/core": "^5.7.2",
         "@fullcalendar/daygrid": "^5.7.2",
