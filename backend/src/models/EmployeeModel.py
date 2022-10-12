@@ -11,7 +11,7 @@ class EmployeeModel():
                 connection = get_connection()
                 employees = []
                 with connection.cursor() as cursor:
-                    cursor.execute("""SELECT U.userId, U.firstName, U.firstSurname, U.secondSurname, U.email, E.phoneNumber,E.role, AR.name
+                    cursor.execute("""SELECT U.userId, U.firstName, U.firstSurname, U.secondSurname, U.email, E.phoneNumber, E.ci, E.role, AR.name
                                         FROM user U 
                                         INNER JOIN employee E ON E.employeeId=U.userId
                                         INNER JOIN asignation A ON A.employeeId=E.employeeId
@@ -21,7 +21,7 @@ class EmployeeModel():
                                         WHERE U.status=1 
                                     """)
                     for row in cursor.fetchall():
-                        employees.append(SelectModel(userId=row[0], firstName=row[1], firstSurname=row[2], secondSurname=row[3], email=row[4], phoneNumber=row[5], role=row[6], area=row[7]).to_JSON())
+                        employees.append(SelectModel(userId=row[0], firstName=row[1], firstSurname=row[2], secondSurname=row[3], email=row[4], phoneNumber=row[5], ci=row[6] ,role=row[7], area=row[8]).to_JSON())
 
                 connection.close()
                 return employees
@@ -56,18 +56,21 @@ class EmployeeModel():
             try:
                 connection = get_connection()
                 with connection.cursor() as cursor:
-                    cursor.execute("""INSERT INTO user (firstName, firstSurname, secondSurname, userName, password, email, role, status, createDate, updateDate)
-                                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (employee.firstName, employee.firstSurname, employee.secondSurname, employee.userName, employee.password, employee.email, employee.role, employee.status, employee.createDate, employee.updateDate))
+                    cursor.execute("""INSERT INTO user (firstName, firstSurname, secondSurname, userName, password, email, role, updateDate, userIdCreate, userIdMod )
+                                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s )""", (user.firstName, user.firstSurname, user.secondSurname, user.userName, user.password, user.email, user.role, user.updateDate, user.userIdCreate, user.userIdMod))
                     id = cursor.lastrowid
-                    cursor.execute("""INSERT INTO employee (employeeId, phoneNumber)
-                                    VALUES (%s, %s)""", (id, employee.phoneNumber))
+                    cursor.execute("""INSERT INTO employee (employeeId, ci, phoneNumber, homeLat, homeLon, role )
+                                    VALUES (%s, %s, %s, %s, %s, %s )""", (id, employee.ci, employee.phoneNumber, employee.homeLat, employee.homeLon, employee.role))
 
-                    
-                connection.commit()
-                connection.close()
-                return True
+                    connection.commit()
+                    affected_rows = cursor.rowcount
+                return affected_rows
             except Exception as ex:
+                connection.rollback()
                 raise Exception(ex)
+            finally:
+                connection.close()
+
         
         @classmethod
         def update_employee(self, employee, user):

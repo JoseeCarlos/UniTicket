@@ -17,17 +17,23 @@ import { Dropdown } from 'primereact/dropdown';
 
 const Employee = () => {
   let emptyEmployee = {
-    id: null,
-    name: '',
-    lastName: '',
-    secondLastName: '',
-    image: null,
-    description: '',
-    category: null,
-    price: 0,
-    quantity: 0,
-    rating: 0,
-    inventoryStatus: 'INSTOCK'
+    userId: null,
+    firstName: '',
+    firstSurname: '',
+    secondSurname: '',
+    userName: '',
+    password: '',
+    ci: '',
+    phoneNumber: '',
+    homeLat: '-12.4234234',
+    homeLon: '-33.484834',
+    email: '',
+    roleUser: 0,
+    rolEmployee: 0,
+    userIdCreate: 2,
+    userIdMod: 2,
+    updateDate: '2022-05-05',
+
   };
 
   const [employees, setEmployees] = useState(null);
@@ -41,11 +47,18 @@ const Employee = () => {
   const [dropdownValue, setDropdownValue] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
+  const [selectedRole, setSelectedRole] = useState(null);
+  const roles = [
+    { name: 'Administrador', code: '0' },
+    { name: 'Supervisor', code: '1' },
+  ]
 
   const dropdownValues = [
     { name: 'Habilitado', code: '1' },
     { name: 'Inhabilitado', code: '0' }
   ];
+
+
 
   useEffect(() => {
     const employeeService = new EmployeeService();
@@ -79,20 +92,22 @@ const Employee = () => {
   const saveEmployee = () => {
     setSubmitted(true);
 
-    if (employee.name.trim()) {
+    if (employee.firstName.trim()) {
       let _employees = [...employees];
       let _employee = { ...employee };
       if (employee.id) {
-        const index = findIndexById(employee.id);
-
-        _employees[index] = _employee;
-        toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Empleado Actualizado', life: 3000 });
+        console.log("update");
+        console.log(employee);
       }
       else {
-        _employee.id = createId();
-        _employee.image = 'employee-placeholder.svg';
-        _employees.push(_employee);
-        toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Empleado Creado', life: 3000 });
+        employee.userName = generateUsername(employee.firstName,employee.firstSurname,employee.secondSurname);
+        employee.password = generatePassword();
+
+        console.log("create");
+        console.log(employee);
+        const employeeService = new EmployeeService();
+        employeeService.setEmployee(employee).then(data => console.log(data));
+        toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Empleado Creado con exito', life: 3000 });
       }
 
       setEmployees(_employees);
@@ -118,6 +133,23 @@ const Employee = () => {
     setEmployee(emptyEmployee);
     toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Empleado Eliminado', life: 3000 });
   }
+
+
+  const generateUsername = (name, last_name, second_last_name) => {
+    for (let i = 0; i < 1; i++) {
+        let username = String(name).charAt(0) + String(last_name).charAt(0) + String(second_last_name).charAt(0) + Math.floor(Math.random() * 1000);
+        return username;
+    }
+  }
+
+  const generatePassword = () => {
+    let password = '';
+    let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 8; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return password;
+}
 
   const findIndexById = (id) => {
     let index = -1;
@@ -293,6 +325,19 @@ const Employee = () => {
     </>
   );
 
+  const onSelectedRoleChange = (e) => {
+    setSelectedRole(e.value);
+    console.log(e.value.code);
+    if(e.value.code == '1')
+    {
+      setEmployee({...employee, role:1});
+    }
+    else
+    {
+      setEmployee({...employee, role:0});
+    }
+};
+
   return (
     <div className="grid crud-demo">
       <div className="col-12">
@@ -318,25 +363,34 @@ const Employee = () => {
             {employee.image && <img src={`assets/demo/images/employee/${employee.image}`} alt={employee.image} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
             <div className="field">
               <label htmlFor="name">Nombre</label>
-              <InputText id="name" value={employee.firstName} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.name })} />
+              <InputText id="firstName" value={employee.firstName} onChange={(e) => onInputChange(e, 'firstName')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.firstName })} />
               {submitted && !employee.firstName && <small className="p-invalid">El nombre es requerido.</small>}
             </div>
             <div className="formgrid grid">
               <div className="field col">
-                <label htmlFor="lastName">Apellido Paterno</label>
-                <InputText id="lastName" value={employee.firstSurname} onChange={(e) => onInputChange(e, 'lastName')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.lastName })} />
+                <label htmlFor="firstSurname">Apellido Paterno</label>
+                <InputText id="lastNfirstSurnameame" value={employee.firstSurname} onChange={(e) => onInputChange(e, 'firstSurname')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.firstSurname })} />
                 {submitted && !employee.firstSurname && <small className="p-invalid">El apellido paterno es requerido.</small>}
               </div>
               <div className="field col">
-                <label htmlFor="secondLastName">Apellido Materno</label>
-                <InputText id="secondLastName" value={employee.secondSurname} onChange={(e) => onInputChange(e, 'secondLastName')} />
+                <label htmlFor="secondSurname">Apellido Materno</label>
+                <InputText id="secondSurname" value={employee.secondSurname} onChange={(e) => onInputChange(e, 'secondSurname')} />
               </div>
             </div>
-            <div className="field">
-              <label htmlFor="phone">Celular</label>
-              <InputText id="phone" value={employee.phoneNumber} onChange={(e) => onInputChange(e, 'phone')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.phone })} />
-              {submitted && !employee.phoneNumber && <small className="p-invalid">El número de celular es requerido.</small>}
+
+            <div className="formgrid grid">
+              <div className="field col">
+                <label htmlFor="phoneNumber">Celular</label>
+                <InputText id="phoneNumber" value={employee.phoneNumber} onChange={(e) => onInputChange(e, 'phoneNumber')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.phoneNumber })} />
+                {submitted && !employee.phoneNumber && <small className="p-invalid">El número de celular es requerido.</small>}
+              </div>
+              <div className="field col">
+                <label htmlFor="phone">Ci</label>
+                <InputText id="phone" value={employee.ci} onChange={(e) => onInputChange(e, 'ci')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.phone })} />
+                {submitted && !employee.ci && <small className="p-invalid">El número de celular es requerido.</small>}
+              </div>
             </div>
+
             <div className="field">
               <label htmlFor="email">Correo</label>
               <InputText id="email" value={employee.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.email })} />
@@ -345,11 +399,8 @@ const Employee = () => {
             <div className="formgrid grid">
               <div className="field col">
                 <label htmlFor="role">Rol</label>
-                <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="role" placeholder="Seleccione el rol" />
-              </div>
-              <div className="field col">
-                <label htmlFor="area">Área</label>
-                <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="area" placeholder="Seleccione la área" />
+                <Dropdown value={selectedRole} options={roles} onChange={onSelectedRoleChange} optionLabel="name" placeholder="Tipo de Usuarios"/>
+
               </div>
             </div>
           </Dialog>
