@@ -6,7 +6,6 @@ import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { FileUpload } from 'primereact/fileupload';
 import { Rating } from 'primereact/rating';
-import { Toolbar } from 'primereact/toolbar';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { RadioButton } from 'primereact/radiobutton';
 import { InputNumber } from 'primereact/inputnumber';
@@ -400,11 +399,11 @@ const Employee = () => {
               <InputText id="email" value={employee.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.email })} />
               {submitted && !employee.email && <small className="p-invalid">El correo es requerido.</small>}
             </div>
+
             <div className="formgrid grid">
               <div className="field col">
                 <label htmlFor="role">Rol</label>
                 <Dropdown value={selectedRole} options={roles} onChange={onSelectedRoleChange} optionLabel="name" placeholder="Tipo de Usuarios"/>
-
               </div>
             </div>
           </Dialog>
