@@ -22,6 +22,16 @@ export class EmployeeService {
         }).then(res => res.json()).then(data => data);
     }
 
+    deleteEmployee(id) {
+        return fetch('/api/employee/delete/'+id,{
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(id)
+        }).then(res => res.json()).then(data => data);
+    }
+
     getEmployeessWithOrdersSmall() {
         return axios.get('assets/demo/data/products-orders-small.json').then(res => res.data.data);
     }

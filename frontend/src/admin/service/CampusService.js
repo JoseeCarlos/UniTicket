@@ -3,11 +3,11 @@ import axios from 'axios';
 export class CampusService {
 
     getCampusSmall() {
-        return axios.get('assets/demo/data/products-small.json').then(res => res.data.data);
+        return fetch('/api/campus/').then(res => res.json()).then(data => data);
     }
 
     getCampuss() {
-        return axios.get('assets/demo/data/products.json').then(res => res.data.data);
+        return fetch('/api/campus/').then(res => res.json()).then(data => data);
     }
 
     getCampusWithOrdersSmall() {

@@ -11,17 +11,13 @@ class EmployeeModel():
                 connection = get_connection()
                 employees = []
                 with connection.cursor() as cursor:
-                    cursor.execute("""SELECT U.userId, U.firstName, U.firstSurname, U.secondSurname, U.email, E.phoneNumber, E.ci, E.role, AR.name
+                    cursor.execute("""SELECT U.userId, U.firstName, U.firstSurname, U.secondSurname, U.email, E.phoneNumber, E.ci, E.role, U.status
                                         FROM user U 
                                         INNER JOIN employee E ON E.employeeId=U.userId
-                                        INNER JOIN asignation A ON A.employeeId=E.employeeId
-                                        INNER JOIN ´table´ TA ON TA.tableId=A.tableId
-                                        INNER JOIN attentionplace_area ATT ON ATT.areaId=TA.areaId 
-                                        INNER JOIN area AR ON AR.areaId=ATT.areaId
                                         WHERE U.status=1 
                                     """)
                     for row in cursor.fetchall():
-                        employees.append(SelectModel(userId=row[0], firstName=row[1], firstSurname=row[2], secondSurname=row[3], email=row[4], phoneNumber=row[5], ci=row[6] ,role=row[7], area=row[8]).to_JSON())
+                        employees.append(SelectModel(userId=row[0], firstName=row[1], firstSurname=row[2], secondSurname=row[3], email=row[4], phoneNumber=row[5], ci=row[6] ,role=row[7],status=row[8]).to_JSON())
 
                 connection.close()
                 return employees
@@ -77,28 +73,31 @@ class EmployeeModel():
             try:
                 connection = get_connection()
                 with connection.cursor() as cursor:
-                    cursor.execute("""UPDATE user SET firstName=%s, firstSurname=%s, secondSurname=%s, userName=%s, password=%s, email=%s, role=%s, status=%s, createDate=%s, updateDate=%s
-                                    WHERE userId=%s""", (employee.firstName, employee.firstSurname, employee.secondSurname, employee.userName, employee.password, employee.email, employee.role, employee.status, employee.createDate, employee.updateDate, employee.userId))
+                    cursor.execute("""UPDATE user SET firstName=%s, firstSurname=%s, secondSurname=%s, email=%s, updateDate=%s
+                                    WHERE userId=%s""", (employee.firstName, employee.firstSurname, employee.secondSurname, employee.userName, employee.password, employee.email, employee.updateDate, employee.userId))
                     cursor.execute("""UPDATE employee SET phoneNumber=%s
                                     WHERE employeeId=%s""", (employee.phoneNumber, employee.userId))
-
-                    
-                connection.commit()
-                connection.close()
-                return True
+                    affected_rows = cursor.rowcount
+                    connection.commit()
+                return affected_rows
             except Exception as ex:
+                connection.rollback()
                 raise Exception(ex)
+            finally:
+                connection.close()
         
         @classmethod
         def delete_employee(self, employeeId):
             try:
                 connection = get_connection()
                 with connection.cursor() as cursor:
-                    cursor.execute("""UPDATE user SET status=0 WHERE userId=%s""", (employeeId))
-                connection.commit()
-                connection.close()
-                return True
+                    cursor.execute("""UPDATE user SET status=0 WHERE userId=%s""", (employeeId,))
+                    affected_rows = cursor.rowcount
+                    connection.commit()
+                return affected_rows
             except Exception as ex:
                 raise Exception(ex)
+            finally:
+                connection.close()
         
        

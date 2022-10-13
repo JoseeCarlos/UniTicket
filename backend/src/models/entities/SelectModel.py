@@ -1,5 +1,5 @@
 class SelectModel():
-    def __init__(self, userId=None, firstName=None, firstSurname=None, secondSurname=None, email=None, phoneNumber=None, ci=None, role=None, area=None):
+    def __init__(self, userId=None, firstName=None, firstSurname=None, secondSurname=None, email=None, phoneNumber=None, ci=None, role=None,status=None):
         self.userId = userId
         self.firstName = firstName
         self.firstSurname = firstSurname
@@ -8,7 +8,7 @@ class SelectModel():
         self.phoneNumber = phoneNumber
         self.ci = ci
         self.role = role
-        self.area = area
+        self.status = status
     
 
     def to_JSON(self):
@@ -21,5 +21,5 @@ class SelectModel():
             'phoneNumber': self.phoneNumber,
             'ci': self.ci,
             'role': self.role,
-            'area': self.area
+            'status': self.status
         }

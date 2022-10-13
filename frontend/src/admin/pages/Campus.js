@@ -11,6 +11,7 @@ import { FileUpload } from 'primereact/fileupload';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { CampusService } from '../service/CampusService';
+import { CityService } from '../service/CityService';
 
 const ListDemo = () => {
 
@@ -54,7 +55,8 @@ const ListDemo = () => {
   const [dropdownValue, setDropdownValue] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
-
+  const [cities, setCities] = useState([]);
+  const [selectedCities, setSelectedCities] = useState([]);
   const sortOptions = [
     { label: 'Habilitado', value: '1' },
     { label: 'Deshabilitado', value: '0' }
@@ -68,23 +70,18 @@ const ListDemo = () => {
   useEffect(() => {
     const campusService = new CampusService();
     campusService.getCampuss().then(data => setDataviewValue(data) );
+    const cityService = new CityService();
+    cityService.getCities().then(data => setCities(data) );
+     
 
   }, []);
 
   const onSortChange = (event) => {
     const value = event.value;
-
-    if (value.indexOf('!') === 0) {
-      setSortOrder(-1);
-      setSortField(value.substring(1, value.length));
-      setSortKey(value);
-    }
-    else {
-      setSortOrder(1);
-      setSortField(value);
-      setSortKey(value);
-    }
+    setSelectedCities(value.name)
+    console.log(value.name);
   };
+
 
   const openNew = () => {
     setCampus(emptyCampus);
@@ -189,7 +186,7 @@ const ListDemo = () => {
             <Dropdown value={sortKey} options={sortOptions} optionLabel="label" placeholder="Seleccionar estado" onChange={onSortChange} />
           </div>
           <div className='col-6' style={{ textAlign: 'left' }}>
-            <Dropdown value={sortKey} options={sortCity} optionLabel="label" placeholder="Seleccionar ciudad" onChange={onSortChange} />
+            <Dropdown value={selectedCities} options={cities} optionLabel="Name" placeholder="Seleccionar ciudad" onChange={onSortChange} />
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 class City():
-    def __init__(self,cityId=None,name=None,latitude=None,longitude=None,status=None,createDate=None,updateDate=None):
+    def __init__(self,cityId=None,name=None,latitude=None,longitude=None,status=None,createDate=None,updateDate=None,userIdCreate=None,userIdMod=None):
         self.cityId = cityId
         self.name = name
         self.latitude = latitude
@@ -7,6 +7,8 @@ class City():
         self.status = status
         self.createDate = createDate
         self.updateDate = updateDate
+        self.userIdCreate = userIdCreate
+        self.userIdMod = userIdMod
 
     
     def to_JSON(self):
@@ -17,5 +19,7 @@ class City():
             "longitude": self.longitude,
             "status": self.status,
             "createDate": self.createDate,
-            "updateDate": self.updateDate
+            "updateDate": self.updateDate,
+            "userIdCreate": self.userIdCreate,
+            "userIdMod": self.userIdMod
         }

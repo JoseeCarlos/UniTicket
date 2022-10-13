@@ -36,13 +36,21 @@ def add_employee():
 @main.route('/delete/<id>', methods=['DELETE'])
 def delete_employee(id):
     try:
-        return jsonify('employee delete')
+        affected_rows = EmployeeModel.delete_employee(id)
+        if affected_rows == 0:
+            return jsonify({'error': 'No se puede eliminar al empleado'}), 500
+        return jsonify({'message': 'Empleado eliminado correctamente '})
     except Exception as e:
         return jsonify({'error': str(e)})
 
 @main.route('/update/<id>', methods=['PUT'])
 def update_employee(id):
     try:
-        return jsonify('employee update')
+        user = User(firstName=request.json['firstName'], firstSurname=request.json['firstSurname'], secondSurname=request.json['secondSurname'], userName=request.json['userName'], password=request.json['password'], email=request.json['email'], role=request.json['role'], updateDate=request.json['updateDate'], userIdCreate=request.json['userIdCreate'], userIdMod=request.json['userIdMod'])
+        employee = Employee(ci=request.json['ci'], phoneNumber=request.json['phoneNumber'], homeLat=request.json['homeLat'], homeLon=request.json['homeLon'], role=request.json['role'])
+        affected_rows = EmployeeModel.update_employee(employee, user)
+        if affected_rows == 0:
+            return jsonify({'error': 'No se puede actualizar al empleado'}), 500
+        return jsonify({'message': 'Empleado actualizado correctamente'})
     except Exception as e:
         return jsonify({'error': str(e)})

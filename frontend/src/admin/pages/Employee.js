@@ -50,7 +50,7 @@ const Employee = () => {
   const [selectedRole, setSelectedRole] = useState(null);
   const roles = [
     { name: 'Administrador', code: '0' },
-    { name: 'Supervisor', code: '1' },
+    { name: 'Asistente', code: '1' },
   ]
 
   const dropdownValues = [
@@ -62,7 +62,9 @@ const Employee = () => {
 
   useEffect(() => {
     const employeeService = new EmployeeService();
-    employeeService.getEmployees().then(data => setEmployees(data));
+    employeeService.getEmployees().then(data => {
+      console.log(data);
+      setEmployees(data)});
       
   }, []);
 
@@ -117,7 +119,11 @@ const Employee = () => {
   }
 
   const editEmployee = (employee) => {
-    setEmployee({ ...employee });
+    let employee2 = { ...employee };
+    console.log(employee2.role);
+    setSelectedRole( employee2.role=== 1 ? { name: 'Administrador', code: '0' } : { name: 'Asistente', code: '1' });
+    setEmployee(employee2);
+    console.log(employee2);
     setEmployeeDialog(true);
   }
 
@@ -127,10 +133,8 @@ const Employee = () => {
   }
 
   const deleteEmployee = () => {
-    let _employees = employees.filter(val => val.id !== employee.id);
-    setEmployees(_employees);
-    setDeleteEmployeeDialog(false);
-    setEmployee(emptyEmployee);
+    const employeeService = new EmployeeService();
+    employeeService.deleteEmployee(employee.userId).then(data => console.log(data));
     toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Empleado Eliminado', life: 3000 });
   }
 
@@ -263,7 +267,7 @@ const Employee = () => {
     return (
       <>
         <span className="p-column-title">Nombre</span>
-        {rowData.role===1 ? 'Administrador' : 'Supervisor'}
+        {rowData.role===1 ? 'Supervisor' : 'Asistente'}
       </>
     );
   }
@@ -271,8 +275,8 @@ const Employee = () => {
   const areaBodyTemplate = (rowData) => {
     return (
       <>
-        <span className="p-column-title">Área</span>
-        {rowData.area}
+        <span className="p-column-title">Status</span>
+        <span className={`provider-badge status-${ rowData.is_active === 0 ?  'outofstock' : 'instock' }`}>{ rowData.status === 0 ? 'Inactivo' : 'Activo' }</span>
       </>
     );
   }
@@ -327,7 +331,7 @@ const Employee = () => {
 
   const onSelectedRoleChange = (e) => {
     setSelectedRole(e.value);
-    console.log(e.value.code);
+    console.log(e.value);   
     if(e.value.code == '1')
     {
       setEmployee({...employee, role:1});
@@ -355,7 +359,7 @@ const Employee = () => {
             <Column field="price" header="Celular" body={phoneBodyTemplate} sortable headerStyle={{ width: '14%', minWidth: '8rem' }}></Column>
             <Column field="email" header="Correo" sortable body={emailBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
             <Column field="role" header="Rol" body={roleBodyTemplate} sortable headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
-            <Column field="area" header="Area" body={areaBodyTemplate} sortable headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+            <Column field="status" header="Estado" body={areaBodyTemplate} sortable headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
             <Column body={actionBodyTemplate}></Column>
           </DataTable>
 
