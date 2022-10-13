@@ -10,7 +10,7 @@ import ScrollToTop from './ScrollToTop';
 ReactDOM.render(
     <HashRouter>
         <ScrollToTop>
-            <Login></Login>
+            <App></App>
         </ScrollToTop>
     </HashRouter>,
     document.getElementById('root')

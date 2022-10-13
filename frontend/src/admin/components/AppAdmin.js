@@ -37,6 +37,7 @@ import Campus from '../pages/Campus';
 import Quejas from '../pages/Complaint';
 import GeneralReport from '../pages/GeneralReport';
 import GenerateReport from '../pages/GenerateReport';
+import AttentionPlaceTable from '../pages/AttentionPlaceTable';
 
 
 import PrimeReact from 'primereact/api';
@@ -169,7 +170,7 @@ const App = () => {
                 { label: 'Campus', icon: 'pi pi-fw pi-home', to: '/campus' },
                 { label: 'Quejas', icon: 'pi pi-fw pi-comments', to: '/quejas' },
                 { label: 'Sedes', icon: 'pi pi-fw pi-id-card', to: '/formlayout' },
-                { label: 'Mesas', icon: 'pi pi-fw pi-check-square', to: '/input' },
+                { label: 'Lugares de Atencion', icon: 'pi pi-fw pi-check-square', to: '/attentionPlaceTable' },
                 { label: 'Quejas', icon: "pi pi-fw pi-bookmark", to: "/floatlabel" },
                 { label: 'Reportes', icon: "pi pi-fw pi-exclamation-circle", to: "invalidstate" },
                 {
@@ -335,6 +336,7 @@ const App = () => {
                     <Route path="/quejas" component={Quejas} />
                     <Route path="/generalReport" component={GeneralReport} />
                     <Route path="/generateReport" component={GenerateReport} />
+                    <Route path="/attentionPlaceTable" component={AttentionPlaceTable} />
                 </div>
 
                 <AppFooter layoutColorMode={layoutColorMode} />
