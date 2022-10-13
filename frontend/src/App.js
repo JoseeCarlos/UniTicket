@@ -1,11 +1,10 @@
 import React from 'react';
 import logo from './logo.svg'
 import './App.css';
-
 import AppAdmin from './admin/components/AppAdmin';
 import Login from './login/login';
 
-const rol = 'User';
+const rol = 'Admin';
 
 function App(){
 
