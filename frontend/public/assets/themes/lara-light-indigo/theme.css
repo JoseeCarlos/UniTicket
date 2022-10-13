@@ -232,15 +232,17 @@
   --teal-800: #0b655b;
   --teal-900: #084a42;
   --orange-50: #fff8f3;
-  --orange-100: #feddc7;
+  --orange-100: #fedec8;
   --orange-200: #fcc39b;
   --orange-300: #fba86f;
-  --orange-400: #fa8e42;
+  --orange-400: #fa8f42;
   --orange-500: #f97316;
   --orange-600: #d46213;
   --orange-700: #ae510f;
   --orange-800: #893f0c;
   --orange-900: #642e09;
+  --red-100: #fac7c7;
+  --red-500: #f9151d;
   --bluegray-50: #f7f8f9;
   --bluegray-100: #dadee3;
   --bluegray-200: #bcc3cd;
@@ -1237,13 +1239,7 @@
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 0.1rem var(--primary-uni);
-  ;
   border-color: var(--primary-uni);
-  ;
-}
-
-.p-inputtext.p-invalid.p-component {
-  border-color: #e24c4c;
 }
 
 .p-inputtext.p-inputtext-sm {
@@ -1618,10 +1614,6 @@
 
 .p-input-filled .p-multiselect:not(.p-disabled).p-focus {
   background-color: #ffffff;
-}
-
-.p-password.p-invalid.p-component>.p-inputtext {
-  border-color: #e24c4c;
 }
 
 .p-password-panel {
@@ -7152,6 +7144,9 @@
 
 
 /* OTHER STYLES */
+.App {
+  text-align: left !important;
+}
 
 .action-dt {
   border-radius: 50%;
@@ -7205,4 +7200,93 @@ input:focus {
   width: auto !important;
   gap: 1rem;
   padding: 5px 10px 5px 10px !important;
+}
+
+.bg-red-100 {
+  background-color: var(--red-100);
+}
+
+.text-red-500 {
+  color: var(--red-500);
+}
+
+.grid-login {
+  height: 100%;
+  max-height: 100vh;
+}
+
+.grid-login .col-12 {
+  padding: 0 !important;
+}
+
+.card-login {
+  padding: 1.5rem;
+  height: 100vh;
+  display: flex;
+  justify-items: center;
+}
+
+.divider::before {
+  box-shadow: 0 5px 10px rgba(255, 255, 255, 1);
+}
+
+.divider .p-divider-content {
+  background-color: transparent !important;
+}
+
+.divider i {
+  border: solid 2px var(--primary-uni);
+  padding: 5px;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 5px 10px rgba(255, 255, 255, 0.3);
+}
+
+.divider-img {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../../layout/images/logo-uni.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.card-divider,
+.card-divider-login {
+  background-color: var(--white);
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 15px 7px rgb(255, 255, 255, 0.3);
+  font-size: 12.5px;
+}
+
+.card-divider-login {
+  margin-left: 50px;
+  height: 350px;
+  width: 250px;
+  text-align: center;
+  height: auto;
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+.card-divider-login h3 {
+  font-size: 25px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.card-divider-login form {
+  margin-top: 30px;
+}
+
+.card-divider-login form #user {
+  margin-bottom: 5px;
+}
+
+.card-divider-login .field:nth-child(4) {
+  text-align: start;
+}
+
+.card-divider-login p {
+  margin-top: 20px;
 }

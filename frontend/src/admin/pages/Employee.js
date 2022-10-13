@@ -6,7 +6,6 @@ import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { FileUpload } from 'primereact/fileupload';
 import { Rating } from 'primereact/rating';
-import { Toolbar } from 'primereact/toolbar';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { RadioButton } from 'primereact/radiobutton';
 import { InputNumber } from 'primereact/inputnumber';
@@ -341,16 +340,12 @@ const Employee = () => {
               <InputText id="email" value={employee.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && !employee.email })} />
               {submitted && !employee.email && <small className="p-invalid">El correo es requerido.</small>}
             </div>
-            <div className="formgrid grid">
-              <div className="field col">
-                <label htmlFor="role">Rol</label>
-                <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="role" placeholder="Seleccione el rol" />
-              </div>
-              <div className="field col">
-                <label htmlFor="area">Área</label>
-                <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="area" placeholder="Seleccione la área" />
-              </div>
+
+            <div className="field">
+              <label htmlFor="role">Rol</label>
+              <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="role" placeholder="Seleccione el rol" />
             </div>
+
           </Dialog>
 
           <Dialog visible={deleteEmployeeDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteEmployeeDialogFooter} onHide={hideDeleteEmployeeDialog}>
