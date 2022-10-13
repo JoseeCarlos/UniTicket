@@ -21,13 +21,35 @@ import { InputText } from "primereact/inputtext";
 const AttentionPlaceTable = () => {
   let emptyTable = {
     id: null,
-    number: "1",
-    attentionPlace: emptyAttentionPlace,
+    number:'',
+    attentionPlaceId:null,
+    areaId:null,
+    status:'',
+    createDate:'',
+    updateDate:'',
+    userIdCreate:'',
+    userIdMod:''
   };
   let emptyAttentionPlace = {
-    id: null,
-    name: "Cajas",
-    campus: "Campus Tiquipaya",
+    atentionPlaceId: null,
+    name:'',
+    campusId:'',
+    status:'',
+    createDate:'',
+    updateDate:'',
+    userIdCreate:'',
+    userIdMod:''
+  };
+  let emptyAttentionPlaceArea = {
+    atentionPlaceid:null,
+    areaId:null,
+    startDate:'',
+    finishDate:'',
+    status:'',
+    createDate:'',
+    updateDate:'',
+    userIdCreate:'',
+    userIdMod:''
   };
   const [customers1, setCustomers1] = useState(null);
   const [customers2, setCustomers2] = useState([]);
