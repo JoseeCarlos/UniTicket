@@ -35,6 +35,7 @@ import TimelineDemo from './admin/pages/TimelineDemo';
 import Employee from './admin/pages/Employee';
 import Campus from './admin/pages/Campus';
 import Quejas from './admin/pages/Complaint';
+import LugaresDeAtencionMesas from './admin/pages/AttentionPlaceTable';
 
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
@@ -165,8 +166,7 @@ const App = () => {
                 { label: 'Empleados', icon: 'pi pi-fw pi-id-card', to: '/employee' },
                 { label: 'Campus', icon: 'pi pi-fw pi-id-card', to: '/campus' },
                 { label: 'Quejas', icon: 'pi pi-fw pi-id-card', to: '/quejas' },
-                { label: 'Sedes', icon: 'pi pi-fw pi-id-card', to: '/formlayout' },
-                { label: 'Mesas', icon: 'pi pi-fw pi-check-square', to: '/input' },
+                { label: 'Lugares De Atencion y Mesas', icon: 'pi pi-fw pi-check-square', to: '/lugaresDeAtencionMesas' },
                 { label: "Quejas", icon: "pi pi-fw pi-bookmark", to: "/floatlabel" },
                 { label: "Reportes", icon: "pi pi-fw pi-exclamation-circle", to: "invalidstate" },
                 { label: 'Button', icon: 'pi pi-fw pi-mobile', to: '/button' },
@@ -322,6 +322,7 @@ const App = () => {
                     <Route path="/employee" component={Employee} />
                     <Route path="/campus" component={Campus} />
                     <Route path="/quejas" component={Quejas} />
+                    <Route path="/lugaresDeAtencionMesas" component={LugaresDeAtencionMesas} />
                 </div>
 
                 <AppFooter layoutColorMode={layoutColorMode} />
