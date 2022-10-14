@@ -12,18 +12,23 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { CampusService } from '../service/CampusService';
 import { CityService } from '../service/CityService';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { GMap } from 'primereact/gmap';
 
 const ListDemo = () => {
 
   let emptyCampus = {
-    id: null,
+    campusId: null,
     name: '',
+    description: '',
     latitude: '',
     longitude: '',
-    image: null,
-    city: '',
-    state: null,
-    create_date: 0
+    cityId: '',
+    status: '',
+    createDate: '',
+    updateDate: '2022-05-05',
+    userIdCreate: '',
+    userIdMod: '',
   };
 
   const dropdownValues = [
@@ -69,7 +74,9 @@ const ListDemo = () => {
 
   useEffect(() => {
     const campusService = new CampusService();
-    campusService.getCampuss().then(data => setDataviewValue(data) );
+    campusService.getCampuss().then(data => {
+      console.log(data);
+      setDataviewValue(data)} );
     const cityService = new CityService();
     cityService.getCities().then(data => setCities(data) );
      
@@ -105,16 +112,12 @@ const ListDemo = () => {
       let _campuss = [...campuss];
       let _campus = { ...campus };
       if (campus.id) {
-        const index = findIndexById(campus.id);
-
-        _campuss[index] = _campus;
-        toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Campus Actualizado', life: 3000 });
+        console.log("update");
+        console.log(_campus);
       }
       else {
-        _campus.id = createId();
-        _campus.image = 'product-placeholder.svg';
-        _campuss.push(_campus);
-        toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Campus Creado', life: 3000 });
+        console.log("create");
+        console.log(_campus);
       }
 
       setCampuss(_campuss);
@@ -134,8 +137,11 @@ const ListDemo = () => {
   }
 
   const deleteCampus = () => {
-    let _campuss = campuss.filter(val => val.id !== campus.id);
-    setCampuss(_campuss);
+    const campusService = new CampusService();
+    console.log(campus);
+    campusService.deleteCampus(campus).then(data => {
+      console.log(data);
+      } );
     setDeleteCampusDialog(false);
     setCampus(emptyCampus);
     toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Campus Eliminado', life: 3000 });
@@ -178,6 +184,12 @@ const ListDemo = () => {
     setCampus(_campus);
   }
 
+  const citySelected = (e) => {
+    let _campus = { ...campus };
+    _campus[`cityId`] = e.target.value.cityId;
+    console.log(_campus);
+    setCampus(_campus);
+  }  
   const dataviewHeader = (
     <div className="grid grid-nogutter">
       <div className="col-6">
@@ -186,7 +198,7 @@ const ListDemo = () => {
             <Dropdown value={sortKey} options={sortOptions} optionLabel="label" placeholder="Seleccionar estado" onChange={onSortChange} />
           </div>
           <div className='col-6' style={{ textAlign: 'left' }}>
-            <Dropdown value={selectedCities} options={cities} optionLabel="Name" placeholder="Seleccionar ciudad" onChange={onSortChange} />
+            <Dropdown value={selectedCities} onChange={citySelected} options={cities} optionLabel="name" placeholder="Seleccione la ciudad" />
           </div>
         </div>
       </div>
@@ -200,13 +212,13 @@ const ListDemo = () => {
     return (
       <div className="col-12">
         <div className="flex flex-column md:flex-row align-items-center p-3 w-full">
-          <img src={`assets/demo/images/product/${data.image}`} alt={data.name} className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
+          <img src={`assets/images/campusDef.jpg`} alt={data.name} className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
           <div className="flex-1 text-center md:text-left">
             <div className="font-bold text-2xl">{data.name}</div>
             <div className="mb-3">{data.description}</div>
           </div>
           <div className="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-            <Button icon="pi pi-pencil" className="mb-2 align-self-center md:align-self-end action-dt" onClick={() => editCampus(data.id)} />
+            <Button icon="pi pi-pencil" className="mb-2 align-self-center md:align-self-end action-dt" onClick={() => editCampus(data)} />
             <Button icon="pi pi-trash" className="action-dt mb-2" onClick={() => confirmDeleteCampus(data.id)} />
             <Button icon="pi pi-eye" className="action-dt" onClick={() => editCampus(data.id)} />
           </div>
@@ -220,7 +232,7 @@ const ListDemo = () => {
       <div className="col-12 md:col-4">
         <div className="card m-3 border-1 surface-border">
           <div className="text-center">
-            <img src={`assets/demo/images/product/${data.image}`} alt={data.name} className="w-9 shadow-2 my-3 mx-0" />
+            <img src={`assets/layout/images/campusDef.jpg`} alt={data.name} className="w-9 shadow-2 my-3 mx-0" />
             <div className="text-2xl font-bold">{data.name}</div>
             <div className="mb-3">{data.description}</div>
           </div>
@@ -291,12 +303,16 @@ const ListDemo = () => {
               <InputText id="name" value={campus.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !campus.name })} />
               {submitted && !campus.name && <small className="p-invalid">El nombre es requerido.</small>}
             </div>
+            <div className="field">
+              <label htmlFor="description">Descripción</label>
+              <InputTextarea id="description" value={campus.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
+            </div>
             <div className="formgrid grid">
               AQUI TIENE QUE ESTAR EL MAPA
             </div>
             <div className="field">
               <label htmlFor="city">Ciudad</label>
-              <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="city" placeholder="Seleccione la ciudad" />
+              <Dropdown value={selectedCities} onChange={citySelected} options={cities} optionLabel="name" placeholder="Seleccione la ciudad" />
             </div>
           </Dialog>
 
