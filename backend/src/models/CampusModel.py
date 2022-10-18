@@ -43,10 +43,11 @@ class CampusModel():
     def create_campus(self, campus):
         try:
             connection = get_connection()
+            print(campus.cityId)
             with connection.cursor() as cursor:
-                cursor.execute("""INSERT INTO campus (name, description, latitude, longitude, updateDate, userIdCreate)
-                                    VALUES (%s, %s, %s, %s, %s, %s)
-                                """, (campus.name, campus.description, campus.latitude, campus.longitude, campus.updateDate, campus.userIdCreate))
+                cursor.execute("""INSERT INTO campus (name, description, latitude, longitude, cityId, updateDate, userIdCreate)
+                                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                                """, (campus.name, campus.description, campus.latitude, campus.longitude, campus.cityId, campus.updateDate, campus.userIdCreate))
                 connection.commit()
                 affected_rows = cursor.rowcount
             connection.close()

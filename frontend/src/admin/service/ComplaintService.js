@@ -7,7 +7,7 @@ export class ComplaintService {
     }
 
     getComplaints() {
-        return axios.get('assets/demo/data/products.json').then(res => res.data.data);
+        return fetch('/api/complain/').then(res => res.json()).then(data => data);
     }
 
     getComplaintsWithOrdersSmall() {

@@ -15,6 +15,7 @@ import { ToggleButton } from 'primereact/togglebutton';
 import { Rating } from 'primereact/rating';
 import { CustomerService } from '../service/CustomerService';
 import { ProductService } from '../service/ProductService';
+import { ComplaintService } from '../service/ComplaintService';
 
 const TableDemo = () => {
     const [customers1, setCustomers1] = useState(null);
@@ -46,6 +47,8 @@ const TableDemo = () => {
 
     const customerService = new CustomerService();
     const productService = new ProductService();
+    const [complains, setComplains] = useState([]);
+    const complaintService = new ComplaintService();
 
     useEffect(() => {
         setLoading2(true);
@@ -54,6 +57,11 @@ const TableDemo = () => {
         customerService.getCustomersLarge().then(data => { setCustomers2(getCustomers(data)); setLoading2(false); });
         customerService.getCustomersMedium().then(data => setCustomers3(data));
         productService.getProductsWithOrdersSmall().then(data => setProducts(data));
+        complaintService.getComplaints().then(data => {
+            console.log(data)
+            setComplains(data)
+        });
+
 
         initFilters1();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -238,11 +246,11 @@ const TableDemo = () => {
     const rowExpansionTemplate = (data) => {
         return (
             <div className="orders-subtable">
-                <h5>{data.name} {data.price}</h5>
+                <h5>{data.userName}</h5>
+                <p>{data.name}</p>
                 <p>{data.description}</p>
-                <p>Mucho me retaron *inserte carita triste*</p>
                 {/* Poner la razon */}
-                {data.name == 'Bracelet' ? <Button type="button" icon="pi pi-check">Habilitar Tickect</Button> : ''  }
+                {data.complainType == '1' ? <Button type="button" icon="pi pi-check">Habilitar Tickect</Button> : ''  }
             </div>
         );
     }
@@ -271,6 +279,24 @@ const TableDemo = () => {
             </React.Fragment>
         );
     }
+    const emailBodyTemplate = (rowData) => {
+        return (
+          <>
+            <span className="p-column-title">Status</span>
+            <span className={`provider-badge status-${ rowData.complainType === 0 ?  'outofstock' : 'instock' }`}>{ rowData.complainType === 0 ? 'OFFLINE' : 'ONLINE' }</span>
+          </>
+        );
+      }
+
+      const attentionTypeTemplate = (rowData) => {
+        return (
+          <>
+            <span className="p-column-title">AttentionType</span>
+            <span className={`provider-badge status-${ rowData.attentionType === 0 ?  'outofstock' : 'instock' }`}>{ rowData.attentionType === 0 ? 'NORMAL' : 'TRANSFERENCIA' }</span>
+          </>
+        );
+      }
+
 
     const calculateCustomerTotal = (name) => {
         let total = 0;
@@ -291,18 +317,18 @@ const TableDemo = () => {
             <div className="col-12">
                 <div className="card">
                     <h5>Administración de Quejas</h5>
-                    <DataTable value={products} expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)} responsiveLayout="scroll"
+                    <DataTable value={complains} expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)} responsiveLayout="scroll"
                         rowExpansionTemplate={rowExpansionTemplate} dataKey="id" header={header} paginator rows={10} rowsPerPageOptions={[5, 10, 25]} 
                         className="datatable-responsive" paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} Quejas" emptyMessage="No hay quejas :D.">
                         <Column expander style={{ width: '3em' }} />
-                        <Column field="name" header="Name" sortable />
-                        <Column field="type" header="Tipo" sortable />
-                        <Column field="attentionType" header="Tipo de atención" sortable />
-                        <Column field="attentionPlace" header="Lugar de atención" sortable />
+                        <Column field="userName" header="Name" sortable />
+                        <Column field="complainType" header="Tipo de Queja" sortable body={emailBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+                        <Column field="attentionType" header="Tipo de Atencion " sortable body={attentionTypeTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+                        <Column field="tableName" header="Lugar de atención" sortable />
                         <Column field="startTime" header="Inicio" sortable />
                         <Column field="finishTime" header="Fin" sortable />
-                        <Column field="employee" header="Encargado" sortable />
+                        <Column field="employeeName" header="Encargado" sortable />
                     </DataTable>
                 </div>
             </div>

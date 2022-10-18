@@ -21,14 +21,14 @@ const ListDemo = () => {
     campusId: null,
     name: '',
     description: '',
-    latitude: '',
-    longitude: '',
+    latitude: '-12.873483',
+    longitude: '-11.983043',
     cityId: '',
     status: '',
     createDate: '',
     updateDate: '2022-05-05',
-    userIdCreate: '',
-    userIdMod: '',
+    userIdCreate: '1',
+    userIdMod: '1',
   };
 
   const dropdownValues = [
@@ -109,21 +109,33 @@ const ListDemo = () => {
     setSubmitted(true);
 
     if (campus.name.trim()) {
-      let _campuss = [...campuss];
       let _campus = { ...campus };
-      if (campus.id) {
+      const campusService = new CampusService();
+      if (campus.campusId) {
         console.log("update");
         console.log(_campus);
-      }
-      else {
+        campusService.updateCampus(_campus).then(data => {
+          console.log(data);
+          setCampusDialog(false);
+          setCampus(emptyCampus);
+          toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Campus Updated', life: 3000 });
+        });
+      }else {
         console.log("create");
+        campusService.addCampus(_campus).then(data => {
+          console.log(data);
+        }
+        );
         console.log(_campus);
-      }
 
-      setCampuss(_campuss);
-      setCampusDialog(false);
-      setCampus(emptyCampus);
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Campus Creado', life: 3000 }); 
+        campusService.getCampuss().then(data => setDataviewValue(data));
+        
+
+      }
     }
+    console.log('holaa');
+    setCampusDialog(false);
   }
 
   const editCampus = (campus) => {
@@ -188,6 +200,7 @@ const ListDemo = () => {
     let _campus = { ...campus };
     _campus[`cityId`] = e.target.value.cityId;
     console.log(_campus);
+    setSelectedCities(e.value);
     setCampus(_campus);
   }  
   const dataviewHeader = (

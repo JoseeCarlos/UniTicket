@@ -35,7 +35,7 @@ const Employee = () => {
 
   };
 
-  const [employees, setEmployees] = useState(null);
+  const [employees, setEmployees] = useState([]);
   const [employeeDialog, setEmployeeDialog] = useState(false);
   const [deleteEmployeeDialog, setDeleteEmployeeDialog] = useState(false);
   const [deleteEmployeesDialog, setDeleteEmployeesDialog] = useState(false);
@@ -96,22 +96,35 @@ const Employee = () => {
     if (employee.firstName.trim()) {
       let _employees = [...employees];
       let _employee = { ...employee };
-      if (employee.id) {
+      const employeeService = new EmployeeService();
+      if (employee.userId) {
         console.log("update");
         console.log(employee);
+        const employeeService = new EmployeeService();
+        employeeService.updateEmployee(employee).then(data => {
+          console.log(data);
+          }
+        );
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Empleado Modificado', life: 3000 });
+        employeeService.getEmployees().then(data => {
+          console.log(data);
+          setEmployees(data)}
+        );
       }
       else {
+        console.log("create");
         employee.userName = generateUsername(employee.firstName,employee.firstSurname,employee.secondSurname);
         employee.password = generatePassword();
-
         console.log("create");
         console.log(employee);
-        const employeeService = new EmployeeService();
         employeeService.setEmployee(employee).then(data => console.log(data));
         toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Empleado Creado con exito', life: 3000 });
+        employeeService.getEmployees().then(data => {
+          console.log(data);
+          setEmployees(data)}
+        );
       }
 
-      setEmployees(_employees);
       setEmployeeDialog(false);
       setEmployee(emptyEmployee);
     }
@@ -135,6 +148,10 @@ const Employee = () => {
     const employeeService = new EmployeeService();
     employeeService.deleteEmployee(employee.userId).then(data => console.log(data));
     toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Empleado Eliminado', life: 3000 });
+    employeeService.getEmployees().then(data => {
+      console.log(data);
+      setEmployees(data)}
+    );
   }
 
 

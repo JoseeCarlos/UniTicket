@@ -23,7 +23,7 @@ def get_campus(id):
 @campus.route('/add', methods=['POST'])
 def create_campus():
     try:
-        campus = Campus(name=request.json['name'], description=request.json['description'], latitude=request.json['latitude'], longitude=request.json['longitude'], updateDate=request.json['updateDate'], userIdCreate=request.json['userIdCreate'])
+        campus = Campus(name=request.json['name'], description=request.json['description'], latitude=request.json['latitude'], longitude=request.json['longitude'], cityId=request.json['cityId'] , updateDate=request.json['updateDate'], userIdCreate=request.json['userIdCreate'])
         affected_rows = CampusModel.create_campus(campus)
         if affected_rows == 0:
             return jsonify({'error': 'Campus no registrado'}), 500

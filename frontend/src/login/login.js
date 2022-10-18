@@ -4,7 +4,8 @@ import { Button } from 'primereact/button';
 import { Divider } from 'primereact/divider';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
-
+import { EmployeeService } from '../admin/service/EmployeeService';
+import { useHistory } from "react-router-dom";
 function Login() {
 
   const [value1, setValue1] = useState('');
@@ -17,6 +18,41 @@ function Login() {
     { name: 'Padre', code: '3' }
   ];
 
+  const history = useHistory();
+
+  let emptyUser = {
+    userName: '',
+    password: ''
+  }
+  const [userSeleted, setUserSeleted] = useState(emptyUser);
+
+
+  const setValueUser = (e, name) => {
+    let _user = { ...userSeleted };
+    _user[name] = e.target.value;
+    setUserSeleted(_user);
+    console.log(e.target.value);
+
+  }
+  const nextPath = (path)=> {
+    this.props.history.push(path);
+  }
+
+
+  const login = () => {
+    console.log("hola");
+    console.log(userSeleted);
+    const employeeService = new EmployeeService();
+    employeeService.login(userSeleted).then(data => {
+      console.log(data);
+      sessionStorage.setItem('userId', data.userId);
+      sessionStorage.setItem('name', data.firstName+" "+data.firstSurname);
+      sessionStorage.setItem('role', data.role);
+      console.log(sessionStorage.getItem('userId'), sessionStorage.getItem('name'), sessionStorage.getItem('role'));
+    }
+    );
+  }
+
   return (
     <div className="grid-login">
       <div className="col-12">
@@ -28,14 +64,14 @@ function Login() {
                 <form>
                   <div className="field">
                     <span className="p-float-label">
-                      <InputText type="text" id="user" value={value1} onChange={(e) => setValue1(e.target.value)} className="p-invalid" />
+                      <InputText type="text" id="user" onChange={(e)=>{setValueUser(e,"userName")}} className="p-invalid" />
                       <label htmlFor="user">Usuario</label>
                     </span>
                   </div>
 
                   <div className="field">
                     <span className="p-float-label">
-                      <Password inputId="password" value={value10} onChange={(e) => setValue10(e.target.value)} className="p-invalid" />
+                      <Password inputId="password" onChange={(e)=>{setValueUser(e,"password")}} className="p-invalid" />
                       <label htmlFor="password">Password</label>
                     </span>
                   </div>
@@ -51,7 +87,7 @@ function Login() {
                     <label htmlFor="remeber">Recuerdame</label>
                   </div>
 
-                  <Button label="Ingresar"></Button>
+                  <Button label="Ingresar" onClick={login} ></Button>
 
                   <p className="forgot-password text-right">
                     <a href="#">Olvidaste tu contraseña?</a>
