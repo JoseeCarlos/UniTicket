@@ -218,12 +218,6 @@ const AttentionPlaceTable = () => {
             headerStyle={{ width: "12rem" }}
           ></Column>
           <Column
-            field="area"
-            header="Area"
-            sortable
-            headerStyle={{ width: "12rem" }}
-          ></Column>
-          <Column
             field="status"
             header="Estado"
             sortable

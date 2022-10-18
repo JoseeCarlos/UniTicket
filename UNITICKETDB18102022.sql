@@ -41,7 +41,7 @@ CREATE TABLE `area` (
 
 LOCK TABLES `area` WRITE;
 /*!40000 ALTER TABLE `area` DISABLE KEYS */;
-INSERT INTO `area` VALUES (1,'Cajas','Atencion para pagos a la universidad',1,'2022-10-10 12:54:12',NULL,1,NULL),(2,'Bienestar universitario','Atencion de quejas, problemas e informacion para estudiantes',1,'2022-10-10 12:54:12',NULL,1,NULL);
+INSERT INTO `area` VALUES (1,'Bienestar universitario','Atencion para pagos a la universidad',1,'2022-10-10 12:54:12',NULL,1,NULL),(2,'Cajas','Atencion de quejas, problemas e informacion para estudiantes',1,'2022-10-10 12:54:12',NULL,1,NULL);
 /*!40000 ALTER TABLE `area` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -748,4 +748,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-18 10:23:43
+-- Dump completed on 2022-10-18 10:58:18
