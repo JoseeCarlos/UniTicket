@@ -38,6 +38,7 @@ import Quejas from '../pages/Complaint';
 import GeneralReport from '../pages/GeneralReport';
 import GenerateReport from '../pages/GenerateReport';
 import AttentionPlaceTable from '../pages/AttentionPlaceTable';
+import Area from '../pages/Area';
 
 
 import PrimeReact from 'primereact/api';
@@ -169,7 +170,7 @@ const App = () => {
                 { label: 'Empleados', icon: 'pi pi-fw pi-id-card', to: '/employee' },
                 { label: 'Campus', icon: 'pi pi-fw pi-home', to: '/campus' },
                 { label: 'Quejas', icon: 'pi pi-fw pi-comments', to: '/quejas' },
-                { label: 'Sedes', icon: 'pi pi-fw pi-id-card', to: '/formlayout' },
+                { label: 'Areas', icon: 'pi pi-fw pi-table', to: '/area' },
                 { label: 'Lugares de Atencion', icon: 'pi pi-fw pi-check-square', to: '/attentionPlaceTable' },
                 { label: 'Quejas', icon: "pi pi-fw pi-bookmark", to: "/floatlabel" },
                 { label: 'Reportes', icon: "pi pi-fw pi-exclamation-circle", to: "/login" },
@@ -337,6 +338,7 @@ const App = () => {
                     <Route path="/generalReport" component={GeneralReport} />
                     <Route path="/generateReport" component={GenerateReport} />
                     <Route path="/attentionPlaceTable" component={AttentionPlaceTable} />
+                    <Route path="/area" component={Area} />
                 </div>
 
                 <AppFooter layoutColorMode={layoutColorMode} />
