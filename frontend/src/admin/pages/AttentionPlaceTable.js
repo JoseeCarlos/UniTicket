@@ -4,15 +4,7 @@ import { FilterMatchMode, FilterOperator } from "primereact/api";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dropdown } from "primereact/dropdown";
-import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
-import { ProgressBar } from "primereact/progressbar";
-import { Calendar } from "primereact/calendar";
-import { MultiSelect } from "primereact/multiselect";
-import { Slider } from "primereact/slider";
-import { TriStateCheckbox } from "primereact/tristatecheckbox";
-import { ToggleButton } from "primereact/togglebutton";
-import { Rating } from "primereact/rating";
 import { CustomerService } from "../service/CustomerService";
 import { ProductService } from "../service/ProductService";
 import { Dialog } from "primereact/dialog";
@@ -21,35 +13,35 @@ import { InputText } from "primereact/inputtext";
 const AttentionPlaceTable = () => {
   let emptyTable = {
     id: null,
-    number:'',
-    attentionPlaceId:null,
-    areaId:null,
-    status:'',
-    createDate:'',
-    updateDate:'',
-    userIdCreate:'',
-    userIdMod:''
+    number: "",
+    attentionPlaceId: null,
+    areaId: null,
+    status: "",
+    createDate: "",
+    updateDate: "",
+    userIdCreate: "",
+    userIdMod: "",
   };
   let emptyAttentionPlace = {
     atentionPlaceId: null,
-    name:'',
-    campusId:'',
-    status:'',
-    createDate:'',
-    updateDate:'',
-    userIdCreate:'',
-    userIdMod:''
+    name: "",
+    campusId: "",
+    status: "",
+    createDate: "",
+    updateDate: "",
+    userIdCreate: "",
+    userIdMod: "",
   };
   let emptyAttentionPlaceArea = {
-    atentionPlaceid:null,
-    areaId:null,
-    startDate:'',
-    finishDate:'',
-    status:'',
-    createDate:'',
-    updateDate:'',
-    userIdCreate:'',
-    userIdMod:''
+    atentionPlaceid: null,
+    areaId: null,
+    startDate: "",
+    finishDate: "",
+    status: "",
+    createDate: "",
+    updateDate: "",
+    userIdCreate: "",
+    userIdMod: "",
   };
   const [customers1, setCustomers1] = useState(null);
   const [customers2, setCustomers2] = useState([]);
@@ -62,10 +54,13 @@ const AttentionPlaceTable = () => {
   const [expandedRows, setExpandedRows] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [table, setTable] = useState(emptyTable);
+  const [tableInsertDialog, setTableInsertDialog] = useState(false);
   const [tableEditDialog, setTableEditDialog] = useState(false);
   const [tableViewDialog, setTableViewDialog] = useState(false);
   const [tableDeleteDialog, setTableDeleteDialog] = useState(false);
   const [attentionPlace, setAttentionPlace] = useState(emptyAttentionPlace);
+  const [attentionPlaceInsertDialog, setAttentionPlaceInsertDialog] =
+    useState(false);
   const [attentionPlaceViewDialog, setAttentionPlaceViewDialog] =
     useState(false);
   const [attentionPlaceEditDialog, setAttentionPlaceEditDialog] =
@@ -85,11 +80,17 @@ const AttentionPlaceTable = () => {
     { name: "Campus Tiquipaya", code: "1" },
     { name: "Edificio America", code: "2" },
   ];
+  const dropdownAreaValues = [
+    { name: "Caja", code: "1" },
+    { name: "Bienestar Universitario", code: "2" },
+  ];
   const hideDialog = () => {
     setSubmitted(false);
+    setTableInsertDialog(false);
     setTableEditDialog(false);
     setTableViewDialog(false);
     setTableDeleteDialog(false);
+    setAttentionPlaceInsertDialog(false);
     setAttentionPlaceDeleteDialog(false);
     setAttentionPlaceViewDialog(false);
     setAttentionPlaceEditDialog(false);
@@ -164,7 +165,10 @@ const AttentionPlaceTable = () => {
   const collapseAll = () => {
     setExpandedRows(null);
   };
-
+  const insertTable = () => {
+    setTable({ emptyTable });
+    setTableInsertDialog(true);
+  };
   const viewTable = (table) => {
     setTable({ ...table });
     setTableViewDialog(true);
@@ -176,6 +180,10 @@ const AttentionPlaceTable = () => {
   const confirmDeleteTable = (table) => {
     setTable(table);
     setTableDeleteDialog(true);
+  };
+  const insertAttentionPlace = () => {
+    setAttentionPlace(emptyAttentionPlace);
+    setAttentionPlaceInsertDialog(true);
   };
   const viewAttentionPlace = (attentionPlace) => {
     setAttentionPlace({ ...attentionPlace });
@@ -192,24 +200,28 @@ const AttentionPlaceTable = () => {
   const rowExpansionTemplate = (data) => {
     return (
       <div className="orders-subtable">
-        <DataTable value={data.orders} responsiveLayout="scroll">
+        <DataTable
+          value={data.orders}
+          responsiveLayout="scroll"
+          header={tableHeader}
+        >
           <Column
             field="id"
             header="Numero de Mesa"
             sortable
-            headerStyle={{ width: "1rem" }}
+            headerStyle={{ width: "4rem" }}
           ></Column>
           <Column
             field="customer"
             header="Empleado Actual"
             sortable
-            headerStyle={{ width: "10rem" }}
+            headerStyle={{ width: "12rem" }}
           ></Column>
           <Column
             field="area"
             header="Area"
             sortable
-            headerStyle={{ width: "10rem" }}
+            headerStyle={{ width: "12rem" }}
           ></Column>
           <Column
             field="status"
@@ -219,17 +231,11 @@ const AttentionPlaceTable = () => {
           ></Column>
           <Column
             header="Acciones"
-            headerStyle={{ width: "10rem" }}
+            headerStyle={{ width: "1rem" }}
             body={
               <span className="p-buttonset">
-                <Button
-                  icon="pi pi-eye"
-                  onClick={() => viewTable(data)}
-                />
-                <Button
-                  icon="pi pi-pencil"
-                  onClick={() => editTable(data)}
-                />
+                <Button icon="pi pi-eye" onClick={() => viewTable(data)} />
+                <Button icon="pi pi-pencil" onClick={() => editTable(data)} />
                 <Button
                   icon="pi pi-trash"
                   onClick={() => confirmDeleteTable(data)}
@@ -238,6 +244,40 @@ const AttentionPlaceTable = () => {
             }
           ></Column>
         </DataTable>
+        <Dialog
+          visible={tableInsertDialog}
+          style={{ width: "450px" }}
+          header="Nueva Mesa"
+          modal
+          className="p-fluid"
+          footer={tableInsertDialogFooter}
+          onHide={hideDialog}
+        >
+          <div className="field">
+            <label htmlFor="name">Numero</label>
+            <InputText
+              id="name"
+              value={table.name}
+              onChange={(e) => onInputChange(e, "name")}
+              required
+              autoFocus
+              className={classNames({ "p-invalid": submitted && !table.name })}
+            />
+            {submitted && !table.name && (
+              <small className="p-invalid">El nombre es requerido.</small>
+            )}
+          </div>
+          <div className="field">
+            <label htmlFor="attentionPlace">Lugar de Atención</label>
+            <Dropdown
+              value={dropdownValue}
+              onChange={(e) => setDropdownValue(e.value)}
+              options={dropdownValues}
+              optionLabel="name"
+              placeholder="Seleccione el Lugar de Atención"
+            />
+          </div>
+        </Dialog>
         <Dialog
           visible={tableViewDialog}
           style={{ width: "450px" }}
@@ -332,6 +372,22 @@ const AttentionPlaceTable = () => {
       />
     </>
   );
+  const tableInsertDialogFooter = (
+    <>
+      <Button
+        label="Guardar"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={hideDialog}
+      />
+      <Button
+        label="Cancelar"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideDialog}
+      />
+    </>
+  );
   const tableEditDialogFooter = (
     <>
       <Button
@@ -361,6 +417,22 @@ const AttentionPlaceTable = () => {
         icon="pi pi-check"
         className="p-button-text"
         onClick={deleteTable}
+      />
+    </>
+  );
+  const attentionPlaceDialogInsertFooter = (
+    <>
+      <Button
+        label="Guardar"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={hideDialog}
+      />
+      <Button
+        label="Cancelar"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideDialog}
       />
     </>
   );
@@ -410,18 +482,32 @@ const AttentionPlaceTable = () => {
   );
   const header = (
     <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-      <h5>Lugares De Atención</h5>
+      <h5>
+        Lugares De Atención{" "}
+        <i className="pi pi-plus icn" onClick={insertAttentionPlace} />
+      </h5>
       <span className="p-buttonset">
         <Button icon="pi pi-plus" label="Expandir" onClick={expandAll} />
         <Button icon="pi pi-minus" label="Colapsar" onClick={collapseAll} />
       </span>
     </div>
   );
+  const tableHeader = (
+    <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+      <h5>
+        Mesas asignadas
+        <i className="pi pi-plus icn" onClick={insertTable} />
+      </h5>
+    </div>
+  );
   return (
     <div className="grid table-demo">
       <div className="col-12">
         <div className="card">
-          <h5>Administración De Lugares De Atención y Mesas</h5>
+          <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h5>Administración De Lugares De Atención y Mesas</h5>
+          </div>
+
           <DataTable
             value={products}
             expandedRows={expandedRows}
@@ -433,7 +519,8 @@ const AttentionPlaceTable = () => {
           >
             <Column expander style={{ width: "1em" }} />
             <Column field="name" header="Nombre" sortable />
-            <Column field="area" header="Area" sortable />
+            <Column field="area" header="Area Actual" sortable />
+            <Column field="campus" header="Campus" sortable />
             <Column field="status" header="Estado" sortable />
             <Column
               header="Acciones"
@@ -458,6 +545,48 @@ const AttentionPlaceTable = () => {
           </DataTable>
         </div>
       </div>
+      <Dialog
+        visible={attentionPlaceInsertDialog}
+        style={{ width: "450px" }}
+        header="Nuevo Lugar de Atención"
+        className="p-fluid"
+        footer={attentionPlaceDialogInsertFooter}
+        onHide={hideDialog}
+      >
+        <div className="field">
+          <label htmlFor="name">Nombre</label>
+          <InputText
+            id="name"
+            onChange={(e) => onInputChange(e, "name")}
+            required
+            className={classNames({ "p-invalid": submitted && !table.name })}
+          />
+          {submitted && !table.name && (
+            <small className="p-invalid">El nombre es requerido.</small>
+          )}
+        </div>
+        <div className="field">
+          <label htmlFor="campus">Campus</label>
+          <Dropdown
+            value={dropdownValue}
+            onChange={(e) => setDropdownValue(e.value)}
+            options={dropdownCampusValues}
+            optionLabel="name"
+            placeholder="Seleccione el campus"
+          />
+        </div>
+        <div className="field">
+          <label htmlFor="area">Area</label>
+          <Dropdown
+            value={dropdownValue}
+            onChange={(e) => setDropdownValue(e.value)}
+            options={dropdownAreaValues}
+            optionLabel="name"
+            placeholder="Seleccione el area"
+            required
+          />
+        </div>
+      </Dialog>
       <Dialog
         visible={attentionPlaceViewDialog}
         style={{ width: "450px" }}
@@ -488,6 +617,17 @@ const AttentionPlaceTable = () => {
             options={dropdownCampusValues}
             optionLabel="name"
             placeholder="Seleccione el Lugar de Atención"
+            disabled
+          />
+        </div>
+        <div className="field">
+          <label htmlFor="area">Area</label>
+          <Dropdown
+            value={dropdownAreaValues[0]}
+            onChange={(e) => setDropdownValue(e.value)}
+            options={dropdownAreaValues}
+            optionLabel="name"
+            placeholder="Seleccione el area"
             disabled
           />
         </div>
@@ -523,6 +663,17 @@ const AttentionPlaceTable = () => {
             options={dropdownCampusValues}
             optionLabel="name"
             placeholder="Seleccione el campus"
+          />
+        </div>
+        <div className="field">
+          <label htmlFor="area">Area</label>
+          <Dropdown
+            value={dropdownValue}
+            onChange={(e) => setDropdownValue(e.value)}
+            options={dropdownAreaValues}
+            optionLabel="name"
+            placeholder="Seleccione el area"
+            required
           />
         </div>
       </Dialog>

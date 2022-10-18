@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: uniticketdb
+-- Host: localhost    Database: uniticketdb
 -- ------------------------------------------------------
 -- Server version	8.0.30
 
@@ -113,7 +113,7 @@ CREATE TABLE `attention` (
 
 LOCK TABLES `attention` WRITE;
 /*!40000 ALTER TABLE `attention` DISABLE KEYS */;
-INSERT INTO `attention` VALUES (1,'2022-10-10 12:54:22','2022-10-10 12:37:19',1,1,2,1,NULL,1),(2,'2022-10-10 12:54:22',NULL,1,NULL,3,2,1,1);
+INSERT INTO `attention` VALUES (1,'2022-10-10 12:54:22','2022-10-10 12:37:19',1,1,2,1,NULL,1),(2,'2022-10-10 12:54:22',NULL,1,2,3,2,1,1);
 /*!40000 ALTER TABLE `attention` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,8 +159,6 @@ DROP TABLE IF EXISTS `attentionplace_area`;
 CREATE TABLE `attentionplace_area` (
   `attentionPlaceId` tinyint NOT NULL,
   `areaId` tinyint NOT NULL,
-  `startDate` date NOT NULL,
-  `finishDate` date DEFAULT NULL,
   `status` tinyint NOT NULL DEFAULT '1' COMMENT '1 active\n0 inactive',
   `createDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updateDate` datetime DEFAULT NULL,
@@ -180,7 +178,7 @@ CREATE TABLE `attentionplace_area` (
 
 LOCK TABLES `attentionplace_area` WRITE;
 /*!40000 ALTER TABLE `attentionplace_area` DISABLE KEYS */;
-INSERT INTO `attentionplace_area` VALUES (1,1,'2020-10-15',NULL,1,'2022-10-10 12:54:12',NULL,1,NULL),(2,2,'2020-10-18',NULL,1,'2022-10-10 12:54:12',NULL,1,NULL);
+INSERT INTO `attentionplace_area` VALUES (1,1,1,'2022-10-10 12:54:12',NULL,1,NULL),(2,2,1,'2022-10-10 12:54:12',NULL,1,NULL);
 /*!40000 ALTER TABLE `attentionplace_area` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,6 +222,7 @@ DROP TABLE IF EXISTS `campus`;
 CREATE TABLE `campus` (
   `campusId` tinyint NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
+  `description` varchar(120) NOT NULL,
   `latitude` decimal(10,8) NOT NULL,
   `longitude` decimal(11,8) NOT NULL,
   `cityId` tinyint NOT NULL,
@@ -244,7 +243,7 @@ CREATE TABLE `campus` (
 
 LOCK TABLES `campus` WRITE;
 /*!40000 ALTER TABLE `campus` DISABLE KEYS */;
-INSERT INTO `campus` VALUES (1,'Campus Tiquipaya',-17.33120670,-66.22820310,1,1,'2022-10-10 12:54:12',NULL,1,NULL);
+INSERT INTO `campus` VALUES (1,'Campus Tiquipaya','campus principal de cochbamba',-17.33120670,-66.22820310,1,1,'2022-10-10 12:54:12',NULL,1,NULL);
 /*!40000 ALTER TABLE `campus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -311,7 +310,7 @@ CREATE TABLE `complain` (
 
 LOCK TABLES `complain` WRITE;
 /*!40000 ALTER TABLE `complain` DISABLE KEYS */;
-INSERT INTO `complain` VALUES (1,0,NULL,1,2,1,'2022-10-10 12:54:22',NULL,4,NULL),(2,1,'Tarda mucho timepo en atender',1,2,1,'2022-10-10 12:56:23',NULL,4,NULL);
+INSERT INTO `complain` VALUES (1,0,NULL,1,1,1,'2022-10-10 12:54:22',NULL,4,NULL),(2,1,'Tarda mucho timepo en atender',1,2,1,'2022-10-10 12:56:23',NULL,4,NULL);
 /*!40000 ALTER TABLE `complain` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -545,6 +544,25 @@ INSERT INTO `usertype` VALUES (1,'Familiar','Personas con perentezco familiar co
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `viewattentionplaces`
+--
+
+DROP TABLE IF EXISTS `viewattentionplaces`;
+/*!50001 DROP VIEW IF EXISTS `viewattentionplaces`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `viewattentionplaces` AS SELECT 
+ 1 AS `attentionplaceID`,
+ 1 AS `Nombre`,
+ 1 AS `Sede`,
+ 1 AS `Estado`,
+ 1 AS `Responable de Registro`,
+ 1 AS `Fecha de Registro`,
+ 1 AS `Responsable de Ultima Modificación`,
+ 1 AS `Ultima Modificación`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `viewcampus`
 --
 
@@ -650,6 +668,24 @@ UNLOCK TABLES;
 --
 
 --
+-- Final view structure for view `viewattentionplaces`
+--
+
+/*!50001 DROP VIEW IF EXISTS `viewattentionplaces`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb3 */;
+/*!50001 SET character_set_results     = utf8mb3 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `viewattentionplaces` AS select `ap`.`attentionPlaceId` AS `attentionplaceID`,`ap`.`name` AS `Nombre`,`c`.`name` AS `Sede`,if((`ap`.`status` = 1),'Activo','Inactivo') AS `Estado`,(select concat(`user`.`firstName`,' ',`user`.`firstSurname`) from `user` where (`user`.`userId` = `ap`.`userIdCreate`)) AS `Responable de Registro`,`ap`.`createDate` AS `Fecha de Registro`,ifnull((select concat(`user`.`firstName`,' ',`user`.`firstSurname`) from `user` where (`user`.`userId` = `ap`.`userIdMod`)),'Ninguno') AS `Responsable de Ultima Modificación`,ifnull(`ap`.`updateDate`,'Ninguna') AS `Ultima Modificación` from (`attentionplace` `ap` join `campus` `c` on((`c`.`campusId` = `ap`.`campusId`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `viewcampus`
 --
 
@@ -712,4 +748,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-10 14:26:44
+-- Dump completed on 2022-10-18 10:23:43

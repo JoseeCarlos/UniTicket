@@ -165,14 +165,6 @@ const ListDemo = () => {
     return id;
   }
 
-  const exportCSV = () => {
-    dt.current.exportCSV();
-  }
-
-  const confirmDeleteSelected = () => {
-    setDeleteCampussDialog(true);
-  }
-
   const onInputChange = (e, name) => {
     const val = (e.target && e.target.value) || '';
     let _campus = { ...campus };
