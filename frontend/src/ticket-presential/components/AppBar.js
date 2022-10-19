@@ -1,7 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import classNames from 'classnames';
-import { Avatar } from 'primereact/avatar';
 
 export const AppBar = (props) => {
 

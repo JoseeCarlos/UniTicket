@@ -32,7 +32,8 @@ const ViewAttention = () => {
       <AppBar></AppBar>
       <div className='container-view-attention'>
         <div className='video-attention'>
-          <iframe className='video' src="https://www.youtube.com/embed/dWcwY8VWXf0?autoplay=1&controls=1" title="Patito Bailando" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          {/* <iframe className='video' src="https://www.youtube.com/embed/dWcwY8VWXf0?autoplay=1&controls=1" title="Patito Bailando" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> */}
+          <iframe className='video' src="https://www.youtube.com/embed/3J1O-vOa71s?autoplay=1&controls=1" title="Patito Bailando" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           <div className='section-attention'>
             <div className='title'><h1>EN ATENCIÓN</h1></div>
             <div className='list-attention'>
