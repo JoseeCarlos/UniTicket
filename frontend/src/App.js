@@ -10,7 +10,7 @@ function App(){
 
     return (
         <div className="App">
-            { rol == 'Admin' ? <AppAdmin></AppAdmin> : Login } 
+            { rol == 'Admin' ? <AppAdmin></AppAdmin> : '<AppPublic></AppPublic>' } 
         </div>
     );
 }
