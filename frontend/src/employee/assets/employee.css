@@ -1,0 +1,192 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container-employee {
+  display: grid;
+  grid-template-rows: repeat(2, 70px calc(100% - 70px));
+  height: 100vh;
+  justify-items: center;
+}
+
+.container-attention {
+  width: 90%;
+  max-width: 100000px;
+  margin: 20px auto;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.container-attention .layout-bar-logo {
+  height: 100%;
+  width: 100%;
+  grid-column: 1;
+}
+
+.container-attention img {
+  display: block;
+  height: 280px;
+  object-fit: contain;
+  margin: auto;
+}
+
+.container-attention .current-ticket {
+  position: relative;
+}
+
+.container-attention .current-ticket h1 {
+  position: absolute;
+  bottom: 37%;
+  left: 33%;
+  font-size: 34px;
+}
+
+.container-attention .in-attention {
+  height: 80%;
+  width: 100%;
+  grid-column-start: 2;
+  grid-column-end: -1;
+}
+
+.container-attention .record {
+  grid-column-start: 1;
+  grid-column-end: -1;
+}
+
+.in-attention,
+.record {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+}
+
+.in-attention .detail-actions {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background-color: var(--uni-background);
+}
+
+.record .record-actions {
+  height: 100%;
+  width: 100%;
+  background-color: var(--uni-background);
+}
+
+.in-attention .detail-actions .detail {
+  grid-column-start: 1;
+  grid-column-end: 5;
+  border-right: dashed 4px white;
+}
+
+.in-attention .detail-actions .detail table {
+  width: 100%;
+}
+
+.in-attention .detail-actions .detail table td{
+  padding: 10px;
+  font-size: 18px;
+}
+
+.in-attention .detail-actions .detail table td span {
+  background-color: white;
+  border-radius: 10px;
+  padding: 5px 10px;
+  border: 1px solid var(--primary-uni);
+}
+
+.record .record-actions table {
+  width: 100%;
+}
+
+.record .record-actions table tbody tr td {
+  margin-top: 3.5px;
+  margin-bottom: 3.5px;
+}
+
+.record .record-actions table .content {
+  width: 84%;
+  border-right: dashed 4px white;
+  padding-left: 20px;
+  font-size: 14px;
+}
+
+.record .record-actions table .action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.record-actions table .action .btn {
+  font-size: 14px;
+  width: 80%;
+  display: block;
+}
+
+.in-attention .detail-actions .actions {
+  grid-column: 5 / 6;
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.actions .btn {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block;
+  height: 30px;
+  font-size: 14px;
+}
+
+h1 {
+  font-weight: bold;
+}
+
+.record .search {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.record .search .field {
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.record .search .search-input {
+  width: 220px;
+  font-size: 14px;
+  border-radius: 0 5px 5px 0;
+}
+
+.record .search i {
+  background-color: white;
+  border: 2px solid var(--primary-uni);
+  padding: 5px;
+  border-radius: 5px 0 0 5px;
+  margin-right: 0 !important;
+}
+
+.record .search .pagination {
+  border-radius: 5px;
+  padding: 5px;
+  margin-right: 20px !important;
+}
+
+@media screen and (max-width: 3025px) and (min-width: 1600px){
+  .container-attention .current-ticket h1 {
+    position: absolute;
+    bottom: 53.5%;
+    left: 36%;
+    font-size: 34px;
+  }
+}
