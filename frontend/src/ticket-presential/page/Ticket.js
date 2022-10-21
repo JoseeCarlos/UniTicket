@@ -5,15 +5,10 @@ import { Image } from 'primereact/image';
 
 const Ticket = () => {
 
-  const typeAttention = false;
-  const typeArea = true;
-  const typeUser = false;
-  const columns = false;
-
-  const typeAttentionChanged = () => {
-    typeAttention = false;
-    typeArea = true;
-  };
+  var typeAttention = true;
+  var typeArea = false;
+  var typeUser = false;
+  var columns = false;
 
   return (
     <div className='container-ticket'>
@@ -40,17 +35,13 @@ const Ticket = () => {
           <div className={`card-options`}>
             <div className='option'>
               <Image src="assets/layout/images/prov.jpg" />
-              <h3>GENERAL</h3>
+              <h3>CAJAS</h3>
             </div>
 
             <div className='option'>
               <Image src="assets/layout/images/prov.jpg" />
-              <h3>3RA EDAD</h3>
+              <h3>PLATAFORMA</h3>
             </div>
-
-            
-            
-
           </div>
         </div>
 
@@ -59,17 +50,25 @@ const Ticket = () => {
           <div className='card-options'>
             <div className='option'>
               <Image src="assets/layout/images/prov.jpg" />
-              <h3>GENERAL</h3>
+              <h3>ESTUDIANTE</h3>
             </div>
 
             <div className='option'>
               <Image src="assets/layout/images/prov.jpg" />
-              <h3>3RA EDAD</h3>
+              <h3>FAMILIAR</h3>
+            </div>
+
+            <div className='option'>
+              <Image src="assets/layout/images/prov.jpg" />
+              <h3>USUARIO COMUN</h3>
+            </div>
+
+            <div className='option'>
+              <Image src="assets/layout/images/prov.jpg" />
+              <h3>PADRE O TUTOR</h3>
             </div>
           </div>
         </div>
-
-
       </div>
     </div >
   );

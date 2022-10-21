@@ -6,12 +6,12 @@ import Login from './login/login';
 //import * as serviceWorker from './serviceWorker';
 import { HashRouter } from 'react-router-dom'
 import ScrollToTop from './ScrollToTop';
-import Ticket from './ticket-presential/page/Ticket';
+import ViewAttention from './view/page/viewAttention';
 
 ReactDOM.render(
     <HashRouter>
         <ScrollToTop>
-            <Ticket></Ticket>
+            <ViewAttention></ViewAttention>
         </ScrollToTop>
     </HashRouter>,
     document.getElementById('root')
