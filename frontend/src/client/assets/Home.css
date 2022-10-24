@@ -1,0 +1,177 @@
+.home {
+  height: 100%;
+}
+
+.banner {
+  height: 500px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(img/logo-uni.jpg);
+  background-repeat: no-repeat;
+  object-fit: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 20px 0px black;
+}
+
+.banner h1,
+.banner span {
+  color: white;
+  filter: drop-shadow(-3px -3px 2px rgba(0, 0, 0, 0.3))
+          drop-shadow(5px 5px 5px rgba(255, 255, 255, 0.2))
+          drop-shadow(15px 15px 15px rgba(255, 255, 255, 0.2));
+}
+
+.banner h1 {
+  font-size: 108px;
+}
+
+.banner span {
+  font-size: 40px;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.steps h2 {
+  font-size: 30px;
+  margin: 60px;
+}
+
+.steps .cards-steps {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  box-shadow: 2px 3px 11px 0px #c6afaf !important;
+  border-radius: 5px;
+  overflow: hidden;
+  border: solid 2px var(--primary-uni);
+}
+
+.steps .cards-steps .card {
+  height: 300px;
+  width: 300px;
+  box-shadow: none !important;
+  margin-bottom: 0 !important;
+  border-radius: 0 !important;
+  border-right: 2px solid white;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.steps .cards-steps .card:last-child {
+  border-right: none;
+}
+
+.steps .cards-steps .card:hover .img-step {
+  transform: scale(1.1, 1.1);
+}
+
+.steps .cards-steps .card .p-card-body,
+.steps .cards-steps .card .p-card-content {
+  overflow: hidden;
+  padding: 0;
+}
+
+.steps .cards-steps .card .p-card-header,
+.steps .cards-steps .card .p-card-footer {
+  text-align: center;
+}
+
+.steps .cards-steps .card .p-card-header {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px;
+  color: white;
+  background-color: var(--primary-uni);
+}
+
+.steps .cards-steps .card .p-card-footer {
+  font-size: 11px;
+  text-align: justify;
+  letter-spacing: 1px;
+  padding: 10px;
+  height: 100px;
+  color: #4d4b4b;
+}
+
+.steps .cards-steps .card .p-card-content .img-step {
+  width: 100%;
+  height: 190px;
+  background-image: url(img/pasos.jpg);
+  background-size: cover;
+  transition: all 250ms ease-in;
+}
+
+.section-information {
+  margin: 100px auto;
+  height: 350px;
+  width: 80%;
+  background-color: var(--primary-uni);
+  box-shadow: 2px 3px 11px 0px #c6afaf !important;
+  color: white;
+  display: grid;
+  grid-template-columns: repeat(2, 50% 50%);
+  grid-template-rows: repeat(2, 1fr 3fr);
+}
+
+.section-information h2 {
+  grid-column: 1;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.section-information h2 {
+  font-size: 30px;
+}
+
+.section-information h2 a {
+  color: white;
+  cursor: pointer;
+  border-bottom: 3px dashed white;
+}
+
+.section-information .description {
+  height: 100%;
+  font-size: 18px;
+  padding-left: 20px;
+  grid-column: 1;
+  grid-row-start: 2;
+  grid-row-end: -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.description ul {
+  margin-top: 20px;
+  margin-left: 40px;
+}
+
+.description .p-button {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.section-information .container-img {
+  grid-column: 2;
+  grid-row-start: 1;
+  grid-row-end: -1;
+  overflow: hidden;
+}
+
+.section-information img {
+  height: 100%;
+  width: 100%;
+  transition: all 300ms ease;
+}
+
+.section-information img:hover {
+  transform: scale(1.1, 1.1);
+}
