@@ -6,6 +6,7 @@ import Login from './login/login';
 //import * as serviceWorker from './serviceWorker';
 import { HashRouter } from 'react-router-dom'
 import ScrollToTop from './ScrollToTop';
+import ViewAttention from './view/page/viewAttention';
 
 ReactDOM.render(
     <HashRouter>
