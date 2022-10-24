@@ -168,9 +168,6 @@ const TableDemo = () => {
         return <InputNumber value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} mode="currency" currency="USD" locale="en-US" />
     }
 
-    const statusBodyTemplate = (rowData) => {
-        return <span className={`customer-badge status-${rowData.status}`}>{rowData.status}</span>;
-    }
 
     const statusFilterTemplate = (options) => {
         return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select a Status" className="p-column-filter" showClear />;
@@ -271,6 +268,15 @@ const TableDemo = () => {
         );
     }
 
+    const statusBodyTemplate = (rowData) => {
+        return (
+          <>
+            <span className="p-column-title">Status</span>
+            <span className={`provider-badge status-${ rowData.status === 0 ?  'outofstock' : 'instock' }`}>{ rowData.status === 0 ? 'Inactivo' : 'Activo' }</span>
+          </>
+        );
+      }
+
     const footerTemplate = (data) => {
         return (
             <React.Fragment>
@@ -296,6 +302,7 @@ const TableDemo = () => {
           </>
         );
       }
+    
 
 
     const calculateCustomerTotal = (name) => {

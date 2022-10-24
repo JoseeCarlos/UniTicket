@@ -63,7 +63,6 @@ class CityModel():
                 cursor.execute("""UPDATE city
                                     SET name=%s, status=%s, updateDate=%s, userIdMod=%s
                                     WHERE cityId=%s""", (city.name, city.status, city.updateDate, city.userIdMod, city.cityId))
-
             connection.commit()
             connection.close()
             return True
@@ -78,7 +77,6 @@ class CityModel():
                 cursor.execute("""UPDATE city
                                     SET status=0
                                     WHERE cityId=%s""", (cityId))
-
             connection.commit()
             connection.close()
             return True

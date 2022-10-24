@@ -14,17 +14,20 @@ function App(){
     // const [layoutColorMode, setLayoutColorMode] = useState('light')
     // const location = useLocation()
     // console.log(location);
-    if(sessionStorage.getItem('role'))
-    {
-        return (
-            <div className="App">
-                <AppAdmin/>
-            </div>
-        );
-    }
+    // if(sessionStorage.getItem('role'))
+    // {
+    //     return (
+    //         <div className="App">
+    //             <AppAdmin/>
+    //         </div>
+    //     );
+    // }
+    sessionStorage.setItem('userId', "1");
+    sessionStorage.setItem('name', "juan Perez");
+    sessionStorage.setItem('role', "admin");
     return (
         <div className="App">
-            <Login/>
+            <AppAdmin/>
         </div>
     );
 }

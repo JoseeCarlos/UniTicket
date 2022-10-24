@@ -6,6 +6,8 @@ import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { DataView, DataViewLayoutOptions } from "primereact/dataview";
 import { Dropdown } from "primereact/dropdown";
+import { AreaService } from "../service/AreaService";
+import Campus from "./Campus";
 const Area = () => {
   let emptyArea = {
     areaId: null,
@@ -13,9 +15,11 @@ const Area = () => {
     description: "",
     status: "",
     createDate: "",
-    updateDate: "",
-    userIdCreate: "",
-    userIdMod: "",
+    updateDate: "2022-01-01",
+    userIdCreate: "2",
+    userIdMod: "1",
+    numeroMaximoTickets: null
+    
   };
   const [dataviewValue, setDataviewValue] = useState(null);
   const [layout, setLayout] = useState("grid");
@@ -30,60 +34,8 @@ const Area = () => {
   const toast = useRef(null);
 
   useEffect(() => {
-    // const campusService = new CampusService();
-    // campusService.getCampuss().then(data => setDataviewValue(data) );
-    setDataviewValue([
-      {
-        areaId: 1,
-        name: "Cajas",
-        description: "Atencion para pagos al a universidad",
-        status: "Activo",
-        createDate: "10/10/2022",
-        updateDate: "12/10/2022",
-        userCreate: "Juan Perez",
-        userMod: "Jose Matinez",
-      },
-      {
-        areaId: 2,
-        name: "Bienestar Universitario",
-        description: "Atencion para pagos al a universidad",
-        status: "Activo",
-        createDate: "10/10/2022",
-        updateDate: "12/10/2022",
-        userCreate: "Juan Perez",
-        userMod: "Jose Matinez",
-      },
-      {
-        areaId: 3,
-        name: "Tramites",
-        description: "Atencion para pagos al a universidad",
-        status: "Activo",
-        createDate: "10/10/2022",
-        updateDate: "12/10/2022",
-        userCreate: "Juan Perez",
-        userMod: "Jose Matinez",
-      },
-      {
-        areaId: 4,
-        name: "Contabilidad",
-        description: "Atencion para pagos al a universidad",
-        status: "Activo",
-        createDate: "10/10/2022",
-        updateDate: "12/10/2022",
-        userCreate: "Juan Perez",
-        userMod: "Jose Matinez",
-      },
-      {
-        areaId: 5,
-        name: "Incripciones",
-        description: "Atencion para pagos al a universidad",
-        status: "Inactivo",
-        createDate: "10/10/2022",
-        updateDate: "12/10/2022",
-        userCreate: "Juan Perez",
-        userMod: "Jose Matinez",
-      },
-    ]);
+    const areaService = new AreaService();
+    areaService.getAreas().then((data) => setDataviewValue(data));
   }, []);
   const viewArea = (area) => {
     setArea({ ...area });
@@ -117,7 +69,46 @@ const Area = () => {
     setSubmitted(false);
     setAreaDeleteDialog(false);
   };
-  const saveArea = () => {};
+  const saveArea = () => {
+    setSubmitted(true)
+
+    if(area.name.trim())
+    {
+      let _area = {...area};
+      if(area.areaId){
+        console.log("update");
+        _area.userIdMod = 1;
+        _area.updateDate = "2021-01-01";
+        console.log(_area)
+        const areaService = new AreaService();
+        areaService.updateArea(_area).then(data => {
+          console.log(data);
+        });
+        areaService.getAreas().then((data) => {
+          console.log(data);
+          setDataviewValue(data)
+        });
+        toast.current.show({ severity: "success", summary: "Successful", detail: "Area Updated", life: 3000 });
+        setAreaEditDialog(false);
+      }else{
+        console.log("create")
+        console.log(_area)
+        const areaService = new AreaService();
+        areaService.addArea(_area).then(data => {
+          console.log(data);
+          if (data.status === 200) {
+            toast.current.show({ severity: "success", summary: "Successful", detail: "Area Creada con Exito", life: 3000 });
+            setAreaInsertDialog(false);
+            setArea(emptyArea);
+            areaService.getAreas().then((data) => setDataviewValue(data));
+          } else {
+            toast.current.show({ severity: "error", summary: "Error", detail: "Area No Creada", life: 3000 });
+          }
+        }
+        );
+      }
+    }
+  };
 
   const onInputChange = (e, name) => {
     const val = (e.target && e.target.value) || "";
@@ -153,7 +144,15 @@ const Area = () => {
     </>
   );
 
-  const deleteAttentionPlace = () => {};
+  const deleteAttentionPlace = () => {
+    const areaService = new AreaService();
+    areaService.deleteArea(area.areaId).then(data => {
+      console.log(data);
+    }
+    );
+    areaService.getAreas().then((data) => setDataviewValue(data));
+    toast.current.show({ severity: "success", summary: "Successful", detail: "Area Eliminada con Exito", life: 3000 });
+  };
   const areaDeleteDialogFooter = (
     <>
       <Button
@@ -192,15 +191,11 @@ const Area = () => {
         <div className="col-12">
           <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <div className="flex flex-column md:flex-row align-items-center p-3">
-              <img
-                src={`assets/demo/images/product/${data.image}`}
-                alt={data.name}
-                className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5"
-              />
+               <img src={`assets/layout/images/campusDef.jpg`} alt={data.name} className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
               <div className="flex-1 text-center md:text-left">
                 <div className="font-bold text-2xl">{data.name}</div>
                 <div className="mb-3">{data.description}</div>
-                <div className="mb-3">{data.status}</div>
+                <div className="mb-3">{data.status == 1 ? 'Activo':'Inactivo'}</div>
               </div>
             </div>
             <span className="p-buttonset">
@@ -225,6 +220,7 @@ const Area = () => {
           Administración De Areas{" "}
           <i className="pi pi-plus icn" onClick={openAreaInsertDialog} />
         </h5>
+        <Toast ref={toast} />
         <DataView
           value={dataviewValue}
           layout={layout}
@@ -254,17 +250,11 @@ const Area = () => {
             autoFocus
             className={classNames({ "p-invalid": submitted && !area.name })}
           />
-          {submitted && !area.name && (
-            <small className="p-invalid">El nombre es requerido.</small>
-          )}
+          {submitted && !area.name && (<small className="p-invalid">El nombre es requerido.</small>)}
         </div>
         <div className="field">
           <label htmlFor="description">Descripción</label>
-          <InputText
-            id="description"
-            value={area.description}
-            onChange={(e) => onInputChange(e, "description")}
-            required
+          <InputText id="description" value={area.description} onChange={(e) => onInputChange(e, "description")} required
             autoFocus
             className={classNames({ "p-invalid": submitted && !area.name })}
           />
@@ -302,6 +292,20 @@ const Area = () => {
             id="description"
             value={area.description}
             onChange={(e) => onInputChange(e, "description")}
+            required
+            autoFocus
+            className={classNames({ "p-invalid": submitted && !area.name })}
+          />
+          {submitted && !area.name && (
+            <small className="p-invalid">El nombre es requerido.</small>
+          )}
+        </div>
+        <div className="field">
+          <label htmlFor="description">Numero maximo de Tickect </label>
+          <InputText
+            id="description"
+            value={area.numeroMaximoTickets}
+            onChange={(e) => onInputChange(e, "numeroMaximoTickets")}
             required
             autoFocus
             className={classNames({ "p-invalid": submitted && !area.name })}
@@ -378,15 +382,6 @@ const Area = () => {
             id="description"
             value={area.description}
             onChange={(e) => onInputChange(e, "description")}
-            required
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="status">Estado</label>
-          <InputText
-            id="status"
-            value={area.status}
-            onChange={(e) => onInputChange(e, "status")}
             required
           />
         </div>

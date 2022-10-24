@@ -9,6 +9,8 @@ import { CustomerService } from "../service/CustomerService";
 import { ProductService } from "../service/ProductService";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
+import { AttentionPLaceService } from "../service/AttentionPLaceService";
+import { TableService } from "../service/TableService";
 
 const AttentionPlaceTable = () => {
   let emptyTable = {
@@ -59,6 +61,7 @@ const AttentionPlaceTable = () => {
   const [tableViewDialog, setTableViewDialog] = useState(false);
   const [tableDeleteDialog, setTableDeleteDialog] = useState(false);
   const [attentionPlace, setAttentionPlace] = useState(emptyAttentionPlace);
+  
   const [attentionPlaceInsertDialog, setAttentionPlaceInsertDialog] =
     useState(false);
   const [attentionPlaceViewDialog, setAttentionPlaceViewDialog] =
@@ -71,6 +74,8 @@ const AttentionPlaceTable = () => {
 
   const customerService = new CustomerService();
   const productService = new ProductService();
+  const attentionPLaceService = new AttentionPLaceService();
+  const tableService = new TableService();
 
   const dropdownValues = [
     { name: "Cajas Tiquipaya", code: "1" },
@@ -104,18 +109,28 @@ const AttentionPlaceTable = () => {
   };
   useEffect(() => {
     setLoading2(true);
-    customerService.getCustomersLarge().then((data) => {
-      setCustomers1(getCustomers(data));
-      setLoading1(false);
+    // customerService.getCustomersLarge().then((data) => {
+    //   setCustomers1(getCustomers(data));
+    //   setLoading1(false);
+    // });
+    // customerService.getCustomersLarge().then((data) => {
+    //   setCustomers2(getCustomers(data));
+    //   setLoading2(false);
+    // });
+    // customerService.getCustomersMedium().then((data) => setCustomers3(data));
+    // productService
+    //   .getProductsWithOrdersSmall()
+    //   .then((data) => {
+    //     setProducts(data)
+    //     console.log(data)
+    //   });
+    
+    attentionPLaceService.getAreas().then((data) => {
+      setProducts(data);
+      setDropdownValue(data);
     });
-    customerService.getCustomersLarge().then((data) => {
-      setCustomers2(getCustomers(data));
-      setLoading2(false);
-    });
-    customerService.getCustomersMedium().then((data) => setCustomers3(data));
-    productService
-      .getProductsWithOrdersSmall()
-      .then((data) => setProducts(data));
+
+    console.log( getTableAreas("2")); 
 
     initFilters1();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -126,6 +141,16 @@ const AttentionPlaceTable = () => {
       return d;
     });
   };
+
+  const statusBodyTemplate = (rowData) => {
+    return (
+      <>
+        <span className="p-column-title">Status</span>
+        <span className={`provider-badge status-${ rowData.status === 0 ?  'outofstock' : 'instock' }`}>{ rowData.status === 0 ? 'Inactivo' : 'Activo' }</span>
+      </>
+    );
+  }
+
 
   const initFilters1 = () => {
     setFilters1({
@@ -181,6 +206,15 @@ const AttentionPlaceTable = () => {
     setTable(table);
     setTableDeleteDialog(true);
   };
+  const getTableAreas = (tableId) => {
+    const tableAreas = [];
+    tableService.getTableAreas(tableId).then((data) => {
+      tableAreas.push(data);
+    }
+    );
+    return tableAreas;
+  };
+
   const insertAttentionPlace = () => {
     setAttentionPlace(emptyAttentionPlace);
     setAttentionPlaceInsertDialog(true);
@@ -197,26 +231,37 @@ const AttentionPlaceTable = () => {
     setAttentionPlace(attentionPlace);
     setAttentionPlaceDeleteDialog(true);
   };
+  const [dataTableArea, setDataTableArea] = useState([]);
+
   const rowExpansionTemplate = (data) => {
+    data = getTableAreas(data.attentionPlaceId);
+    // console.log(data);
+   
     return (
       <div className="orders-subtable">
+        {
+          // console.log(data)
+        // console.log(getTableAreas(data.attentionPlaceId))
+        // setDataTableArea(getTableAreas(data.attentionPlaceId))
+        }
         <DataTable
-          value={data.orders}
+          value={data}
           responsiveLayout="scroll"
           header={tableHeader}
         >
+          {console.log(data)}
           <Column
-            field="id"
+            field="number"
             header="Numero de Mesa"
             sortable
             headerStyle={{ width: "4rem" }}
           ></Column>
           <Column
-            field="customer"
+            field="employeeName"
             header="Empleado Actual"
             sortable
             headerStyle={{ width: "12rem" }}
-          ></Column>
+          >culo</Column>
           <Column
             field="status"
             header="Estado"
@@ -505,17 +550,19 @@ const AttentionPlaceTable = () => {
           <DataTable
             value={products}
             expandedRows={expandedRows}
-            onRowToggle={(e) => setExpandedRows(e.data)}
+            onRowToggle={(e) => {
+              setExpandedRows(e.data);
+            }}
             responsiveLayout="scroll"
             rowExpansionTemplate={rowExpansionTemplate}
             dataKey="id"
             header={header}
           >
             <Column expander style={{ width: "1em" }} />
-            <Column field="name" header="Nombre" sortable />
-            <Column field="area" header="Area Actual" sortable />
-            <Column field="campus" header="Campus" sortable />
-            <Column field="status" header="Estado" sortable />
+            <Column field="attentionPlaceName" header="Nombre" sortable />
+            <Column field="areaName" header="Area Actual" sortable />
+            <Column field="campusName" header="Campus" sortable />
+            <Column field="status" header="Estado" body={statusBodyTemplate} sortable headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
             <Column
               header="Acciones"
               headerStyle={{ width: "12rem" }}

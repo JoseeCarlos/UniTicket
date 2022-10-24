@@ -103,13 +103,15 @@ const Employee = () => {
         const employeeService = new EmployeeService();
         employeeService.updateEmployee(employee).then(data => {
           console.log(data);
-          }
-        );
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Empleado Modificado', life: 3000 });
+          });
+        
         employeeService.getEmployees().then(data => {
           console.log(data);
           setEmployees(data)}
+          
         );
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Empleado Modificado', life: 3000 });
+        
       }
       else {
         console.log("create");
@@ -118,11 +120,12 @@ const Employee = () => {
         console.log("create");
         console.log(employee);
         employeeService.setEmployee(employee).then(data => console.log(data));
-        toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Empleado Creado con exito', life: 3000 });
         employeeService.getEmployees().then(data => {
           console.log(data);
-          setEmployees(data)}
+         }
         );
+        toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Empleado Creado con exito', life: 3000 });
+        
       }
 
       setEmployeeDialog(false);

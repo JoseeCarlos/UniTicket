@@ -118,8 +118,11 @@ const ListDemo = () => {
           console.log(data);
           setCampusDialog(false);
           setCampus(emptyCampus);
-          toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Campus Updated', life: 3000 });
         });
+        campusService.getCampuss().then(data => setDataviewValue(data));
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Campus Updated', life: 3000 });
+
+
       }else {
         console.log("create");
         campusService.addCampus(_campus).then(data => {
@@ -127,9 +130,8 @@ const ListDemo = () => {
         }
         );
         console.log(_campus);
-
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Campus Creado', life: 3000 }); 
         campusService.getCampuss().then(data => setDataviewValue(data));
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Campus Creado', life: 3000 }); 
         
 
       }
@@ -154,8 +156,8 @@ const ListDemo = () => {
     campusService.deleteCampus(campus).then(data => {
       console.log(data);
       } );
+    campusService.getCampuss().then(data => setDataviewValue(data));
     setDeleteCampusDialog(false);
-    setCampus(emptyCampus);
     toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Campus Eliminado', life: 3000 });
   }
 

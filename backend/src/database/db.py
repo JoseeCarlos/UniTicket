@@ -1,15 +1,14 @@
-import mysql.connector
+# import mysql.connector
+import pyodbc 
 from decouple import config 
 
 def  get_connection():
     try:
-        connection = mysql.connector.connect(
-            host=config('MYSQL_HOST'),
-            user=config('MYSQL_USER'),
-            password='Univalle',
-            database='uniticketdb'
-
-        )
+        s = config('DB_SERVER')
+        u = config('DB_USER')
+        p = config('DB_PASSWORD')
+        d = config('DB_DATABASE')
+        connection = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+s+';DATABASE='+d+';UID='+u+';PWD='+p)
         return connection
-    except mysql.connector.Error as error:
-        print("Failed to connect to MySQL {}".format(error))
+    except Exception as ex:
+        raise Exception(ex)

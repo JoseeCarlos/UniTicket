@@ -172,8 +172,8 @@ const App = () => {
                 { label: 'Quejas', icon: 'pi pi-fw pi-comments', to: '/quejas' },
                 { label: 'Areas', icon: 'pi pi-fw pi-table', to: '/area' },
                 { label: 'Lugares de Atencion', icon: 'pi pi-fw pi-check-square', to: '/attentionPlaceTable' },
-                { label: 'Quejas', icon: "pi pi-fw pi-bookmark", to: "/floatlabel" },
-                { label: 'Reportes', icon: "pi pi-fw pi-exclamation-circle", to: "/login" },
+                // { label: 'Quejas', icon: "pi pi-fw pi-bookmark", to: "/floatlabel" },
+                // { label: 'Reportes', icon: "pi pi-fw pi-exclamation-circle", to: "/login" },
                 {
                     label: 'Reportes', icon: 'pi pi-fw pi-exclamation-circle',
                     items: [
