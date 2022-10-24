@@ -1,0 +1,11 @@
+.layout-footer {
+  background-color: var(--primary-uni);
+  color: white;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  font-size: 14px;
+}
