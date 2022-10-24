@@ -21,7 +21,7 @@ const Asignacion = () => {
   const [valorDropdown, establecerValorDropdown] = useState(null);
   const [filtroAsignacion, establecerFiltroAsignacion] = useState(null);
   const [filtroEmpleado, establecerFiltroEmpleado] = useState(null);
-  const [asignation, establecerAsignacion] = useState(asignacionVacia);
+  const [asignacion, establecerAsignacion] = useState(asignacionVacia);
   const [dialogoInsercionAsignacion, establecerDialogoInsercionAsignacion] = useState(false);
   const [dialogoVistaAsignacion, establecerDialogoVisualizacionAsignacion] = useState(false);
   const [dialogoModificacionAsignacion, establecerDialogoActualizacionAsignacion] = useState(false);
