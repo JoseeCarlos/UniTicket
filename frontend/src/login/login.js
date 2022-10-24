@@ -43,14 +43,34 @@ function Login() {
     console.log("hola");
     console.log(userSeleted);
     const employeeService = new EmployeeService();
-    employeeService.login(userSeleted).then(data => {
-      console.log(data);
-      sessionStorage.setItem('userId', data.userId);
-      sessionStorage.setItem('name', data.firstName+" "+data.firstSurname);
-      sessionStorage.setItem('role', data.role);
-      console.log(sessionStorage.getItem('userId'), sessionStorage.getItem('name'), sessionStorage.getItem('role'));
-    }
-    );
+    employeeService.loginEstudent(userSeleted).then(data => {
+      data.map((item) => {
+        // console.log(item);
+        if (item.Usuario == userSeleted.userName && item.Contrasenia == userSeleted.password) {
+          sessionStorage.setItem('userId', item.idEstudiante);
+          sessionStorage.setItem('name', item.Nombres);
+          if (item.Rol == "Administrador" || item.Rol == "Supervisor") {
+            sessionStorage.setItem('role', "admin");
+          }
+          else {
+            sessionStorage.setItem('role', "Estudiante");
+          }
+          // sessionStorage.setItem('role', "estudiante");
+          history.push("/admin");
+          console.log(item);
+        }
+      }
+      )
+    });
+  
+    // employeeService.login(userSeleted).then(data => {
+    //   console.log(data);
+    //   sessionStorage.setItem('userId', data.userId);
+    //   sessionStorage.setItem('name', data.firstName+" "+data.firstSurname);
+    //   sessionStorage.setItem('role', data.role);
+    //   console.log(sessionStorage.getItem('userId'), sessionStorage.getItem('name'), sessionStorage.getItem('role'));
+    // }
+    // );
   }
 
   return (

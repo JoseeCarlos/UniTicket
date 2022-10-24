@@ -1,7 +1,7 @@
 {
-    "Estudiantes":[
-        {"idEstudiante": "1" , "Nombres": "Juan Luis", "PrimerApellido": "Guerra", "SegundoApellido": "Suarez", "CedulaIdentidad": "121332", "EmitidoEn": "CBBA", "Celular": "12344321","Telefono":"12344321", "CorreoElectronico" : "juan@gmail.com", "Usuario": "JLA1212", "CONTRASENIA": "12121212"},
-        {"idEstudiante": "2" , "Nombres": "Maria", "PrimerApellido": "Perez", "SegundoApellido": "Suarez", "CedulaIdentidad": "121332", "EmitidoEn": "CBBA", "Celular": "12344321","Telefono":"12344321", "CorreoElectronico" : "maria@gmail.com", "Usuario": "MPA1212", "CONTRASENIA": "12121212"},
-        {"idEstudiante": "3" , "Nombres": "Pedro", "PrimerApellido": "Perez", "SegundoApellido": "Suarez", "CedulaIdentidad": "121332", "EmitidoEn": "CBBA", "Celular": "12344321","Telefono":"12344321", "CorreoElectronico" : "pedro@gmail.com", "Usuario": "PPA1212", "CONTRASENIA": "12121212"}
+    "data":[
+        {"idEstudiante": "1" , "Nombres": "Juan Luis", "PrimerApellido": "Guerra", "SegundoApellido": "Suarez", "CedulaIdentidad": "121332", "EmitidoEn": "CBBA", "Celular": "12344321","Telefono":"12344321", "CorreoElectronico" : "juan@gmail.com", "Usuario": "JLA1212", "Contrasenia": "12121212", "Rol": "Administrador"},
+        {"idEstudiante": "2" , "Nombres": "Maria", "PrimerApellido": "Perez", "SegundoApellido": "Suarez", "CedulaIdentidad": "121332", "EmitidoEn": "CBBA", "Celular": "12344321","Telefono":"12344321", "CorreoElectronico" : "maria@gmail.com", "Usuario": "MPA1212", "Contrasenia": "12121212", "Rol":"Supervisor"},
+        {"idEstudiante": "3" , "Nombres": "Pedro", "PrimerApellido": "Perez", "SegundoApellido": "Suarez", "CedulaIdentidad": "121332", "EmitidoEn": "CBBA", "Celular": "12344321","Telefono":"12344321", "CorreoElectronico" : "pedro@gmail.com", "Usuario": "PPA1212", "Contrasenia": "12121212", "Rol":"Estudiante"}
     ]
 }
