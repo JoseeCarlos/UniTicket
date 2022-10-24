@@ -11,7 +11,7 @@ import ViewAttention from './view/page/viewAttention';
 ReactDOM.render(
     <HashRouter>
         <ScrollToTop>
-            <ViewAttention></ViewAttention>
+            <App></App>
         </ScrollToTop>
     </HashRouter>,
     document.getElementById('root')

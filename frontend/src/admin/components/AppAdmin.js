@@ -39,7 +39,7 @@ import GeneralReport from '../pages/GeneralReport';
 import GenerateReport from '../pages/GenerateReport';
 import AttentionPlaceTable from '../pages/AttentionPlaceTable';
 import Area from '../pages/Area';
-
+import Asignation from '../pages/Asignation';
 
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
@@ -172,7 +172,7 @@ const App = () => {
                 { label: 'Quejas', icon: 'pi pi-fw pi-comments', to: '/quejas' },
                 { label: 'Areas', icon: 'pi pi-fw pi-table', to: '/area' },
                 { label: 'Lugares de Atencion', icon: 'pi pi-fw pi-check-square', to: '/attentionPlaceTable' },
-                { label: 'Quejas', icon: "pi pi-fw pi-bookmark", to: "/floatlabel" },
+                { label: 'Asignaciones', icon: "pi pi-fw pi-bookmark", to: "/asignation" },
                 { label: 'Reportes', icon: "pi pi-fw pi-exclamation-circle", to: "invalidstate" },
                 {
                     label: 'Reportes', icon: 'pi pi-fw pi-exclamation-circle',
@@ -339,6 +339,7 @@ const App = () => {
                     <Route path="/generateReport" component={GenerateReport} />
                     <Route path="/attentionPlaceTable" component={AttentionPlaceTable} />
                     <Route path="/area" component={Area} />
+                    <Route path="/asignation" component={Asignation} />
                 </div>
 
                 <AppFooter layoutColorMode={layoutColorMode} />
