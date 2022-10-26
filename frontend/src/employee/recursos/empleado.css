@@ -1,0 +1,192 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.contenedor-empleado {
+  display: grid;
+  grid-template-rows: repeat(2, 70px calc(100% - 70px));
+  height: 100vh;
+  justify-items: center;
+}
+
+.contenedor-atencion {
+  width: 90%;
+  max-width: 100000px;
+  margin: 20px auto;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.contenedor-atencion .disenio-bar-logo {
+  height: 100%;
+  width: 100%;
+  grid-column: 1;
+}
+
+.contenedor-atencion img {
+  display: block;
+  height: 280px;
+  object-fit: contain;
+  margin: auto;
+}
+
+.contenedor-atencion .actual-ticket {
+  position: relative;
+}
+
+.contenedor-atencion .actual-ticket h1 {
+  position: absolute;
+  bottom: 37%;
+  left: 33%;
+  font-size: 34px;
+}
+
+.contenedor-atencion .en-atencion {
+  height: 80%;
+  width: 100%;
+  grid-column-start: 2;
+  grid-column-end: -1;
+}
+
+.contenedor-atencion .historial {
+  grid-column-start: 1;
+  grid-column-end: -1;
+}
+
+.en-atencion,
+.historial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+}
+
+.en-atencion .detalle-acciones {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background-color: var(--uni-background);
+}
+
+.historial .historial-acciones {
+  height: 100%;
+  width: 100%;
+  background-color: var(--uni-background);
+}
+
+.en-atencion .detalle-acciones .detalle {
+  grid-column-start: 1;
+  grid-column-end: 5;
+  border-right: dashed 4px white;
+}
+
+.en-atencion .detalle-acciones .detalle table {
+  width: 100%;
+}
+
+.en-atencion .detalle-acciones .detalle table td{
+  padding: 10px;
+  font-size: 18px;
+}
+
+.en-atencion .detalle-acciones .detalle table td span {
+  background-color: white;
+  border-radius: 10px;
+  padding: 5px 10px;
+  border: 1px solid var(--primary-uni);
+}
+
+.historial .historial-acciones table {
+  width: 100%;
+}
+
+.historial .historial-acciones table tbody tr td {
+  margin-top: 3.5px;
+  margin-bottom: 3.5px;
+}
+
+.historial .historial-acciones table .contenido {
+  width: 84%;
+  border-right: dashed 4px white;
+  padding-left: 20px;
+  font-size: 14px;
+}
+
+.historial .historial-acciones table .accion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.historial-acciones table .accion .btn {
+  font-size: 14px;
+  width: 80%;
+  display: block;
+}
+
+.en-atencion .detalle-acciones .acciones {
+  grid-column: 5 / 6;
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.acciones .btn {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block;
+  height: 30px;
+  font-size: 14px;
+}
+
+h1 {
+  font-weight: bold;
+}
+
+.historial .buscar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-contenido: space-between;
+}
+
+.historial .buscar .campo {
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.historial .buscar .buscar-entrada {
+  width: 220px;
+  font-size: 14px;
+  border-radius: 0 5px 5px 0;
+}
+
+.historial .buscar i {
+  background-color: white;
+  border: 2px solid var(--primary-uni);
+  padding: 5px;
+  border-radius: 5px 0 0 5px;
+  margin-right: 0 !important;
+}
+
+.historial .buscar .paginacion {
+  border-radius: 5px;
+  padding: 5px;
+  margin-right: 20px !important;
+}
+
+@media screen and (max-width: 3025px) and (min-width: 1600px){
+  .contenedor-atencion .actual-ticket h1 {
+    position: absolute;
+    bottom: 53.5%;
+    left: 36%;
+    font-size: 34px;
+  }
+}

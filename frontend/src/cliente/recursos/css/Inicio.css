@@ -1,0 +1,177 @@
+.inicio {
+  height: 100%;
+}
+
+.pancarta {
+  height: 500px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../img/logo-uni.jpg);
+  background-repeat: no-repeat;
+  object-fit: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 20px 0px black;
+}
+
+.pancarta h1,
+.pancarta span {
+  color: white;
+  filter: drop-shadow(-3px -3px 2px rgba(0, 0, 0, 0.3))
+          drop-shadow(5px 5px 5px rgba(255, 255, 255, 0.2))
+          drop-shadow(15px 15px 15px rgba(255, 255, 255, 0.2));
+}
+
+.pancarta h1 {
+  font-size: 108px;
+}
+
+.pancarta span {
+  font-size: 40px;
+}
+
+.pasos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pasos h2 {
+  font-size: 30px;
+  margin: 60px;
+}
+
+.pasos .tarjetas-pasos {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  box-shadow: 2px 3px 11px 0px #c6afaf !important;
+  border-radius: 5px;
+  overflow: hidden;
+  border: solid 2px var(--primary-uni);
+}
+
+.pasos .tarjetas-pasos .tarjeta {
+  height: 300px;
+  width: 300px;
+  box-shadow: none !important;
+  margin-bottom: 0 !important;
+  border-radius: 0 !important;
+  border-right: 2px solid white;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.pasos .tarjetas-pasos .tarjeta:last-child {
+  border-right: none;
+}
+
+.pasos .tarjetas-pasos .tarjeta:hover .img-paso {
+  transform: scale(1.1, 1.1);
+}
+
+.pasos .tarjetas-pasos .tarjeta .p-card-body,
+.pasos .tarjetas-pasos .tarjeta .p-card-content {
+  overflow: hidden;
+  padding: 0;
+}
+
+.pasos .tarjetas-pasos .tarjeta .p-card-header,
+.pasos .tarjetas-pasos .tarjeta .p-card-footer {
+  text-align: center;
+}
+
+.pasos .tarjetas-pasos .tarjeta .p-card-header {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px;
+  color: white;
+  background-color: var(--primary-uni);
+}
+
+.pasos .tarjetas-pasos .tarjeta .p-card-footer {
+  font-size: 11px;
+  text-align: justify;
+  letter-spacing: 1px;
+  padding: 10px;
+  height: 100px;
+  color: #4d4b4b;
+}
+
+.pasos .tarjetas-pasos .tarjeta .p-card-content .img-paso {
+  width: 100%;
+  height: 190px;
+  background-image: url(../img/pasos.jpg);
+  background-size: cover;
+  transition: all 250ms ease-in;
+}
+
+.seccion-informacion {
+  margin: 100px auto;
+  height: 350px;
+  width: 80%;
+  background-color: var(--primary-uni);
+  box-shadow: 2px 3px 11px 0px #c6afaf !important;
+  color: white;
+  display: grid;
+  grid-template-columns: repeat(2, 50% 50%);
+  grid-template-rows: repeat(2, 1fr 3fr);
+}
+
+.seccion-informacion h2 {
+  grid-column: 1;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.seccion-informacion h2 {
+  font-size: 30px;
+}
+
+.seccion-informacion h2 a {
+  color: white;
+  cursor: pointer;
+  border-bottom: 3px dashed white;
+}
+
+.seccion-informacion .descripcion {
+  height: 100%;
+  font-size: 18px;
+  padding-left: 20px;
+  grid-column: 1;
+  grid-row-start: 2;
+  grid-row-end: -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.descripcion ul {
+  margin-top: 20px;
+  margin-left: 40px;
+}
+
+.descripcion .p-button {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.seccion-informacion .contenedor-img {
+  grid-column: 2;
+  grid-row-start: 1;
+  grid-row-end: -1;
+  overflow: hidden;
+}
+
+.seccion-informacion img {
+  height: 100%;
+  width: 100%;
+  transition: all 300ms ease;
+}
+
+.seccion-informacion img:hover {
+  transform: scale(1.1, 1.1);
+}
