@@ -108,7 +108,7 @@ export const Menu = (props) => {
 
     return (
         <div className="layout-menu-container">
-            <Submenu items={props.model} className="layout-menu"  enMenuElementoClic={props.enMenuElementoClic} root={true} role="menu" />
+            <Submenu elementos={props.model} className="layout-menu"  enMenuElementoClic={props.enMenuElementoClic} root={true} role="menu" />
         </div>
     );
 }
