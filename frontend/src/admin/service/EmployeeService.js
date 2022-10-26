@@ -3,7 +3,7 @@ import axios from 'axios';
 export class EmployeeService {
 
     getEmployeesSmall() {
-        return fetch('/api/employee/').then(res => res.json()).then(data => data);
+        return axios.get('assets/demo/data/customers-medium.json').then(res => res.data.data);
     }
 
     getEmployees() {
