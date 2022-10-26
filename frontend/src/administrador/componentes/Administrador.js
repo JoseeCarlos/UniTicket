@@ -27,112 +27,112 @@ import '../assets/demo/Demos.scss';
 import '../assets/layout/layout.scss';
 
 const Administrador = () => {
-    const [layoutMode, setLayoutMode] = useState('static');
-    const [layoutColorMode, setLayoutColorMode] = useState('light')
-    const [inputStyle, setInputStyle] = useState('outlined');
-    const [ripple, setRipple] = useState(true);
-    const [staticMenuInactive, setStaticMenuInactive] = useState(false);
-    const [overlayMenuActive, setOverlayMenuActive] = useState(false);
-    const [mobileMenuActive, setMobileMenuActive] = useState(false);
-    const [mobileTopbarMenuActive, setMobileTopbarMenuActive] = useState(false);
+    const [modoDisenio, establecerModoDisenio] = useState('static');
+    const [disenioColorModo, establecerDisenioColorModo] = useState('light')
+    const [estiloEntrada, establecerEstiloEntrada] = useState('outlined');
+    const [multiplicador, establecerMultiplicador] = useState(true);
+    const [menuEstaticoInactivo, establecerMenuEstaticoInactivo] = useState(false);
+    const [sobreponerMenuActivo, establecerSobreponerMenuActivo] = useState(false);
+    const [menuMovilActivo, establecerMenuMovilActivo] = useState(false);
+    const [topbarMenuMovilActivo, establecerTopbarMenuMovilActivo] = useState(false);
     const copyTooltipRef = useRef();
-    const location = useLocation();
+    const ubicacion = useLocation();
 
-    PrimeReact.ripple = true;
+    PrimeReact.multiplicador = true;
 
-    let menuClick = false;
-    let mobileTopbarMenuClick = false;
+    let menuClic = false;
+    let topbarMovilMenuClic = false;
 
     useEffect(() => {
-        if (mobileMenuActive) {
-            addClass(document.body, "body-overflow-hidden");
+        if (menuMovilActivo) {
+            aniadirClase(document.body, "body-overflow-hidden");
         } else {
-            removeClass(document.body, "body-overflow-hidden");
+            removerClase(document.body, "body-overflow-hidden");
         }
-    }, [mobileMenuActive]);
+    }, [menuMovilActivo]);
 
     useEffect(() => {
         copyTooltipRef && copyTooltipRef.current && copyTooltipRef.current.updateTargetEvents();
-    }, [location]);
+    }, [ubicacion]);
 
-    const onInputStyleChange = (inputStyle) => {
-        setInputStyle(inputStyle);
+    const cambioEstiloEntrada = (estiloEntrada) => {
+        establecerEstiloEntrada(estiloEntrada);
     }
 
-    const onRipple = (e) => {
-        PrimeReact.ripple = e.value;
-        setRipple(e.value)
+    const enMultiplicador = (e) => {
+        PrimeReact.multiplicador = e.value;
+        establecerMultiplicador(e.value)
     }
 
-    const onLayoutModeChange = (mode) => {
-        setLayoutMode(mode)
+    const cambioDisenioModo = (mode) => {
+        establecerModoDisenio(mode)
     }
 
-    const onColorModeChange = (mode) => {
-        setLayoutColorMode(mode)
+    const cambioColorModo = (mode) => {
+        establecerDisenioColorModo(mode)
     }
 
-    const onWrapperClick = (event) => {
-        if (!menuClick) {
-            setOverlayMenuActive(false);
-            setMobileMenuActive(false);
+    const contenedorClic = (event) => {
+        if (!menuClic) {
+            establecerSobreponerMenuActivo(false);
+            establecerMenuMovilActivo(false);
         }
 
-        if (!mobileTopbarMenuClick) {
-            setMobileTopbarMenuActive(false);
+        if (!topbarMovilMenuClic) {
+            establecerTopbarMenuMovilActivo(false);
         }
 
-        mobileTopbarMenuClick = false;
-        menuClick = false;
+        topbarMovilMenuClic = false;
+        menuClic = false;
     }
 
-    const onToggleMenuClick = (event) => {
-        menuClick = true;
+    const alternarMenuClic = (event) => {
+        menuClic = true;
 
-        if (isDesktop()) {
-            if (layoutMode === 'overlay') {
-                if (mobileMenuActive === true) {
-                    setOverlayMenuActive(true);
+        if (esEscritorio()) {
+            if (modoDisenio === 'overlay') {
+                if (menuMovilActivo === true) {
+                    establecerSobreponerMenuActivo(true);
                 }
 
-                setOverlayMenuActive((prevState) => !prevState);
-                setMobileMenuActive(false);
+                establecerSobreponerMenuActivo((prevState) => !prevState);
+                establecerMenuMovilActivo(false);
             }
-            else if (layoutMode === 'static') {
-                setStaticMenuInactive((prevState) => !prevState);
+            else if (modoDisenio === 'static') {
+                establecerMenuEstaticoInactivo((prevState) => !prevState);
             }
         }
         else {
-            setMobileMenuActive((prevState) => !prevState);
+            establecerMenuMovilActivo((prevState) => !prevState);
         }
 
         event.preventDefault();
     }
 
-    const onSidebarClick = () => {
-        menuClick = true;
+    const enBarraLateralClic = () => {
+        menuClic = true;
     }
 
-    const onMobileTopbarMenuClick = (event) => {
-        mobileTopbarMenuClick = true;
+    const enMovilTopbarMenuClic = (event) => {
+        topbarMovilMenuClic = true;
 
-        setMobileTopbarMenuActive((prevState) => !prevState);
+        establecerTopbarMenuMovilActivo((prevState) => !prevState);
         event.preventDefault();
     }
 
-    const onMobileSubTopbarMenuClick = (event) => {
-        mobileTopbarMenuClick = true;
+    const enMovilSubTopbarMenuClic = (event) => {
+        topbarMovilMenuClic = true;
 
         event.preventDefault();
     }
 
-    const onMenuItemClick = (event) => {
+    const enMenuElementoClic = (event) => {
         if (!event.item.items) {
-            setOverlayMenuActive(false);
-            setMobileMenuActive(false);
+            establecerSobreponerMenuActivo(false);
+            establecerMenuMovilActivo(false);
         }
     }
-    const isDesktop = () => {
+    const esEscritorio = () => {
         return window.innerWidth >= 992;
     }
 
@@ -159,45 +159,45 @@ const Administrador = () => {
         }
     ];
 
-    const addClass = (element, className) => {
+    const aniadirClase = (element, className) => {
         if (element.classList)
             element.classList.add(className);
         else
             element.className += ' ' + className;
     }
 
-    const removeClass = (element, className) => {
+    const removerClase = (element, className) => {
         if (element.classList)
             element.classList.remove(className);
         else
             element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
     }
 
-    const wrapperClass = classNames('layout-wrapper', {
-        'layout-overlay': layoutMode === 'overlay',
-        'layout-static': layoutMode === 'static',
-        'layout-static-sidebar-inactive': staticMenuInactive && layoutMode === 'static',
-        'layout-overlay-sidebar-active': overlayMenuActive && layoutMode === 'overlay',
-        'layout-mobile-sidebar-active': mobileMenuActive,
-        'p-input-filled': inputStyle === 'filled',
-        'p-ripple-disabled': ripple === false,
-        'layout-theme-light': layoutColorMode === 'light'
+    const claseContenedor = classNames('layout-wrapper', {
+        'layout-overlay': modoDisenio === 'overlay',
+        'layout-static': modoDisenio === 'static',
+        'layout-static-sidebar-inactive': menuEstaticoInactivo && modoDisenio === 'static',
+        'layout-overlay-sidebar-active': sobreponerMenuActivo && modoDisenio === 'overlay',
+        'layout-mobile-sidebar-active': menuMovilActivo,
+        'p-input-filled': estiloEntrada === 'filled',
+        'p-multiplicador-disabled': multiplicador === false,
+        'layout-theme-light': disenioColorModo === 'light'
     });
 
     return (
-        <div className={wrapperClass} onClick={onWrapperClick}>
+        <div className={claseContenedor} onClick={contenedorClic}>
             <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
-            <TopBar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode}
-                mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+            <TopBar alternarMenuClic={alternarMenuClic} disenioColorModo={disenioColorModo}
+                topbarMenuMovilActivo={topbarMenuMovilActivo} enMovilTopbarMenuClic={enMovilTopbarMenuClic} enMovilSubTopbarMenuClic={enMovilSubTopbarMenuClic} />
 
-            <div className="layout-sidebar" onClick={onSidebarClick}>
-                <Menu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
+            <div className="layout-sidebar" onClick={enBarraLateralClic}>
+                <Menu model={menu} enMenuElementoClic={enMenuElementoClic} disenioColorModo={disenioColorModo} />
             </div>
 
             <div className="layout-main-container">
                 <div className="layout-main">
-                    <Route path="/" exact render={() => <ReporteGeneral colorMode={layoutColorMode} location={location} />} />
+                    <Route path="/" exact render={() => <ReporteGeneral colorMode={disenioColorModo} ubicacion={ubicacion} />} />
                     <Route path="/quejas" component={Quejas} />
                     <Route path="/reporteGeneral" component={ReporteGeneral} />
                     <Route path="/generarReporte" component={GenerarReporte} />
@@ -206,13 +206,13 @@ const Administrador = () => {
                     <Route path="/asignacion" component={Asignacion} />
                 </div>
 
-                <Footer layoutColorMode={layoutColorMode} />
+                <Footer disenioColorModo={disenioColorModo} />
             </div>
 
-            <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange}
-                layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
+            <AppConfig rippleEffect={multiplicador} onRippleEffect={enMultiplicador} estiloEntrada={estiloEntrada} cambioEstiloEntrada={cambioEstiloEntrada}
+                modoDisenio={modoDisenio} cambioDisenioModo={cambioDisenioModo} disenioColorModo={disenioColorModo} cambioColorModo={cambioColorModo} />
 
-            <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
+            <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={menuMovilActivo} unmountOnExit>
                 <div className="layout-mask p-component-overlay"></div>
             </CSSTransition>
         </div>
