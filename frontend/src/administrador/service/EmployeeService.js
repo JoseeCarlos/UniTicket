@@ -3,7 +3,7 @@ import axios from 'axios';
 export class EmployeeService {
 
     getEmployeesSmall() {
-        return axios.get('assets/demo/data/products-small.json').then(res => res.data.data);
+        return axios.get('assets/demo/data/customers-medium.json').then(res => res.data.data);
     }
 
     getEmployees() {

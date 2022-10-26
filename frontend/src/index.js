@@ -12,7 +12,7 @@ import Inicio from './inicio-sesion/inicio-sesion'
 ReactDOM.render(
     <HashRouter>
         <ScrollToTop>
-            <Inicio></Inicio>
+            <App></App>
         </ScrollToTop>
     </HashRouter>,
     document.getElementById('root')
