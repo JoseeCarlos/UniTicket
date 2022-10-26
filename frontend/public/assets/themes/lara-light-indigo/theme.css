@@ -7226,31 +7226,30 @@ input:focus {
   color: var(--red-500);
 }
 
-.grid-login {
+.rejilla-inicio-sesion {
   height: 100%;
-  max-height: 100vh;
 }
 
-.grid-login .col-12 {
+.rejilla-inicio-sesion .col-12 {
   padding: 0 !important;
 }
 
-.card-login {
+.tarjeta-inicio-sesion {
   padding: 1.5rem;
   height: 100vh;
   display: flex;
   justify-items: center;
 }
 
-.divider::before {
+.divisor::before {
   box-shadow: 0 5px 10px rgba(255, 255, 255, 1);
 }
 
-.divider .p-divider-content {
+.divisor .p-divider-content {
   background-color: transparent !important;
 }
 
-.divider i {
+.divisor i {
   border: solid 2px var(--primary-uni);
   padding: 5px;
   font-weight: bold;
@@ -7260,14 +7259,14 @@ input:focus {
   box-shadow: 0 5px 10px rgba(255, 255, 255, 0.3);
 }
 
-.divider-img {
+.divisor-img {
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../../layout/images/logo-uni.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-.card-divider,
-.card-divider-login {
+.tarjeta-divisor,
+.tarjeta-divisor-inicio-sesion {
   background-color: var(--white);
   padding: 15px;
   border-radius: 15px;
@@ -7275,7 +7274,7 @@ input:focus {
   font-size: 12.5px;
 }
 
-.card-divider-login {
+.tarjeta-divisor-inicio-sesion {
   margin-left: 50px;
   height: 350px;
   width: 250px;
@@ -7285,24 +7284,24 @@ input:focus {
   padding-top: 20px;
 }
 
-.card-divider-login h3 {
+.tarjeta-divisor-inicio-sesion h3 {
   font-size: 25px;
   font-weight: bold;
   font-style: italic;
 }
 
-.card-divider-login form {
+.tarjeta-divisor-inicio-sesion form {
   margin-top: 30px;
 }
 
-.card-divider-login form #user {
+.tarjeta-divisor-inicio-sesion form #usuario {
   margin-bottom: 5px;
 }
 
-.card-divider-login .field:nth-child(4) {
+.tarjeta-divisor-inicio-sesion .field:nth-child(4) {
   text-align: start;
 }
 
-.card-divider-login p {
+.tarjeta-divisor-inicio-sesion p {
   margin-top: 20px;
 }

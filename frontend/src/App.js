@@ -1,14 +1,12 @@
 import React from 'react';
-import logo from './logo.svg'
 import './App.css';
-import AppAdmin from './admin/components/AppAdmin';
-import Login from './login/login';
+import AppAdmin from './administrador/components/AppAdmin';
+
+import Inicio_Sesion from './inicio-sesion/inicio-sesion';
 import { Route, useLocation } from 'react-router-dom';
 
-import EmployeeAttention from './employee/page/EmployeeAttention';
-import AppPublic from './client/components/AppPublic';
-
-const rol = 'Admin';
+import EmployeeAttention from './employee/paginas/EmpleadoAtencion';
+import AppPublic from './cliente/componentes/AppPublico';
 
 function App(){
     if(sessionStorage.getItem('role') == "admin")
@@ -36,7 +34,7 @@ function App(){
     }
     return (
         <div className="App">
-            <Login/>
+            <Inicio_Sesion/>
         </div>
     );
 }
