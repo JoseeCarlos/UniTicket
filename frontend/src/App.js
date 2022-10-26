@@ -1,16 +1,15 @@
 import React from 'react';
-import logo from './logo.svg'
 import './App.css';
-import AppAdmin from './admin/components/AppAdmin';
-import Login from './login/login';
+import AppAdmin from './administrador/components/AppAdmin';
+import AppPublico from './cliente/componentes/AppPublico';
 
-const rol = 'Admin';
+let rol = 'Admin';
 
 function App(){
 
     return (
         <div className="App">
-            { rol == 'Admin' ? <AppAdmin></AppAdmin> : '<AppPublic></AppPublic>' } 
+            { rol === 'Admin' ? <AppAdmin></AppAdmin> : <AppPublico></AppPublico> } 
         </div>
     );
 }
