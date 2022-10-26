@@ -75,21 +75,21 @@ class TableModel():
     def get_table_employee(self, attentionPlaceId):
         try:
             connection = get_connection()
+            tableEmployees = []
             with connection.cursor() as cursor:
-                cursor.execute("""select t.tableId,
-                                    t.number,
-                                    concat(u.firstName,u.firstSurname) employeeName,
-                                    t.status
-                                    from ´table´ t
-                                    inner join asignation a on a.tableId=t.tableId
-                                    inner join employee e on e.employeeId=a.employeeId
-                                    inner join user u on u.userId=e.employeeId
-                                    WHERE t.attentionPlaceId = %s
+                cursor.execute("""select M.IdMesa,
+                                    M.number,
+                                    A.IdEmpleado,
+                                    M.Estado
+                                    from UMesa M
+                                    inner join UAsignacion A on A.IdMesa=M.IdMesa
+                                    WHERE M.IdLugarAtencion = ? AND M.Estado=1
                                 """, (attentionPlaceId,))
-                row = cursor.fetchone()
-                tableEmployee = TableEmployee(tableId=row[0],number=row[1],employeeName=row[2], status=row[3]).to_JSON()
+                for row in cursor.fetchall():
+                    tableEmployees.append(TableEmployee(tableId=row[0], number=row[1], employeeId=row[2], status=row[3]).to_JSON())
+                   
 
             connection.close()
-            return tableEmployee
+            return tableEmployees
         except Exception as ex:
             raise Exception(ex)

@@ -10,21 +10,19 @@ class AttentionPlace_AreaModel():
             connection = get_connection()
             attentionPlaceAreas = []
             with connection.cursor() as cursor:
-                cursor.execute("""select ap.attentionplaceId,
-                                    ap.name attentionPlaceName,
-                                    c.name campusName,
-                                    c.campusId,
-                                    a.name areaName,
-                                    a.areaId,
-                                    ap.status
-                                    from attentionPlace ap
-                                    inner join campus c on c.campusId=ap.campusId
-                                    inner join attentionplace_area aa on aa.attentionPlaceId=ap.attentionPlaceId
-                                    inner join area a on a.areaId=aa.areaId
+                cursor.execute("""select LU.IdLugarAtencion,
+                                    LU.Nombre attentionPlaceName,
+                                    LU.IdSitio ,
+                                    A.Nombre areaName,
+                                    A.IdArea,
+                                    LU.Estado
+                                    from ULugarAtencion LU
+                                    inner join ULugarAtencion_Area LA on LA.IdLugarAtencion=LU.IdLugarAtencion
+                                    inner join UArea A on A.IdArea=LA.IdArea
                                 """)
                 for row in cursor.fetchall():
-                    attentionPlaceAreas.append(AttentionPlaceAreaS(attentionPlaceId=row[0], attentionPlaceName=row[1], campusName=row[2], campusId=row[3], areaName=row[4], areaId=row[5], status=row[6]).to_JSON())
-                
+                    attentionPlaceAreas.append(AttentionPlaceAreaS(attentionPlaceId=row[0], attentionPlaceName=row[1], campusId=row[2], areaName=row[3], areaId=row[4], status=row[5]).to_JSON())
+
             connection.close()
             return attentionPlaceAreas
         except Exception as ex:

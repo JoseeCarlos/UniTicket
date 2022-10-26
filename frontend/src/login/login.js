@@ -52,7 +52,10 @@ function Login() {
           if (item.Rol == "Administrador" || item.Rol == "Supervisor") {
             sessionStorage.setItem('role', "admin");
           }
-          else {
+          if (item.Rol == "Empleado") {
+            sessionStorage.setItem('role', "Empleado");
+          }
+          if (item.Rol == "Estudiante") {
             sessionStorage.setItem('role', "Estudiante");
           }
           // sessionStorage.setItem('role', "estudiante");

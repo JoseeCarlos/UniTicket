@@ -6,14 +6,11 @@ import Login from './login/login';
 import { Route, useLocation } from 'react-router-dom';
 
 import EmployeeAttention from './employee/page/EmployeeAttention';
+import AppPublic from './client/components/AppPublic';
 
 const rol = 'Admin';
 
 function App(){
-
-    // const [layoutColorMode, setLayoutColorMode] = useState('light')
-    // const location = useLocation()
-    // console.log(location);
     if(sessionStorage.getItem('role') == "admin")
     {
         return (
@@ -22,17 +19,21 @@ function App(){
             </div>
         );
     }
+    if (sessionStorage.getItem('role') == "Empleado") {
+        return (
+            <div className="App">
+                <EmployeeAttention />
+            </div>
+        );
+    }
     if(sessionStorage.getItem('role') == "Estudiante")
     {
         return (
             <div className="App">
-                <EmployeeAttention/>
+                <AppPublic/>
             </div>
         );
     }
-    // sessionStorage.setItem('userId', "1");
-    // sessionStorage.setItem('name', "juan Perez");
-    // sessionStorage.setItem('role', "admin");
     return (
         <div className="App">
             <Login/>

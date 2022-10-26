@@ -128,9 +128,10 @@ const AttentionPlaceTable = () => {
     attentionPLaceService.getAreas().then((data) => {
       setProducts(data);
       setDropdownValue(data);
+      console.log(data);
     });
 
-    console.log( getTableAreas("2")); 
+    console.log(getTableAreas("2")); 
 
     initFilters1();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -207,9 +208,10 @@ const AttentionPlaceTable = () => {
     setTableDeleteDialog(true);
   };
   const getTableAreas = (tableId) => {
-    const tableAreas = [];
+    let tableAreas = [];
     tableService.getTableAreas(tableId).then((data) => {
       tableAreas.push(data);
+      console.log(tableAreas[0]);
     }
     );
     return tableAreas;
@@ -234,22 +236,21 @@ const AttentionPlaceTable = () => {
   const [dataTableArea, setDataTableArea] = useState([]);
 
   const rowExpansionTemplate = (data) => {
+    console.log("holaa " + data.attentionPlaceId);
     data = getTableAreas(data.attentionPlaceId);
-    // console.log(data);
-   
+    console.log(data);
     return (
       <div className="orders-subtable">
         {
           // console.log(data)
-        // console.log(getTableAreas(data.attentionPlaceId))
-        // setDataTableArea(getTableAreas(data.attentionPlaceId))
+          // console.log(getTableAreas(data.attentionPlaceId))
+          // setDataTableArea(getTableAreas(data.attentionPlaceId))
         }
         <DataTable
-          value={data}
+          value={data[0]}
           responsiveLayout="scroll"
           header={tableHeader}
         >
-          {console.log(data)}
           <Column
             field="number"
             header="Numero de Mesa"
