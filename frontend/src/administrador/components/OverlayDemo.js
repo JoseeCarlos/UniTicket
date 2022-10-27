@@ -8,7 +8,7 @@ import { DataTable } from 'primereact/datatable';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { InputText } from 'primereact/inputtext';
 import { confirmPopup } from 'primereact/confirmpopup';
-import { ProductService } from '../service/ProductService';
+import { ProductService } from '../servicios/ServicioProducto';
 
 const OverlayDemo = () => {
     const [displayBasic, setDisplayBasic] = useState(false);

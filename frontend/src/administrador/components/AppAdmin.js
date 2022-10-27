@@ -29,17 +29,17 @@ import InvalidStateDemo from './InvalidStateDemo';
 import BlocksDemo from './BlocksDemo';
 import IconsDemo from './IconsDemo';
 
-import Crud from '../pages/Crud';
-import EmptyPage from '../pages/EmptyPage';
-import TimelineDemo from '../pages/TimelineDemo';
-import Employee from '../pages/Employee';
-import Campus from '../pages/Campus';
-import Quejas from '../pages/Complaint';
-import GeneralReport from '../pages/GeneralReport';
-import GenerateReport from '../pages/GenerateReport';
-import AttentionPlaceTable from '../pages/AttentionPlaceTable';
-import Area from '../pages/Area';
-import Asignacion from '../pages/Asignacion';
+import Crud from '../paginas/Crud';
+import EmptyPage from '../paginas/EmptyPage';
+import TimelineDemo from '../paginas/TimelineDemo';
+import Employee from '../paginas/Employee';
+import Campus from '../paginas/Campus';
+import Quejas from '../paginas/Complaint';
+import GeneralReport from '../paginas/GeneralReport';
+import GenerateReport from '../paginas/GenerateReport';
+import AttentionPlaceTable from '../paginas/AttentionPlaceTable';
+import Area from '../paginas/Area';
+import Asignacion from '../paginas/Asignacion';
 
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';

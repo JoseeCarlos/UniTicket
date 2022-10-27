@@ -5,7 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { EmployeeService } from "../service/EmployeeService";
+import { EmployeeService } from "../servicios/ServicioEmpleado";
 import { Divider } from "primereact/divider";
 const Asignacion = () => {
   let asignacionVacia = {
@@ -22,17 +22,25 @@ const Asignacion = () => {
   const [filtroAsignacion, establecerFiltroAsignacion] = useState(null);
   const [filtroEmpleado, establecerFiltroEmpleado] = useState(null);
   const [asignacion, establecerAsignacion] = useState(asignacionVacia);
-  const [dialogoInsercionAsignacion, establecerDialogoInsercionAsignacion] = useState(false);
-  const [dialogoVistaAsignacion, establecerDialogoVisualizacionAsignacion] = useState(false);
-  const [dialogoModificacionAsignacion, establecerDialogoActualizacionAsignacion] = useState(false);
-  const [dialogoBorradoAsignacion, establecerDialogoBorradoAsignacion] = useState(false);
+  const [dialogoInsercionAsignacion, establecerDialogoInsercionAsignacion] =
+    useState(false);
+  const [dialogoVistaAsignacion, establecerDialogoVisualizacionAsignacion] =
+    useState(false);
+  const [
+    dialogoModificacionAsignacion,
+    establecerDialogoActualizacionAsignacion,
+  ] = useState(false);
+  const [dialogoBorradoAsignacion, establecerDialogoBorradoAsignacion] =
+    useState(false);
   const [carga, establecerCarga] = useState(true);
   const [empleado, establecerEmpleados] = useState([]);
 
   const servicioEmpleado = new EmployeeService();
   useEffect(() => {
     establecerCarga(true);
-    servicioEmpleado.getEmployeesSmall().then((data) => establecerEmpleados(data));
+    servicioEmpleado
+      .getEmployeesSmall()
+      .then((data) => establecerEmpleados(data));
   });
   const valoresDropdown = [
     { name: "Habilitado", code: "1" },
@@ -72,14 +80,12 @@ const Asignacion = () => {
     </>
   );
   const pieDialogoVistaAsignacion = (
-    <>
-      <Button
-        label="Salir"
-        icon="pi pi-times"
-        className="p-button-text"
-        onClick={() => ocultarDialogoVistaAsignacion()}
-      />
-    </>
+    <Button
+      label="Salir"
+      icon="pi pi-times"
+      className="p-button-text"
+      onClick={() => ocultarDialogoVistaAsignacion()}
+    />
   );
   const pieDialogoModificacionAsignacion = (
     <>
@@ -141,7 +147,7 @@ const Asignacion = () => {
             value={valorDropdown}
             onChange={(e) => establecerValorDropdown(e.value)}
             options={valoresDropdown}
-            optionLabel="name"
+            optionLabel="nombre"
             placeholder="Estado del empleado"
           />
         </span>
@@ -167,14 +173,14 @@ const Asignacion = () => {
             globalFilter={filtroAsignacion}
             emptyMessage="Empleado no encontrado."
           >
-            <Column field="name" header="Nombre Completo" sortable></Column>
+            <Column field="nombre" header="Nombre Completo" sortable></Column>
             <Column field="area" header="Area" sortable></Column>
             <Column
               field="attentionPlace"
               header="Lugar de atencion"
               sortable
             ></Column>
-            <Column field="table" header="Mesa" sortable></Column>
+            <Column field="mesa" header="Mesa" sortable></Column>
             <Column
               header="Acciones"
               headerStyle={{ width: "12rem" }}
@@ -202,14 +208,14 @@ const Asignacion = () => {
             <div className="flex flex-column md:flex-row md:justify-content-between ">
               <div className="p-fluid">
                 <div className="field">
-                  <label htmlFor="employee">Empleado</label>
+                  <label htmlFor="empleado">Empleado</label>
                   <InputText
                     type="search"
                     onInput={(e) => establecerFiltroEmpleado(e.target.value)}
                     placeholder="Buscar empleado..."
                   />
                   <DataTable
-                    id="employee"
+                    id="empleado"
                     value={empleado}
                     scrollable
                     scrollHeight="370px"
@@ -232,9 +238,9 @@ const Asignacion = () => {
                   ></Dropdown>
                 </div>
                 <div className="field">
-                  <label htmlFor="table">Mesas</label>
+                  <label htmlFor="mesa">Mesas</label>
                   <Dropdown
-                    id="table"
+                    id="mesa"
                     placeholder="Seleccione la mesa"
                     required
                     emptyMessage="No se encontraron mesas"
@@ -243,18 +249,18 @@ const Asignacion = () => {
                 <div className="card p-fluid">
                   <h5>Resumen de la Asignación</h5>
                   <div className="field">
-                    <label htmlFor="selectedEmployee">Empleado</label>
-                    <p id="selectedEmployee">Juan Perez</p>
+                    <label htmlFor="empleadoSeleccionado">Empleado</label>
+                    <p id="empleadoSeleccionado">Juan Perez</p>
                   </div>
                   <div className="field">
-                    <label htmlFor="selectedAttentionPlace">
+                    <label htmlFor="lugarAtencionSeleccionado">
                       Lugar de Atención
                     </label>
-                    <p id="selectedAttentionPlace">Cajas Tiquipaya</p>
+                    <p id="lugarAtencionSeleccionado">Cajas Tiquipaya</p>
                   </div>
                   <div className="field">
-                    <label htmlFor="startDate">Fecha de Inicio</label>
-                    <p id="startDate">24/10/2022</p>
+                    <label htmlFor="fechaInicio">Fecha de Inicio</label>
+                    <p id="fechaInicio">24/10/2022</p>
                   </div>
                 </div>
               </div>
@@ -269,24 +275,24 @@ const Asignacion = () => {
           >
             <div className="p-fluid">
               <div className="field">
-                <label htmlFor="employee">Empleado</label>
-                <p id="employee">Juan Perez</p>
+                <label htmlFor="empleado">Empleado</label>
+                <p id="empleado">Juan Perez</p>
               </div>
             </div>
             <div className="p-fluid">
               <div className="field">
-                <label htmlFor="selectedAttentionPlace">
+                <label htmlFor="lugarAtencionSeleccionado">
                   Lugar de Atención
                 </label>
-                <p id="selectedAttentionPlace">Cajas Tiquipaya</p>
+                <p id="lugarAtencionSeleccionado">Cajas Tiquipaya</p>
               </div>
               <div className="field">
-                <label htmlFor="startDate">Fecha de Inicio</label>
-                <p id="startDate">24/10/2022</p>
+                <label htmlFor="fechaInicio">Fecha de Inicio</label>
+                <p id="fechaInicio">24/10/2022</p>
               </div>
               <div className="field">
-                <label htmlFor="modificationDate">Fecha de Modificación</label>
-                <p id="modificationDate">31/10/2022</p>
+                <label htmlFor="fechaModificacion">Fecha de Modificación</label>
+                <p id="fechaModificacion">31/10/2022</p>
               </div>
             </div>
           </Dialog>
@@ -299,39 +305,39 @@ const Asignacion = () => {
             <div className="flex flex-column md:flex-row md:justify-content-between ">
               <div className="p-fluid">
                 <div className="field">
-                  <label htmlFor="employee">Empleado</label>
+                  <label htmlFor="empleado">Empleado</label>
                   <InputText
                     type="search"
                     onInput={(e) => establecerFiltroEmpleado(e.target.value)}
                     placeholder="Buscar empleado..."
                   />
                   <DataTable
-                    id="employee"
+                    id="empleado"
                     value={empleado}
                     scrollable
                     scrollHeight="370px"
                     globalFilter={filtroEmpleado}
                     emptyMessage="Empleado no encontrado."
                   >
-                    <Column field="name" header="Nombre Completo" />
+                    <Column field="nombre" header="Nombre Completo" />
                   </DataTable>
                 </div>
               </div>
               <Divider layout="vertical" />
               <div className="p-fluid">
                 <div className="field">
-                  <label htmlFor="attentionPlace">Lugares de Atención</label>
+                  <label htmlFor="lugarAtencion">Lugares de Atención</label>
                   <Dropdown
-                    id="attentionPlace"
+                    id="lugarAtencion"
                     placeholder="Seleccione el lugar de atencion"
                     required
                     emptyMessage="No se encontraron lugares de atención"
                   ></Dropdown>
                 </div>
                 <div className="field">
-                  <label htmlFor="table">Mesas</label>
+                  <label htmlFor="mesa">Mesas</label>
                   <Dropdown
-                    id="table"
+                    id="mesa"
                     placeholder="Seleccione la mesa"
                     required
                     emptyMessage="No se encontraron mesas"
@@ -340,18 +346,18 @@ const Asignacion = () => {
                 <div className="card p-fluid">
                   <h5>Resumen de la Asignación</h5>
                   <div className="field">
-                    <label htmlFor="selectedEmployee">Empleado</label>
-                    <p id="selectedEmployee">Juan Perez</p>
+                    <label htmlFor="empleadoSeleccionado">Empleado</label>
+                    <p id="empleadoSeleccionado">Juan Perez</p>
                   </div>
                   <div className="field">
-                    <label htmlFor="selectedAttentionPlace">
+                    <label htmlFor="lugarAtencionSeleccionado">
                       Lugar de Atención
                     </label>
-                    <p id="selectedAttentionPlace">Cajas Tiquipaya</p>
+                    <p id="lugarAtencionSeleccionado">Cajas Tiquipaya</p>
                   </div>
                   <div className="field">
-                    <label htmlFor="startDate">Fecha de Inicio</label>
-                    <p id="startDate">24/10/2022</p>
+                    <label htmlFor="fechaInicio">Fecha de Inicio</label>
+                    <p id="fechaInicio">24/10/2022</p>
                   </div>
                 </div>
               </div>
@@ -360,7 +366,7 @@ const Asignacion = () => {
           <Dialog
             visible={dialogoBorradoAsignacion}
             style={{ width: "450px" }}
-            header="Confirm"
+            header="Confirmar"
             modal
             footer={pieDialogoBorradoAsignacion}
             onHide={ocultarDialogoBorradoAsignacion}
