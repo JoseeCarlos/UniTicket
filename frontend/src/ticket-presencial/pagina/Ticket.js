@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar } from '../componentes/AppBar';
+import { TopBar } from '../componentes/TopBar';
 import '../recursos/ticket.css';
 import { Image } from 'primereact/image';
 
@@ -12,7 +12,7 @@ const Ticket = () => {
 
   return (
     <div className='contenedor-ticket'>
-      <AppBar></AppBar>
+      <TopBar></TopBar>
       <div className={`tarjetas-ticket col-${columnas}`}>
 
         <div className={`tarjeta-ticket ${tipoAtencion}`}>

@@ -1,7 +1,7 @@
 import React from 'react';
-import { AppBar } from '../../componentes/AppBar';
-import '../recursos/vista.css';
-import { AppFooterVista } from '../componentes/AppFooter';
+import { TopBar } from '../../componentes/TopBar';
+import '../recursos/Vista.css';
+import { Footer } from '../componentes/Footer';
 
 const VistaAtencion = () => {
 
@@ -29,7 +29,7 @@ const VistaAtencion = () => {
 
   return (
     <div className='contenedor'>
-      <AppBar></AppBar>
+      <TopBar></TopBar>
       <div className='contenedor-vista-atencion'>
         <div className='video-atencion'>
           <iframe className='video' src="https://www.youtube.com/embed/dWcwY8VWXf0?autoplay=1&controls=1" title="Patito Bailando" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -83,7 +83,7 @@ const VistaAtencion = () => {
           </div>
         </div>
       </div>
-      <AppFooterVista></AppFooterVista>
+      <Footer></Footer>
     </div >
   );
 }
