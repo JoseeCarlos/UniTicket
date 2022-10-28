@@ -16,8 +16,8 @@ const VistaAtencion = () => {
     let mes = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
       'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-    fecha.innerHTML = `${dia[fecha_actual.getdia()]}, ${fecha_actual.getDate()} 
-                              de ${mes[fecha_actual.getmes()]} de ${fecha_actual.getFullYear()}`;
+    fecha.innerHTML = `${dia[fecha_actual.getDay()]}, ${fecha_actual.getDate()} 
+                              de ${mes[fecha_actual.getMonth()]} de ${fecha_actual.getFullYear()}`;
 
     let hora = new Date();
     tiempo.innerHTML = hora.toLocaleTimeString();

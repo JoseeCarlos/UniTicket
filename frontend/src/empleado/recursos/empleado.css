@@ -59,10 +59,11 @@
 
 .en-atencion,
 .historial {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-weight: bold;
+  display: flex !important; 
+  flex-direction: column !important;
+  align-items: center !important;
+  font-weight: bold !important;
+  background-color: transparent !important;
 }
 
 .en-atencion .detalle-acciones {
@@ -135,6 +136,7 @@
   flex-direction: column;
   padding: 0 20px;
   text-align: center;
+  gap: 10px;
 }
 
 .acciones .btn {
@@ -153,7 +155,7 @@ h1 {
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-contenido: space-between;
+  justify-content: space-between;
 }
 
 .historial .buscar .campo {

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../recursos/topBar.css';
+import '../recursos/TopBar.css';
 
 export const TopBar = (props) => {
 

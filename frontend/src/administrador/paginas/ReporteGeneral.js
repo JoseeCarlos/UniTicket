@@ -5,50 +5,71 @@ import { ServicioProducto } from "../servicios/ServicioProducto";
 import { Dropdown } from "primereact/dropdown";
 
 const datosLinea = {
-  etiquetas: [
-    "8:00",
-    "9:00",
-    "10:00",
-    "11:00",
-    "12:00",
-    "13:00",
-    "14:00",
-    "15:00",
-    "16:00",
-    "17:00",
-    "18:00",
-  ],
-  datos: [
+  labels: ['8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'],
+  datasets: [
     {
-      label: "Hoy",
+      label: 'Hoy',
       data: [65, 59, 80, 81, 56, 55, 40, 45, 43, 70, 89],
       fill: false,
-      backgroundColor: "#2f4860",
-      borderColor: "#2f4860",
-      tension: 0.4,
+      backgroundColor: '#2f4860',
+      borderColor: '#2f4860',
+      tension: .4
     },
     {
-      label: "Ayer",
+      label: 'Ayer',
       data: [28, 48, 40, 19, 86, 27, 90, 15, 30, 56, 67], // Aqui hay que cargar los tiquets atendidos por hora segun la hora del dia
       fill: false,
-      backgroundColor: "#00bb7e",
-      borderColor: "#00bb7e",
-      tension: 0.4,
-    },
-  ],
+      backgroundColor: '#00bb7e',
+      borderColor: '#00bb7e',
+      tension: .4
+    }
+  ]
 };
 
-const Panel = (propiedades) => {
+const Panel = (props) => {
   const [products, establecerProductos] = useState(null);
   const menu1 = useRef(null);
   const menu2 = useRef(null);
-  const [opcionesLinea, establecerOpdionesLinea] = useState(null);
+  const [opcionesLinea, setOpcionesLinea] = useState(null)
+
+  const temaClaro = () => {
+    const opcionesLinea = {
+      plugins: {
+        legend: {
+          labels: {
+            color: '#495057'
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: '#495057'
+          },
+          grid: {
+            color: '#ebedef',
+          }
+        },
+        y: {
+          ticks: {
+            color: '#495057'
+          },
+          grid: {
+            color: '#ebedef',
+          }
+        },
+      }
+    };
+
+    setOpcionesLinea(opcionesLinea)
+  }
 
   useEffect(() => {
     const servicioProducto = new ServicioProducto();
     servicioProducto
       .getProductsSmall()
       .then((dato) => establecerProductos(dato));
+    temaClaro();
   }, []);
 
   const valoresDropdown = [

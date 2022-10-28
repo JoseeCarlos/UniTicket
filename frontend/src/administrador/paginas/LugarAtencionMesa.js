@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { classNames } from "primereact/utils";
-import { FilterMatchMode, FilterOperator } from "primereact/api";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
-import { CustomerService } from "../servicios/ServicioCliente";
-import { ProductService } from "../servicios/ServicioProducto";
+import { ServicioMesa } from "../servicios/ServicioMesa";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 
@@ -52,7 +50,8 @@ const LugarAtencionMesa = () => {
   const [dialogoVistaMesa, establecerDialogoVistaMesa] = useState(false);
   const [dialogoBorradoMesa, establecerDialogoBorradoMesa] = useState(false);
   const [nombre, establecerEnvioNombre] = useState(false);
-  const [lugarAtencion, establcerLugarAtencion] = useState(lugarAtencionVacio);
+  const [lugarAtencion, establecerLugarAtencion] = useState(lugarAtencionVacio);
+
   const [dialogoInsercionLugarAtencion, establecerDialogoInsercionLugarAtencion] =
     useState(false);
   const [dialogoVistaLugarAtencion, establecerDialogoVistaLugarAtencion] =
@@ -63,7 +62,7 @@ const LugarAtencionMesa = () => {
     useState(false);
   const [valorDropdown, establecerValorDropdown] = useState(null);
 
-  const servicioProducto = new ProductService();
+  const servicioProducto = new ServicioMesa();
 
   const valoresDropdown = [
     { nombre: "Cajas Tiquipaya", code: "1" },
@@ -100,7 +99,7 @@ const LugarAtencionMesa = () => {
     const val = (e.target && e.target.value) || "";
     let _LugarAtencion = { ...lugarAtencion };
     _LugarAtencion[`${nombre}`] = val;
-    establcerLugarAtencion(_LugarAtencion);
+    establecerLugarAtencion(_LugarAtencion);
   };
   useEffect(() => {
     servicioProducto
@@ -135,19 +134,19 @@ const LugarAtencionMesa = () => {
     establecerDialogoBorradoMesa(true);
   };
   const insertarLugarAtencion = () => {
-    establcerLugarAtencion(lugarAtencionVacio);
+    establecerLugarAtencion(lugarAtencionVacio);
     establecerDialogoInsercionLugarAtencion(true);
   };
   const verLugarAtencion = (lugarAtencion) => {
-    establcerLugarAtencion({ ...lugarAtencion });
+    establecerLugarAtencion({ ...lugarAtencion });
     establecerDialogoVistaLugarAtencion(true);
   };
   const editarLugarAtencion = (lugarAtencion) => {
-    establcerLugarAtencion({ ...lugarAtencion });
+    establecerLugarAtencion({ ...lugarAtencion });
     establecerDialogoEdicionLugarAtencion(true);
   };
   const confirmarBorradoLugarAtencion = (lugarAtencion) => {
-    establcerLugarAtencion(lugarAtencion);
+    establecerLugarAtencion(lugarAtencion);
     establecerDialogoBorradoLugarAtencion(true);
   };
   const baseExpancionFilas = (dato) => {
@@ -283,7 +282,7 @@ const LugarAtencionMesa = () => {
           <div className="field">
             <label htmlFor="lugarAtencion">Lugar de Atención</label>
             <Dropdown
-            id="lugarAtencion"
+              id="lugarAtencion"
               value={valorDropdown}
               onChange={(e) => establecerValorDropdown(e.value)}
               options={valoresDropdown}
@@ -395,8 +394,8 @@ const LugarAtencionMesa = () => {
       />
     </>
   );
-  const borrarMesa = () => {};
-  const borrarLugraAtencion = () => {};
+  const borrarMesa = () => { };
+  const borrarLugraAtencion = () => { };
   const pieDialogoBorradoLugarAtencion = (
     <>
       <Button
@@ -465,6 +464,10 @@ const LugarAtencionMesa = () => {
             rowExpansionTemplate={baseExpancionFilas}
             dataKey="id"
             header={header}
+            paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
+            className="datatable-responsive"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            emptyMessage="No hay lugares de atención."
           >
             <Column expander style={{ width: "1em" }} />
             <Column field="nombre" header="Nombre" sortable />

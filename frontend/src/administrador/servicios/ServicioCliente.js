@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export class CustomerService {
+export class ServicioCliente {
     getCustomersMedium() {
         return axios.get('assets/demo/data/customers-medium.json')
             .then(res => res.data.data);

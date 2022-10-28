@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { EmployeeService } from "../servicios/ServicioEmpleado";
+import { ServicioEmpleado } from "../servicios/ServicioEmpleado";
 import { Divider } from "primereact/divider";
+
 const Asignacion = () => {
   let asignacionVacia = {
     idEmpleado: null,
@@ -17,6 +18,7 @@ const Asignacion = () => {
     idUsuarioCreacion: "",
     idUsuarioModificacion: "",
   };
+
   const [enviado, establecerEnvio] = useState(false);
   const [valorDropdown, establecerValorDropdown] = useState(null);
   const [filtroAsignacion, establecerFiltroAsignacion] = useState(null);
@@ -35,34 +37,41 @@ const Asignacion = () => {
   const [carga, establecerCarga] = useState(true);
   const [empleado, establecerEmpleados] = useState([]);
 
-  const servicioEmpleado = new EmployeeService();
+  const servicioEmpleado = new ServicioEmpleado();
+
   useEffect(() => {
     establecerCarga(true);
     servicioEmpleado
       .getEmployeesSmall()
       .then((data) => establecerEmpleados(data));
   });
+
   const valoresDropdown = [
     { name: "Habilitado", code: "1" },
     { name: "Inhabilitado", code: "0" },
   ];
+
   const guardarAsignacion = () => {};
   const insercionAsignacion = () => {
     establecerAsignacion(asignacionVacia);
     establecerDialogoInsercionAsignacion(true);
   };
+
   const vistaAsignacion = () => {
     establecerAsignacion(asignacionVacia);
     establecerDialogoVisualizacionAsignacion(true);
   };
+
   const actualizacionAsignacion = () => {
     establecerAsignacion(asignacionVacia);
     establecerDialogoActualizacionAsignacion(true);
   };
+
   const borradoAsignacion = () => {
     establecerAsignacion(asignacionVacia);
     establecerDialogoBorradoAsignacion(true);
   };
+
   const pieDialogoInsercionAsignacion = (
     <>
       <Button
@@ -171,7 +180,10 @@ const Asignacion = () => {
             header={encabezado}
             value={empleado}
             globalFilter={filtroAsignacion}
-            emptyMessage="Empleado no encontrado."
+            paginator rows={10} rowsPerPageOptions={[5, 10, 25]} 
+            className="datatable-responsive"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            emptyMessage="No hay asignaciones."
           >
             <Column field="nombre" header="Nombre Completo" sortable></Column>
             <Column field="area" header="Area" sortable></Column>

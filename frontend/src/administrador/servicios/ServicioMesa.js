@@ -1,16 +1,16 @@
 import axios from 'axios';
 
-export class ServicioEmpleado {
+export class ServicioMesa {
 
-    getComplaintsSmall() {
+    getProductsSmall() {
         return axios.get('assets/demo/data/products-small.json').then(res => res.data.data);
     }
 
-    getComplaints() {
+    getProducts() {
         return axios.get('assets/demo/data/products.json').then(res => res.data.data);
     }
 
-    getComplaintsWithOrdersSmall() {
+    getProductsWithOrdersSmall() {
         return axios.get('assets/demo/data/products-orders-small.json').then(res => res.data.data);
     }
 }

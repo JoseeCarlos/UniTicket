@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { AppBar } from '../../componentes/AppBar';
-import '../recursos/empleado.css';
+import { TopBar } from '../../componentes/TopBar';
+import '../recursos/Empleado.css';
 import { Image } from 'primereact/image';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
@@ -54,7 +54,7 @@ const EmpleadoAtencion = () => {
 
   return (
     <div className='contenedor-empleado'>
-      <AppBar></AppBar>
+      <TopBar></TopBar>
       <div className='contenedor-atencion'>
         <div className='actual-ticket'>
           <h1>G-24</h1>
@@ -96,7 +96,7 @@ const EmpleadoAtencion = () => {
         <div className='historial'>
           <div className='buscar'>
             <h1>Historial de atención</h1>
-            <div className="field">
+            <div className="campo">
               <i className="pi pi-angle-left paginacion" style={{ fontSize: '2rem', marginRight: '4px' }} />
               <i className="pi pi-angle-right paginacion" style={{ fontSize: '2rem', marginRight: '4px' }} />
               <i className="pi pi-search" style={{ fontSize: '2rem', marginRight: '4px' }} />

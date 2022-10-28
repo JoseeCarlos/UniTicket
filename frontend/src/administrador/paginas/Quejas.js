@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 
 const Quejas = () => {
+    const quejas = [];
+
     const [filasExpandidas, establecerFilasExpandidas] = useState(null);
     const expandirTodo = () => {
         let _filasExpandidas = {};
-        quejas.forEach(p => _filasExpandidas[`${q.id}`] = true);
+        quejas.forEach(p => _filasExpandidas[`${quejas.id}`] = true);
 
         establecerFilasExpandidas(_filasExpandidas);
     }
@@ -21,7 +23,7 @@ const Quejas = () => {
                 <p>{datos.description}</p>
                 <p>Mucho me retaron *inserte carita triste*</p>
                 {/* Poner la razon */}
-                {datos.name == 'Bracelet' ? <Button type="button" icon="pi pi-check">Habilitar Tickect</Button> : ''  }
+                {datos.name === 'Bracelet' ? <Button type="button" icon="pi pi-check">Habilitar Tickect</Button> : ''  }
             </div>
         );
     }

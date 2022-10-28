@@ -15,18 +15,17 @@ import 'prismjs/themes/prism-coy.css';
 
 const PaginaPrincipal = () => {
 
-
   return (
     <div className='usuario-pagina'>
       <TopBar />
       <div className='inicio-contenedor'>
         <div className="disenio-principal">
-          <Route path="/" exact render={() => <Inicio/>} />
+          <Route path="/" exact render={() => <Inicio />} />
           <Route path="/reservacionEnLinea" component={ReservacionEnLinea} />
           <Route path="/informacion" component={Informacion} />
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 
