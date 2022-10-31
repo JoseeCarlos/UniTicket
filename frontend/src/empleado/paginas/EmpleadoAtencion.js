@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { TopBar } from '../../componentes/TopBar';
-import '../recursos/Empleado.css';
+import '../recursos/Empleados.css';
 import { Image } from 'primereact/image';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
