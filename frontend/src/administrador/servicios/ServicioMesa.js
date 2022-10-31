@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export class ProductService {
+export class ServicioMesa {
 
     getProductsSmall() {
         return axios.get('assets/demo/data/products-small.json').then(res => res.data.data);

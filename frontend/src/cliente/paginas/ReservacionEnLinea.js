@@ -1,57 +1,102 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FotoServicio } from '../servicio/FotoServicio';
 import { Galleria } from 'primereact/galleria';
 import '../recursos/css/Reservacion.css';
+import { Column } from 'primereact/column';
+import { DataTable } from 'primereact/datatable';
+import { Toast } from 'primereact/toast';
+import { ProductService } from '../servicio/ReservacionEnLineaServicio';
+import { Button } from 'primereact/button';
 
-const ReservationOnline = () => {
-  const [images, setImages] = useState(null);
+const ReservacionEnLinea = () => {
+  const [imagenes, establecerImagenes] = useState(null);
 
-  const galleriaService = new FotoServicio();
+  const fotoServicio = new FotoServicio();
 
-  const responsiveOptions = [
+  const opcionesResponsivas = [
     {
-      breakpoint: '1024px',
+      anchoMaximo: '1024px',
       numVisible: 5
     },
     {
-      breakpoint: '960px',
+      anchoMaximo: '960px',
       numVisible: 4
     },
     {
-      breakpoint: '768px',
+      anchoMaximo: '768px',
       numVisible: 3
     },
     {
-      breakpoint: '560px',
+      anchoMaximo: '560px',
       numVisible: 1
     }
   ];
 
   useEffect(() => {
-    galleriaService.getImages().then(data => setImages(data));
+    fotoServicio.getImages().then(datos => establecerImagenes(datos));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const itemTemplate = (item) => {
-    return <div className='informacion-ticket'>Hola mundo</div>
+  const elementoTemplate = (elemento) => {
+    return (
+      <div className='informacion-ticket'>
+        <div className='numero-ticket'>
+          <img src='assets/layout/images/logo.svg' alt='Número de ticket' />
+          <h1>{elemento.title}</h1>
+        </div>
+
+        <div className='detalle-ticket'>
+          s
+        </div>
+      </div>
+    );
   }
 
-  const thumbnailTemplate = (item) => {
-    return <img src={item.thumbnailImageSrc} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={item.alt} style={{ display: 'block' }} />
+  const carrusel = (elemento) => {
+    return (
+      <div className='numero-ticket-lista'>
+        <img src='assets/layout/images/logo.svg' alt='Número de ticket' />
+        <h5>{elemento.title}</h5>
+      </div>
+    );
   }
+
+  /* DATA TABLE */
+
+  const [products, setProducts] = useState([]);
+  const [selectedProduct1, setSelectedProduct1] = useState(null);
+  const toast = useRef(null);
+
+
+  useEffect(() => {
+    const productService = new ProductService();
+    productService.getProductsSmall().then(data => setProducts(data));
+  }, []);
 
   return (
     <div className='contenedor-reservacion'>
       <div className="galeria">
-        <Galleria value={images} responsiveOptions={responsiveOptions} numVisible={7} circular style={{ maxWidth: '600px' }}
-          item={itemTemplate} thumbnail={thumbnailTemplate} />
+        <Galleria value={imagenes} responsiveOptions={opcionesResponsivas} numVisible={7} circular style={{ maxWidth: '650px' }}
+          item={elementoTemplate} thumbnail={carrusel} />
       </div>
       <div className='nuevo-ticket'>
-        Nuevo ticket
+        <img src='assets/layout/images/logo.svg' alt='Nuevo ticket' />
+        <i className='pi pi-plus'></i>
       </div>
-      <div className='historial'>
-
+      <h2>HISTORIAL DE TICKETS RESERVADOS</h2>
+      <div className='historial-enLinea-ticket'>
+        <Toast ref={toast} />
+        <DataTable value={products} selectionMode="single"
+                  selection={selectedProduct1} onSelectionChange={e => setSelectedProduct1(e.value)}
+                  dataKey="id" responsiveLayout="stack" breakpoint="960px" paginator
+                  paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+                  currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords}" rows={10} rowsPerPageOptions={[10, 20, 50]}>
+          <Column field="code" header="Code"></Column>
+          <Column field="name" header="Name"></Column>
+          <Column field="category" header="Category"></Column>
+          <Column field="quantity" header="Quantity"></Column>
+        </DataTable>
       </div>
     </div >
   );
 }
-export default ReservationOnline;
+export default ReservacionEnLinea;

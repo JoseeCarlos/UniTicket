@@ -6773,22 +6773,21 @@
 .p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-prev,
 .p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-next {
   margin: 0.5rem;
-  background-color: transparent;
+  background-color: var(--primary-uni);
   color: #f8f9fa;
   width: 2rem;
-  height: 2rem;
+  height: 8rem;
   transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
-  border-radius: 50%;
 }
 
 .p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-prev:hover,
 .p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-next:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--primary-uni-2);
   color: #f8f9fa;
 }
 
 .p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-item-content {
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.5s;
 }
 
 .p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-item-content:focus {
