@@ -5,9 +5,10 @@ import '../recursos/css/Reservacion.css';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Toast } from 'primereact/toast';
-import { reservaService } from '../servicio/ReservacionEnLineaServicio';
+import { ReservaServicio } from '../servicio/ReservacionEnLineaServicio';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
+import { Dropdown } from 'primereact/dropdown';
 
 const ReservacionEnLinea = () => {
   let reservaVacia = {
@@ -22,17 +23,34 @@ const ReservacionEnLinea = () => {
     inventoryStatus: 'INSTOCK'
   };
 
+  const citySelectItems = [
+    { label: 'New York', value: 'NY' },
+    { label: 'Rome', value: 'RM' },
+    { label: 'London', value: 'LDN' },
+    { label: 'Istanbul', value: 'IST' },
+    { label: 'Paris', value: 'PRS' }
+  ];
+
   const [imagenes, establecerImagenes] = useState(null);
   const [reservacionDialogo, establecerReservacionDialogo] = useState(false);
   const [reserva, establecerReserva] = useState(reservaVacia);
-  const [selectedreserva1, setSelectedreserva1] = useState(null);
+  const [reservas, establecerReservas] = useState(null);
+  const [reservaSeleccionada, establecerReservaSeleccionada] = useState(null);
   const [envio, establecerEnvio] = useState(false);
+  const [horaSeleccionada, comprobarHoraSeleccionada] = useState(null);
+  const [seleccionArea, establecerSeleccionArea] = useState(null);
   const toast = useRef(null);
 
 
   useEffect(() => {
     fotoServicio.getImages().then(datos => establecerImagenes(datos));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+
+  useEffect(() => {
+    const reservaServicio = new ReservaServicio();
+    reservaServicio.getProductsSmall().then(datos => establecerReservas(datos));
+  }, []);
 
   const abrirDialogo = () => {
     establecerEnvio(false);
@@ -92,16 +110,16 @@ const ReservacionEnLinea = () => {
     );
   }
 
-  const header = (
+  const titulo = (
     <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
       <h5 className="m-0">Reservación de Ticket</h5>
     </div>
   );
 
-  const reservaDialogFooter = (
+  const botones = (
     <>
       <Button label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={ocultarDialogo} />
-      <Button label="Reservar" icon="pi pi-check" className="p-button-text" onClick={reservarTicket} />
+      <Button label="Reservar" icon="pi pi-check" className="p-button" onClick={reservarTicket} />
     </>
   );
 
@@ -114,23 +132,13 @@ const ReservacionEnLinea = () => {
     );
   }
 
-  /* DATA TABLE */
-
-
-
-
-  useEffect(() => {
-    const reservaService = new reservaService();
-    reservaService.getreservasSmall().then(data => setreservas(data));
-  }, []);
-
   return (
     <div className='contenedor-reservacion'>
       <div className="galeria">
         <Galleria value={imagenes} responsiveOptions={opcionesResponsivas} numVisible={7} circular style={{ maxWidth: '650px' }}
           item={elementoTemplate} thumbnail={carrusel} />
       </div>
-      <div className='nuevo-ticket'>
+      <div className='nuevo-ticket' onClick={abrirDialogo}>
         <img src='assets/layout/images/logo.svg' alt='Nuevo ticket' />
         <i className='pi pi-plus'></i>
       </div>
@@ -138,61 +146,55 @@ const ReservacionEnLinea = () => {
       <div className='historial-enLinea-ticket'>
         <Toast ref={toast} />
         <DataTable value={reservas} selectionMode="single"
-          selection={selectedreserva1} onSelectionChange={e => setSelectedreserva1(e.value)}
+          selection={reservaSeleccionada} onSelectionChange={e => establecerReservaSeleccionada(e.value)}
           dataKey="id" responsiveLayout="stack" breakpoint="960px" paginator
           paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
           currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords}" rows={10} rowsPerPageOptions={[10, 20, 50]}>
-          <Column field="code" header="Code"></Column>
-          <Column field="name" header="Name"></Column>
-          <Column field="category" header="Category"></Column>
-          <Column field="quantity" header="Quantity"></Column>
+          <Column field="ticket" header="Ticket"></Column>
+          <Column field="fecha" header="Fecha"></Column>
+          <Column field="area" header="Área"></Column>
+          <Column field="atencion" header="Lugar de atención"></Column>
         </DataTable>
       </div>
 
-      <Dialog visible={reservacionDialogo} style={{ width: '450px' }} header="reserva Details" modal className="p-fluid" footer={reservaDialogFooter} onHide={hideDialog}>
-        {reserva.image && <img src={`assets/demo/images/reserva/${reserva.image}`} alt={reserva.image} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
-        <div className="field">
-          <label htmlFor="name">Name</label>
-          <InputText id="name" value={reserva.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !reserva.name })} />
-          {submitted && !reserva.name && <small className="p-invalid">Name is required.</small>}
-        </div>
-        <div className="field">
-          <label htmlFor="description">Description</label>
-          <InputTextarea id="description" value={reserva.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
+      <Dialog visible={reservacionDialogo} style={{ width: '450px' }} header={titulo} modal className="p-fluid" footer={botones} onHide={ocultarDialogo}>
+
+        <div className='contenedor-dialogo'>
+          <div className='numero-ticket-reserva'>
+            <img src='assets/layout/images/logo.svg' alt='Número de ticket' />
+            <h5>R-06</h5>
+          </div>
+
+          <div className='datos-nueva-reserva'>
+            <div className='agrupar'>
+              <label>Sitio: </label>
+              <Dropdown className='dropdown' value={seleccionArea} options={citySelectItems} onChange={(e) => establecerSeleccionArea(e.value)} placeholder="Seleccione un Sitio" />
+            </div>
+
+            <div className='agrupar'> 
+              <label>Área: </label>
+              <Dropdown className='dropdown' value={seleccionArea} options={citySelectItems} onChange={(e) => establecerSeleccionArea(e.value)} placeholder="Seleccione un Área" />
+            </div>
+
+            <div className='agrupar'>
+              <label>Fecha y Hora: </label>
+              <h5>12/21/2343 17:34</h5>
+            </div>
+          </div>
+
+          <DataTable className='datatable-horas' selectionMode="multiple" cellSelection 
+                     selection={horaSeleccionada} onSelectionChange={e => comprobarHoraSeleccionada(e.value)} 
+                     dataKey="id" responsiveLayout="scroll"
+                     emptyMessage="Sin atención.">
+            <Column field="lunes" header="Lunes"></Column>
+            <Column field="martes" header="Martes"></Column>
+            <Column field="miercoeles" header="Miercoles"></Column>
+            <Column field="jueves" header="Jueves"></Column>
+            <Column field="viernes" header="Viernes"></Column>
+            <Column field="sabado" header="Sabado"></Column>
+          </DataTable>
         </div>
 
-        <div className="field">
-          <label className="mb-3">Category</label>
-          <div className="formgrid grid">
-            <div className="field-radiobutton col-6">
-              <RadioButton inputId="category1" name="category" value="Accessories" onChange={onCategoryChange} checked={reserva.category === 'Accessories'} />
-              <label htmlFor="category1">Accessories</label>
-            </div>
-            <div className="field-radiobutton col-6">
-              <RadioButton inputId="category2" name="category" value="Clothing" onChange={onCategoryChange} checked={reserva.category === 'Clothing'} />
-              <label htmlFor="category2">Clothing</label>
-            </div>
-            <div className="field-radiobutton col-6">
-              <RadioButton inputId="category3" name="category" value="Electronics" onChange={onCategoryChange} checked={reserva.category === 'Electronics'} />
-              <label htmlFor="category3">Electronics</label>
-            </div>
-            <div className="field-radiobutton col-6">
-              <RadioButton inputId="category4" name="category" value="Fitness" onChange={onCategoryChange} checked={reserva.category === 'Fitness'} />
-              <label htmlFor="category4">Fitness</label>
-            </div>
-          </div>
-        </div>
-
-        <div className="formgrid grid">
-          <div className="field col">
-            <label htmlFor="price">Price</label>
-            <InputNumber id="price" value={reserva.price} onValueChange={(e) => onInputNumberChange(e, 'price')} mode="currency" currency="USD" locale="en-US" />
-          </div>
-          <div className="field col">
-            <label htmlFor="quantity">Quantity</label>
-            <InputNumber id="quantity" value={reserva.quantity} onValueChange={(e) => onInputNumberChange(e, 'quantity')} integeronly />
-          </div>
-        </div>
       </Dialog>
     </div >
   );

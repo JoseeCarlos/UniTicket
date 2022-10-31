@@ -2103,7 +2103,7 @@
 .p-button.p-button-text {
   background-color: transparent;
   color: var(--primary-uni);
-  border-color: transparent;
+  border: 2px solid var(--primary-uni);
 }
 
 .p-button.p-button-text:enabled:hover,
