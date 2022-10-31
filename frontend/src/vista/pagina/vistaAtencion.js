@@ -1,6 +1,6 @@
 import React from 'react';
 import { TopBar } from '../../componentes/TopBar';
-import '../recursos/Vista.css';
+import '../recursos/VistaAtencion.css';
 import { Footer } from '../componentes/Footer';
 
 const VistaAtencion = () => {
