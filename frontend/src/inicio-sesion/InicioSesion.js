@@ -5,7 +5,7 @@ import { Divider } from 'primereact/divider';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 
-function Inicio_Sesion() {
+function InicioSesion() {
 
   const [value1, setValue1] = useState('');
   const [value10, setValue10] = useState('');
@@ -104,4 +104,4 @@ function Inicio_Sesion() {
 
 }
 
-export default Inicio_Sesion;
+export default InicioSesion;
