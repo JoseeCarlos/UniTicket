@@ -9,7 +9,7 @@ import VistaAtencion from './vista/pagina/VistaAtencion';
 import Principal from './cliente/componentes/PaginaPrincipal';
 import Inicio from './inicio-sesion/Inicio-sesion';
 import Empleado from './empleado/paginas/EmpleadoAtencion';
-import Administrador from './administrador/componentes/Administrador';
+import Administrador from './administrador/componentes/Administrador'; /* Hola */
 
 ReactDOM.render(
     <HashRouter>
