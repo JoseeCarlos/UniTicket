@@ -57,6 +57,26 @@
 .informacion-ticket .detalle-ticket {
   background-color: var(--uni-background);
   width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 20px;
+}
+
+.detalle-ticket label {
+  font-weight: bold;
+}
+
+.detalle-ticket label span {
+  font-weight: normal;
+}
+
+.detalle-ticket h3 {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .nuevo-ticket {
@@ -86,7 +106,7 @@
 .contenedor-reservacion h2 {
   grid-column: span 2;
   margin: 55px auto;
-  font-size: 50px;
+  font-size: 45px;
   font-weight: bold;
 }
 

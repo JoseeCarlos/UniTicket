@@ -104,7 +104,11 @@ const ReservacionEnLinea = () => {
         </div>
 
         <div className='detalle-ticket'>
-          s
+          <h3>Datos de la reserva</h3>
+          <label>Lugar de atención: <span>Tiquipaya</span> </label>
+          <label>Área: <span>Tiquipaya</span></label>
+          <label>Fecha y Hora: <span>Tiquipaya</span></label>
+          <label>Sitio: <span>Tiquipaya</span></label>
         </div>
       </div>
     );
