@@ -6,7 +6,9 @@ import { Footer } from './Footer';
 
 import ReservacionEnLinea from '../paginas/ReservacionEnLinea';
 import Informacion from '../paginas/Informacion';
+import Tramites from '../paginas/Tramites';
 import { Inicio } from '../paginas/Inicio';
+import '../recursos/css/PaginaPrincipal.css'
 
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
@@ -22,10 +24,14 @@ const PaginaPrincipal = () => {
         <div className="disenio-principal">
           <Route path="/" exact render={() => <Inicio />} />
           <Route path="/reservacionEnLinea" component={ReservacionEnLinea} />
+          <Route path="/tramites" component={Tramites} />
           <Route path="/informacion" component={Informacion} />
         </div>
       </div>
-      <Footer />
+      <div className='footer'>
+        s
+        <Footer />
+      </div>
     </div>
   );
 
