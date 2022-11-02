@@ -9,7 +9,7 @@
   grid-template-rows: repeat(2, auto auto);
   gap: 5rem;
   height: 100vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../assets/images/fondo.jpg);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../recursos/imagenes/fondo.jpg);
   justify-items: center;
 }
 

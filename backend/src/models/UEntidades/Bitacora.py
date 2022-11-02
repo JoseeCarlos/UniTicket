@@ -1,7 +1,6 @@
-class Requisito():
-    def __init__(self, IdRequisito=None,Nombre=None, Descripcion=None, IdUsuarioRegistro=None, Estado=None, FechaRegistro=None, FechaModificacion=None):
-        self.IdRequisito = IdRequisito
-        self.Nombre = Nombre
+class Bitacora():
+    def __init__(self, IdBitacora=None,Descripcion=None,IdUsuarioRegistro=None,Estado=None,FechaRegistro=None,FechaModificacion=None):
+        self.IdBitacora = IdBitacora
         self.Descripcion = Descripcion
         self.IdUsuarioRegistro = IdUsuarioRegistro
         self.Estado = Estado
@@ -10,11 +9,13 @@ class Requisito():
     
     def to_JSON(self):
         return {
-            "IdRequisito": self.IdRequisito,
-            "Nombre": self.Nombre,
+            "IdBitacora": self.IdBitacora,
             "Descripcion": self.Descripcion,
             "IdUsuarioRegistro": self.IdUsuarioRegistro,
             "Estado": self.Estado,
             "FechaRegistro": self.FechaRegistro,
             "FechaModificacion": self.FechaModificacion
         }
+
+
+     

@@ -1,11 +1,12 @@
 from flask import jsonify
 from database.db import get_connection
-from .entities.Area import Area
+from .UEntidades.Area import Area
 import json
+from datetime import datetime
 
 class AreaModel():
     @classmethod
-    def get_areas(self):
+    def obtener_areas(self):
         try:
             connection = get_connection()
             areas = []
@@ -15,14 +16,14 @@ class AreaModel():
                                     WHERE Estado=1  
                                 """)
                 for row in cursor.fetchall():
-                    areas.append(Area(areaId=row[0],name=row[1],description=row[2], status=row[3], createDate=row[4], updateDate=row[5], userIdCreate=row[6], userIdMod=row[7]).to_JSON())
+                    areas.append(Area(IdArea=row[0],Nombre=row[1],Descripcion=row[2], NumeroMaximoTicketsParaEstudiantes=row[3], IdUsuarioRegistro=row[4], Estado=row[5], FechaRegistro=row[6], FechaModificacion=row[7]).to_JSON())
             connection.close()
             return areas
         except Exception as ex:
             raise Exception(ex) 
     
     @classmethod
-    def get_area(self, areaId):
+    def obtener_area(self, areaId):
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
@@ -31,7 +32,7 @@ class AreaModel():
                                     WHERE IdArea=%s
                                 """, (areaId))
                 row = cursor.fetchone()
-                area = Area(areaId=row[0],name=row[1],description=row[2], status=row[3], createDate=row[4], updateDate=row[5], userIdCreate=row[6], userIdMod=row[7]).to_JSON()
+                area = Area(IdArea=row[0],Nombre=row[1],Descripcion=row[2], Estado=row[3], FechaCreacion=row[4], FechaActualizacion=row[5], IdUsuarioCreacion=row[6], IdUsuarioActualizacion=row[7]).to_JSON()
 
             connection.close()
             return area
@@ -39,13 +40,13 @@ class AreaModel():
             raise Exception(ex)
     
     @classmethod
-    def create_area(self, area):
+    def crear_area(self, area):
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("""INSERT INTO UArea(Nombre, Descripcion, NumeroMaximoTicketsParaEstudiantes, FechaActualizacion, IdUsuarioCreacion)
+                cursor.execute("""INSERT INTO UArea(Nombre, Descripcion, NumeroMaximoTicketsPorEstudiantes, IdUsuarioRegistro, FechaModificacion)
                                     VALUES (?, ?, ?, ?, ?)
-                                """, (area.name, area.description, area.numberMaxAtettion, area.updateDate, area.userIdCreate))
+                                """, (area.Nombre, area.Descripcion, area.NumeroMaximoTicketsParaEstudiantes, area.IdUsuarioRegistro, area.FechaModificacion))
                 connection.commit()
                 affected_rows = cursor.rowcount
             connection.close()
@@ -54,14 +55,14 @@ class AreaModel():
             raise Exception(ex)
     
     @classmethod    
-    def update_area(self, area):
+    def modificar_area(self, area):
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("""UPDATE UArea
-                                  SET Nombre= ? , Descripcion= ?, FechaActualizacion= ?, IdUsuarioActualizacion= ?
-                                  WHERE IdArea= ?
-                                """, (area.name, area.description, area.updateDate, area.userIdMod, area.areaId))
+                cursor.execute("""UPDATE UArea  
+                    SET Nombre= ? , Descripcion= ?, FechaModificacion= ?
+                    WHERE IdArea= ?
+                                """, (area.Nombre, area.Descripcion, area.FechaModificacion, area.IdArea))
                 connection.commit()
                 affected_rows = cursor.rowcount
             connection.close()
@@ -71,19 +72,17 @@ class AreaModel():
 
     
     @classmethod
-    def delete_area(self, areaId):
+    def eliminar_area(self, IdArea):
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
                 cursor.execute("""UPDATE UArea
                                     SET Estado=0
                                     WHERE IdArea= ?
-                                """, (areaId,))
+                                """, (IdArea,))
                 connection.commit()
                 affected_rows = cursor.rowcount
             connection.close()
             return affected_rows
         except Exception as ex:
             raise Exception(ex)
-    
-            

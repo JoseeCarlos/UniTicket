@@ -87,14 +87,14 @@ function Inicio_Sesion() {
                 <form>
                   <div className="field">
                     <span className="p-float-label">
-                      <InputText type="text" id="usuario" value={value1} onChange={(e) => setValue1(e.target.value)} className="p-invalid" />
+                      <InputText type="text" id="user" onChange={(e)=>{setValueUser(e,"userName")}} className="p-invalid" />
                       <label htmlFor="usuario">Usuario</label>
                     </span>
                   </div>
 
                   <div className="field">
                     <span className="p-float-label">
-                      <Password inputId="contrasenia" value={value10} onChange={(e) => setValue10(e.target.value)} className="p-invalid" />
+                      <Password inputId="password" onChange={(e)=>{setValueUser(e,"password")}} className="p-invalid" />
                       <label htmlFor="contrasenia">Contraseña</label>
                     </span>
                   </div>

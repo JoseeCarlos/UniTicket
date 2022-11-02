@@ -14,7 +14,7 @@ export class AreaService{
     }
 
     updateArea(area){
-        return fetch('/api/area/update/'+area.areaId,{
+        return fetch('/api/area/update/'+area.IdArea,{
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',

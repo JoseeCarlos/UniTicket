@@ -1,14 +1,13 @@
 class Tramite():
-    def __init__(self,IdTramite=None, Nombre=None, Descripcion=None, IdArea=None, Estado=None, FechaCreacion=None, FechaActualizacion=None, idUsuarioCreacion=None, IdUsuarioActualizacion=None):
+    def __init__(self,IdTramite=None, Nombre=None, Descripcion=None, IdArea=None, IdUsuarioRegistro=None, Estado=None, FechaRegistro=None, FechaModificacion=None):
         self.IdTramite = IdTramite
         self.Nombre = Nombre
         self.Descripcion = Descripcion
         self.IdArea = IdArea
+        self.IdUsuarioRegistro = IdUsuarioRegistro
         self.Estado = Estado
-        self.FechaCreacion = FechaCreacion
-        self.FechaActualizacion = FechaActualizacion
-        self.idUsuarioCreacion = idUsuarioCreacion
-        self.IdUsuarioActualizacion = IdUsuarioActualizacion
+        self.FechaRegistro = FechaRegistro
+        self.FechaModificacion = FechaModificacion
 
     def to_JSON(self):
         return {
@@ -16,9 +15,8 @@ class Tramite():
             "Nombre": self.Nombre,
             "Descripcion": self.Descripcion,
             "IdArea": self.IdArea,
+            "IdUsuarioRegistro": self.IdUsuarioRegistro,
             "Estado": self.Estado,
-            "FechaCreacion": self.FechaCreacion,
-            "FechaActualizacion": self.FechaActualizacion,
-            "idUsuarioCreacion": self.idUsuarioCreacion,
-            "IdUsuarioActualizacion": self.IdUsuarioActualizacion
+            "FechaRegistro": self.FechaRegistro,
+            "FechaModificacion": self.FechaModificacion
         }

@@ -8,6 +8,7 @@ import ScrollToTop from './ScrollToTop';
 import VistaAtencion from './vista/pagina/vistaAtencion';
 import AppPublico from './cliente/componentes/AppPublico';
 import Inicio from './inicio-sesion/inicio-sesion'
+import Ticket from './ticket-presencial/pagina/Ticket';
 
 ReactDOM.render(
     <HashRouter>

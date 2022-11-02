@@ -1,24 +1,22 @@
 class RazonQueja():
-    def __init__(self, IdRazonQueja=None, Nombre=None, Descripcion=None, Estado=None, FechaCreacion=None, FechaActualizacion=None, IdUsuarioCreacion=None, IdUsuarioModificacion=None):
+    def __init__(self, IdRazonQueja=None, Nombre=None, Descripcion=None, IdUsuarioRegistro=None, Estado=None, FechaRegistro=None, FechaModificacion=None):
         self.IdRazonQueja = IdRazonQueja
         self.Nombre = Nombre
         self.Descripcion = Descripcion
+        self.IdUsuarioRegistro = IdUsuarioRegistro
         self.Estado = Estado
-        self.FechaCreacion = FechaCreacion
-        self.FechaActualizacion = FechaActualizacion
-        self.IdUsuarioCreacion = IdUsuarioCreacion
-        self.IdUsuarioModificacion = IdUsuarioModificacion
+        self.FechaRegistro = FechaRegistro
+        self.FechaModificacion = FechaModificacion
     
     def to_JSON(self):
         return {
             "IdRazonQueja": self.IdRazonQueja,
             "Nombre": self.Nombre,
             "Descripcion": self.Descripcion,
+            "IdUsuarioRegistro": self.IdUsuarioRegistro,
             "Estado": self.Estado,
-            "FechaCreacion": self.FechaCreacion,
-            "FechaActualizacion": self.FechaActualizacion,
-            "IdUsuarioCreacion": self.IdUsuarioCreacion,
-            "IdUsuarioModificacion": self.IdUsuarioModificacion
+            "FechaRegistro": self.FechaRegistro,
+            "FechaModificacion": self.FechaModificacion
         }
 
     

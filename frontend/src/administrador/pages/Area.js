@@ -5,21 +5,18 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { DataView, DataViewLayoutOptions } from "primereact/dataview";
-import { Dropdown } from "primereact/dropdown";
 import { AreaService } from "../service/AreaService";
-import Campus from "./Campus";
+
 const Area = () => {
   let emptyArea = {
-    areaId: null,
-    name: "",
-    description: "",
-    status: "",
-    createDate: "",
-    updateDate: "2022-01-01",
-    userIdCreate: "2",
-    userIdMod: "1",
-    numeroMaximoTickets: null
-    
+    IdArea: null,
+    Nombre: "",
+    Descripcion: "",
+    NumeroMaximoTicketsParaEstudiantes: null,
+    Estado: "",
+    IdUsuarioRegistro: sessionStorage.getItem('userId'),
+    FechaRegistro: "",
+    FechaModificacion: ""
   };
   const [dataviewValue, setDataviewValue] = useState(null);
   const [layout, setLayout] = useState("grid");
@@ -35,7 +32,9 @@ const Area = () => {
 
   useEffect(() => {
     const areaService = new AreaService();
-    areaService.getAreas().then((data) => setDataviewValue(data));
+    areaService.getAreas().then((data) => {
+      console.log(data);
+      setDataviewValue(data)});
   }, []);
   const viewArea = (area) => {
     setArea({ ...area });
@@ -72,13 +71,13 @@ const Area = () => {
   const saveArea = () => {
     setSubmitted(true)
 
-    if(area.name.trim())
+    if(area.Nombre.trim())
     {
       let _area = {...area};
-      if(area.areaId){
+      if(area.IdArea){
         console.log("update");
-        _area.userIdMod = 1;
-        _area.updateDate = "2021-01-01";
+        // _area.userIdMod = 1;
+        // _area.updateDate = "2021-01-01";
         console.log(_area)
         const areaService = new AreaService();
         areaService.updateArea(_area).then(data => {
@@ -146,7 +145,7 @@ const Area = () => {
 
   const deleteAttentionPlace = () => {
     const areaService = new AreaService();
-    areaService.deleteArea(area.areaId).then(data => {
+    areaService.deleteArea(area.IdArea).then(data => {
       console.log(data);
     }
     );
@@ -193,9 +192,9 @@ const Area = () => {
             <div className="flex flex-column md:flex-row align-items-center p-3">
                <img src={`assets/layout/images/campusDef.jpg`} alt={data.name} className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
               <div className="flex-1 text-center md:text-left">
-                <div className="font-bold text-2xl">{data.name}</div>
-                <div className="mb-3">{data.description}</div>
-                <div className="mb-3">{data.status == 1 ? 'Activo':'Inactivo'}</div>
+                <div className="font-bold text-2xl">{data.Nombre}</div>
+                <div className="mb-3">{data.Descripcion}</div>
+                <div className="mb-3">{data.Estado == 1 ? 'Activo':'Inactivo'}</div>
               </div>
             </div>
             <span className="p-buttonset">
@@ -244,22 +243,22 @@ const Area = () => {
           <label htmlFor="name">Nombre</label>
           <InputText
             id="name"
-            value={area.name}
+            value={area.Nombre}
             onChange={(e) => onInputChange(e, "name")}
             required
             autoFocus
-            className={classNames({ "p-invalid": submitted && !area.name })}
+            className={classNames({ "p-invalid": submitted && !area.Nombre })}
           />
-          {submitted && !area.name && (<small className="p-invalid">El nombre es requerido.</small>)}
+          {submitted && !area.Nombre && (<small className="p-invalid">El nombre es requerido.</small>)}
         </div>
         <div className="field">
           <label htmlFor="description">Descripción</label>
-          <InputText id="description" value={area.description} onChange={(e) => onInputChange(e, "description")} required
+          <InputText id="description" value={area.Descripcion} onChange={(e) => onInputChange(e, "Descripcion")} required
             autoFocus
-            className={classNames({ "p-invalid": submitted && !area.name })}
+            className={classNames({ "p-invalid": submitted && !area.Descripcion })}
           />
-          {submitted && !area.name && (
-            <small className="p-invalid">El nombre es requerido.</small>
+          {submitted && !area.Descripcion && (
+            <small className="p-invalid">La Descripcion es requerido.</small>
           )}
         </div>
       </Dialog>
@@ -276,13 +275,13 @@ const Area = () => {
           <label htmlFor="name">Nombre</label>
           <InputText
             id="name"
-            value={area.name}
-            onChange={(e) => onInputChange(e, "name")}
+            value={area.Nombre}
+            onChange={(e) => onInputChange(e, "Nombre")}
             required
             autoFocus
             className={classNames({ "p-invalid": submitted && !area.name })}
           />
-          {submitted && !area.name && (
+          {submitted && !area.Nombre && (
             <small className="p-invalid">El nombre es requerido.</small>
           )}
         </div>
@@ -290,28 +289,28 @@ const Area = () => {
           <label htmlFor="description">Descripción</label>
           <InputText
             id="description"
-            value={area.description}
-            onChange={(e) => onInputChange(e, "description")}
+            value={area.Descripcion}
+            onChange={(e) => onInputChange(e, "Descripcion")}
             required
             autoFocus
-            className={classNames({ "p-invalid": submitted && !area.name })}
+            className={classNames({ "p-invalid": submitted && !area.Descripcion })}
           />
-          {submitted && !area.name && (
-            <small className="p-invalid">El nombre es requerido.</small>
+          {submitted && !area.Descripcion && (
+            <small className="p-invalid">La Descripcion es requerida.</small>
           )}
         </div>
         <div className="field">
-          <label htmlFor="description">Numero maximo de Tickect </label>
+          <label htmlFor="Numero">Numero maximo de Tickect </label>
           <InputText
             id="description"
-            value={area.numeroMaximoTickets}
-            onChange={(e) => onInputChange(e, "numeroMaximoTickets")}
+            value={area.NumeroMaximoTicketsParaEstudiantes}
+            onChange={(e) => onInputChange(e, "NumeroMaximoTicketsParaEstudiantes")}
             required
             autoFocus
-            className={classNames({ "p-invalid": submitted && !area.name })}
+            className={classNames({ "p-invalid": submitted && !area.NumeroMaximoTicketsParaEstudiantes })}
           />
-          {submitted && !area.name && (
-            <small className="p-invalid">El nombre es requerido.</small>
+          {submitted && !area.NumeroMaximoTicketsParaEstudiantes && (
+            <small className="p-invalid">El Numeor es requerido.</small>
           )}
         </div>
       </Dialog>
@@ -328,18 +327,18 @@ const Area = () => {
           <label htmlFor="name">Nombre</label>
           <InputText
             id="name"
-            value={area.name}
-            onChange={(e) => onInputChange(e, "name")}
+            value={area.Nombre}
+            onChange={(e) => onInputChange(e, "Nombre")}
             readOnly
           />
         </div>
         <div className="field">
           <label htmlFor="description">Descripción</label>
-          <InputText id="description" value={area.description} readOnly />
+          <InputText id="description" value={area.Descripcion} readOnly />
         </div>
         <div className="field">
           <label htmlFor="status">Estado</label>
-          <InputText id="status" value={area.status} readOnly />
+          <InputText id="status" value={area.Estado} readOnly />
         </div>
         <div className="field">
           <label htmlFor="userCreate">Responsable de Registro</label>
@@ -371,8 +370,8 @@ const Area = () => {
           <label htmlFor="name">Nombre</label>
           <InputText
             id="name"
-            value={area.name}
-            onChange={(e) => onInputChange(e, "name")}
+            value={area.Nombre}
+            onChange={(e) => onInputChange(e, "Nombre")}
             required
           />
         </div>
@@ -380,8 +379,8 @@ const Area = () => {
           <label htmlFor="description">Descripción</label>
           <InputText
             id="description"
-            value={area.description}
-            onChange={(e) => onInputChange(e, "description")}
+            value={area.Descripcion}
+            onChange={(e) => onInputChange(e, "Descripcion")}
             required
           />
         </div>
@@ -400,7 +399,7 @@ const Area = () => {
             style={{ fontSize: "2rem" }}
           />
           <span>
-            Estás seguro de que desea elimiar el area <b>{area.name}</b>?
+            Estás seguro de que desea elimiar el area <b>{area.Nombre}</b>?
           </span>
         </div>
       </Dialog>

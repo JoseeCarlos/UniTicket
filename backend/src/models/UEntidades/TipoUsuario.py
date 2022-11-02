@@ -1,22 +1,20 @@
 class TipoUsuario():
-    def __init__(self, idTipoUsuario=None, Nombre=None, Descripcion=None, Estado=None, FechaCreacion=None, FechaActualizacion=None, IdUsuarioCreacion=None, IdUsuarioActualizacion=None):
+    def __init__(self, idTipoUsuario=None, Nombre=None, Descripcion=None, IdUsuarioRegistro=None, Estado=None, FechaRegistro=None, FechaModificacion=None):
         self.idTipoUsuario = idTipoUsuario
         self.Nombre = Nombre
         self.Descripcion = Descripcion
+        self.IdUsuarioRegistro = IdUsuarioRegistro
         self.Estado = Estado
-        self.FechaCreacion = FechaCreacion
-        self.FechaActualizacion = FechaActualizacion
-        self.IdUsuarioCreacion = IdUsuarioCreacion
-        self.IdUsuarioActualizacion = IdUsuarioActualizacion
+        self.FechaRegistro = FechaRegistro
+        self.FechaModificacion = FechaModificacion
     
     def to_JSON(self):
         return {
             "idTipoUsuario": self.idTipoUsuario,
             "Nombre": self.Nombre,
             "Descripcion": self.Descripcion,
+            "IdUsuarioRegistro": self.IdUsuarioRegistro,
             "Estado": self.Estado,
-            "FechaCreacion": self.FechaCreacion,
-            "FechaActualizacion": self.FechaActualizacion,
-            "IdUsuarioCreacion": self.IdUsuarioCreacion,
-            "IdUsuarioActualizacion": self.IdUsuarioActualizacion
+            "FechaRegistro": self.FechaRegistro,
+            "FechaModificacion": self.FechaModificacion
         }

@@ -1,4 +1,4 @@
-class Table():
+class Mesa():
     def __init__(self, IdMesa=None,number=None,IdLugarAtencion=None,IdArea=None,Estado=None,FechaCreacion=None,FecbaActualizacion=None, IdUsuarioCreacion=None, IdUsuarioActualizacion=None):
         self.IdMesa = IdMesa
         self.number = number

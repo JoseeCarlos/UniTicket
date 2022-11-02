@@ -1,21 +1,29 @@
 class Transfer():
-    def __init__(self, transferId=None,transferTime=None,ticketId=None,originEmployeeId=None,originTableId=None,destinationAttentionPlaceId=None,destinationAreaId=None):
-        self.transferId = transferId
-        self.transferTime = transferTime
-        self.ticketId = ticketId
-        self.originEmployeeId = originEmployeeId
-        self.originTableId = originTableId
-        self.destinationAttentionPlaceId = destinationAttentionPlaceId
-        self.destinationAreaId = destinationAreaId
+    def __init__(self, IdTransferencia=None,IdTicket=None,IdEmpleadoOrigen=None,IdMesaOrigen=None,IdLugarAtencionDestino=None,IdAreaDestino=None,Estado=None,FechaCreacion=None, FechaActualizacion=None,IdUsuarioCreacion=None,IdUsuarioActualizacion=None):
+        self.IdTransferencia = IdTransferencia
+        self.IdTicket = IdTicket
+        self.IdEmpleadoOrigen = IdEmpleadoOrigen
+        self.IdMesaOrigen = IdMesaOrigen
+        self.IdLugarAtencionDestino = IdLugarAtencionDestino
+        self.IdAreaDestino = IdAreaDestino
+        self.Estado = Estado
+        self.FechaCreacion = FechaCreacion
+        self.FechaActualizacion = FechaActualizacion
+        self.IdUsuarioCreacion = IdUsuarioCreacion
+        self.IdUsuarioActualizacion = IdUsuarioActualizacion
     
     def to_JSON(self):
         return {
-            "transferId": self.transferId,
-            "transferTime": self.transferTime,
-            "ticketId": self.ticketId,
-            "originEmployeeId": self.originEmployeeId,
-            "originTableId": self.originTableId,
-            "destinationAttentionPlaceId": self.destinationAttentionPlaceId,
-            "destinationAreaId": self.destinationAreaId
+            "IdTransferencia": self.IdTransferencia,
+            "IdTicket": self.IdTicket,
+            "IdEmpleadoOrigen": self.IdEmpleadoOrigen,
+            "IdMesaOrigen": self.IdMesaOrigen,
+            "IdLugarAtencionDestino": self.IdLugarAtencionDestino,
+            "IdAreaDestino": self.IdAreaDestino,
+            "Estado": self.Estado,
+            "FechaCreacion": self.FechaCreacion,
+            "FechaActualizacion": self.FechaActualizacion,
+            "IdUsuarioCreacion": self.IdUsuarioCreacion,
+            "IdUsuarioActualizacion": self.IdUsuarioActualizacion
         }
         

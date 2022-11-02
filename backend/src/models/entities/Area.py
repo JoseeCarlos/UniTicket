@@ -12,16 +12,4 @@ class Area():
         self.userIdMod = userIdMod
 
 
-    def to_JSON(self):
-        return {
-            "areaId": self.areaId,
-            "name": self.name,
-            "description": self.description,
-            "numberMaxAtettion": self.numberMaxAtettion,
-            "status": self.status,
-            "createDate": DateFormat.convert_date(self.createDate),
-            "updateDate": self.updateDate,
-            "userIdCreate": self.userIdCreate,
-            "userIdMod": self.userIdMod  
-        }
-
+    
