@@ -5,10 +5,11 @@ import App from './App';
 //import * as serviceWorker from './serviceWorker';
 import { HashRouter } from 'react-router-dom'
 import ScrollToTop from './ScrollToTop';
-import VistaAtencion from './vista/pagina/vistaAtencion';
-import AppPublico from './cliente/componentes/AppPublico';
-import Inicio from './inicio-sesion/inicio-sesion'
-import Ticket from './ticket-presencial/pagina/Ticket';
+// import VistaAtencion from './vista/pagina/VistaAtencion';
+// import Principal from './cliente/componentes/PaginaPrincipal';
+// import Inicio from './inicio-sesion/InicioSesion';
+// import Empleado from './empleado/paginas/EmpleadoAtencion';
+// import Administrador from './administrador/componentes/Administrador';
 
 ReactDOM.render(
     <HashRouter>

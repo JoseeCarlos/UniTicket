@@ -1,21 +1,20 @@
 class LugarAtencion_Area():
-    def __init__(self,IdArea=None, IdLugarAtencion=None,Estado=None,FechaCreacion=None, FechaActualizacion=None,IdUsuarioCreacion=None,IdUsuarioActualizacion=None):
-        self.IdArea = IdArea
+    def __init__(self, IdLugarAtencion=None, Nombre=None,IdSedeAcademica=None,IdSitio=None,NombreArea=None, IdArea=None, Estado=None):
         self.IdLugarAtencion = IdLugarAtencion
+        self.Nombre = Nombre
+        self.IdSedeAcademica = IdSedeAcademica
+        self.IdSitio = IdSitio
+        self.NombreArea = NombreArea
+        self.IdArea = IdArea
         self.Estado = Estado
-        self.FechaCreacion = FechaCreacion
-        self.FechaActualizacion = FechaActualizacion
-        self.IdUsuarioCreacion = IdUsuarioCreacion
-        self.IdUsuarioActualizacion = IdUsuarioActualizacion
-
     
     def to_JSON(self):
         return {
-            "IdArea": self.IdArea,
-            "IdLugarAtencion": self.IdLugarAtencion,
-            "Estado": self.Estado,
-            "FechaCreacion": self.FechaCreacion,
-            "FechaActualizacion": self.FechaActualizacion,
-            "IdUsuarioCreacion": self.IdUsuarioCreacion,
-            "IdUsuarioActualizacion": self.IdUsuarioActualizacion
+            'IdLugarAtencion': self.IdLugarAtencion,
+            'Nombre': self.Nombre,
+            'IdSedeAcademica': self.IdSedeAcademica,
+            'IdSitio': self.IdSitio,
+            'NombreArea': self.NombreArea,
+            'IdArea': self.IdArea,
+            'Estado': self.Estado
         }

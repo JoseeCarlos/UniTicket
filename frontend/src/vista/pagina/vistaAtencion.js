@@ -1,7 +1,7 @@
 import React from 'react';
-import { AppBar } from '../../componentes/AppBar';
-import '../recursos/vista.css';
-import { AppFooterVista } from '../componentes/AppFooter';
+import { TopBar } from '../../componentes/TopBar';
+import '../recursos/VistaAtencion.css';
+import { Footer } from '../componentes/Footer';
 
 const VistaAtencion = () => {
 
@@ -16,8 +16,8 @@ const VistaAtencion = () => {
     let mes = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
       'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-    fecha.innerHTML = `${dia[fecha_actual.getdia()]}, ${fecha_actual.getDate()} 
-                              de ${mes[fecha_actual.getmes()]} de ${fecha_actual.getFullYear()}`;
+    fecha.innerHTML = `${dia[fecha_actual.getDay()]}, ${fecha_actual.getDate()} 
+                              de ${mes[fecha_actual.getMonth()]} de ${fecha_actual.getFullYear()}`;
 
     let hora = new Date();
     tiempo.innerHTML = hora.toLocaleTimeString();
@@ -29,7 +29,7 @@ const VistaAtencion = () => {
 
   return (
     <div className='contenedor'>
-      <AppBar></AppBar>
+      <TopBar></TopBar>
       <div className='contenedor-vista-atencion'>
         <div className='video-atencion'>
           <iframe className='video' src="https://www.youtube.com/embed/dWcwY8VWXf0?autoplay=1&controls=1" title="Patito Bailando" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -83,7 +83,7 @@ const VistaAtencion = () => {
           </div>
         </div>
       </div>
-      <AppFooterVista></AppFooterVista>
+      <Footer></Footer>
     </div >
   );
 }

@@ -1,25 +1,21 @@
 class Mesa():
-    def __init__(self, IdMesa=None,number=None,IdLugarAtencion=None,IdArea=None,Estado=None,FechaCreacion=None,FecbaActualizacion=None, IdUsuarioCreacion=None, IdUsuarioActualizacion=None):
+    def __init__(self, IdMesa=None, Numero=None, IdLugarAtencion=None, IdUsuarioRegistro=None, Estado=None, FechaRegistro=None, FechaModificacion=None):
         self.IdMesa = IdMesa
-        self.number = number
+        self.Numero = Numero
         self.IdLugarAtencion = IdLugarAtencion
-        self.IdArea = IdArea
+        self.IdUsuarioRegistro = IdUsuarioRegistro
         self.Estado = Estado
-        self.FechaCreacion = FechaCreacion
-        self.FecbaActualizacion = FecbaActualizacion
-        self.IdUsuarioCreacion = IdUsuarioCreacion
-        self.IdUsuarioActualizacion = IdUsuarioActualizacion
-    
+        self.FechaRegistro = FechaRegistro
+        self.FechaModificacion = FechaModificacion
+
     def to_JSON(self):
         return {
             "IdMesa": self.IdMesa,
-            "number": self.number,
+            "Numero": self.Numero,
             "IdLugarAtencion": self.IdLugarAtencion,
-            "IdArea": self.IdArea,
+            "IdUsuarioRegistro": self.IdUsuarioRegistro,
             "Estado": self.Estado,
-            "FechaCreacion": self.FechaCreacion,
-            "FecbaActualizacion": self.FecbaActualizacion,
-            "IdUsuarioCreacion": self.IdUsuarioCreacion,
-            "IdUsuarioActualizacion": self.IdUsuarioActualizacion
+            "FechaRegistro": self.FechaRegistro,
+            "FechaModificacion": self.FechaModificacion
         }
        

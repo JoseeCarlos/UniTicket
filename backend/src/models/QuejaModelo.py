@@ -1,25 +1,25 @@
 from flask import jsonify
 from database.db import get_connection
-from .entities.ComplainS import ComplainS
+from .UEntidades.QuejaS import QuejaS
 import json
 
 
-class ComplainModel():
+class QuejaModelo():
     @classmethod
-    def get_complains(self):
+    def obtener_quejas(self):
         try:
             connection = get_connection()
-            complains = []
+            quejas = []
             with connection.cursor() as cursor:
                 cursor.execute("""select Q.IdQueja, RQ.Nombre,
-                                    IIF(Q.TipoQueja=0,0, TL.userId) 'nombreUsuario',
-                                    isnull(Q.Descripcion, RQ.Descripcion) 'description',
+                                    IIF(Q.TipoQueja=0,0, TL.IdUsuario) 'nombreUsuario',
+                                    isnull(QL.Descripcion, RQ.Descripcion) 'description',
                                     Q.TipoQueja,
                                     IIF(Q.IdAtencion = null, 0 , A.TipoAtencion) 'attentionType',
                                     LU.Nombre,
-                                    A.FechaCreacion,
-                                    A.FechaActualizacion,
-                                    Q.FechaCreacion,
+                                    A.FechaRegistro,
+                                    A.FechaModificacion,
+                                    Q.FechaRegistro,
                                     A.IdEmpleado                         
                                     from UQueja Q
                                     left join UAtencion A on A.IdAtencion=Q.IdAtencion
@@ -28,17 +28,19 @@ class ComplainModel():
                                     left join UTicket T on T.IdTIcket=A.IdTicket
                                     left join UTicketEnlinea TL on TL.IdTicket=T.IdTIcket
                                     left join URazonQueja RQ on RQ.IdRazonQueja=Q.IdRazonQueja
-                                    order by Q.FechaCreacion desc
+									left join UQuejaEnLinea QL ON QL.IdQueja=Q.IdQueja
+									left join UQuejaPresencial QP ON QP.IdQueja=Q.IdQueja
+                                    order by Q.FechaRegistro desc
                                 """)
                 for row in cursor.fetchall():
-                    complains.append(ComplainS(complainId=row[0],userName=row[1],name=row[2],description=row[3], complainType=row[4], attentionType=row[5], tableName=row[6], startTime=row[7], finishTime=row[8], createDate=row[9], employeeName=row[10]).to_JSON())
+                    quejas.append(QuejaS(IdQueja=row[0], NombreQueja=row[1], NombreUsuario=row[2], Descripcion=row[3], TipoQueja=row[4], TipoAtencion=row[5], LugarAtencion=row[6], FechaInicio=row[7], FechaFin=row[8], FechaRegistro=row[9], NombreEmpleado=row[10]).to_JSON())
             connection.close()
-            return complains
+            return quejas
         except Exception as ex:
             raise Exception(ex)
     
     @classmethod
-    def get_complain(self, complainId):
+    def obtener_queja(self, complainId):
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
@@ -54,7 +56,7 @@ class ComplainModel():
             raise Exception(ex)
     
     @classmethod
-    def create_complain(self, complain):
+    def crear_queja(self, complain):
         try:
             connection = get_connection()
             with connection.cursor() as cursor:

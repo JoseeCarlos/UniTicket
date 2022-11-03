@@ -1,29 +1,29 @@
 from flask import jsonify
 from database.db import get_connection
-from .entities.AttentionPlaceAreaS import AttentionPlaceAreaS
+from .UEntidades.LugarAtencion_Area import LugarAtencion_Area
 import json
 
-class AttentionPlace_AreaModel():
+class LugarAtencion_AreaModelo():
     @classmethod
-    def get_attentionPlaceAreas(self):
+    def obtener_LugarAtencionAreas(self):
         try:
             connection = get_connection()
-            attentionPlaceAreas = []
+            lugaAtencionAreas = []
             with connection.cursor() as cursor:
                 cursor.execute("""select LU.IdLugarAtencion,
-                                    LU.Nombre attentionPlaceName,
-                                    LU.IdSitio ,
-                                    A.Nombre areaName,
+                                    LU.Nombre ,
+                                    LU.Id_Sede_Academica ,
+                                    LU.Id_Sitio,
+                                    A.Nombre NombreArea,
                                     A.IdArea,
                                     LU.Estado
                                     from ULugarAtencion LU
-                                    inner join ULugarAtencion_Area LA on LA.IdLugarAtencion=LU.IdLugarAtencion
-                                    inner join UArea A on A.IdArea=LA.IdArea
+                                    inner join UArea A on A.IdArea=LU.IdArea
                                 """)
                 for row in cursor.fetchall():
-                    attentionPlaceAreas.append(AttentionPlaceAreaS(attentionPlaceId=row[0], attentionPlaceName=row[1], campusId=row[2], areaName=row[3], areaId=row[4], status=row[5]).to_JSON())
+                    lugaAtencionAreas.append(LugarAtencion_Area(IdLugarAtencion=row[0], Nombre=row[1], IdSedeAcademica=row[2], IdSitio=row[3], NombreArea=row[4], IdArea=row[5], Estado=row[6]).to_JSON())
 
             connection.close()
-            return attentionPlaceAreas
+            return lugaAtencionAreas
         except Exception as ex:
             raise Exception(ex)

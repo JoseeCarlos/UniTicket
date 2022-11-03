@@ -1,26 +1,29 @@
 import React from 'react';
 import './App.css';
-import AppAdmin from './administrador/components/AppAdmin';
+import Administrador from './administrador/componentes/Administrador';
+import Principal from './cliente/componentes/PaginaPrincipal';
 
-import Inicio_Sesion from './inicio-sesion/inicio-sesion';
+
 import { Route, useLocation } from 'react-router-dom';
 
-import EmployeeAttention from './employee/paginas/EmpleadoAtencion';
-import AppPublic from './cliente/componentes/AppPublico';
+import EmpleadoAtencion from './empleado/paginas/EmpleadoAtencion';
+// import AppPublic from './cliente/componentes/AppPublico';
+
+import InicioSesion from './inicio-sesion/InicioSesion';
 
 function App(){
     if(sessionStorage.getItem('role') == "admin")
     {
         return (
             <div className="App">
-                <AppAdmin/>
+                <Administrador/>
             </div>
         );
     }
     if (sessionStorage.getItem('role') == "Empleado") {
         return (
             <div className="App">
-                <EmployeeAttention />
+                <EmpleadoAtencion />
             </div>
         );
     }
@@ -28,13 +31,13 @@ function App(){
     {
         return (
             <div className="App">
-                <AppPublic/>
+                <Principal/>
             </div>
         );
     }
     return (
         <div className="App">
-            <Inicio_Sesion/>
+            <InicioSesion/>
         </div>
     );
 }

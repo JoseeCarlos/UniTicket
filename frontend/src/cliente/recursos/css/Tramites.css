@@ -1,0 +1,82 @@
+.contenedor-tramites {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.seleccionar-tramite {
+  width: 100%;
+  display: flex;
+  margin: 25px 0 15px 0;
+  padding: 0 35px;
+  gap: 10px;
+  justify-items: flex-start;
+}
+
+.seleccionar-tramite .seleccionar-lugar {
+  width: 250px;
+}
+
+.tarjetas-tramites {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(auto, 1fr);
+  justify-items: center;
+  align-content: space-around;
+  padding: 10px 0;
+  gap: 20px;
+}
+
+.tarjeta-tramite {
+  width: 400px;
+  height: 350px;
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+.p-card-header {
+  height: 148px;
+}
+
+.p-card-body {
+  padding: 0 !important;
+}
+
+.p-card-title {
+  background-color: var(--primary-uni);
+  color: white;
+  padding: 8px;
+}
+
+.p-card-content {
+  padding: 5px 10px !important;
+  font-size: 12px;
+}
+
+.p-card-header img {
+  height: 100%;
+  object-fit: fill;
+}
+
+ol span {
+  font-weight: 600;
+}
+
+ol li {
+  margin-left: 20px;
+}
+
+.p-divider {
+  width: 95%;
+}
+
+.p-divider-dashed.p-divider-horizontal:before {
+  border-top-style: dashed !important;
+}
+
+.p-divider.p-divider-horizontal:before {
+  border-top: 2px var(--primary-uni);
+}
+
