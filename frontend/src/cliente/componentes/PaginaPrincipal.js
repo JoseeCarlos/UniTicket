@@ -8,6 +8,7 @@ import ReservacionEnLinea from '../paginas/ReservacionEnLinea';
 import Informacion from '../paginas/Informacion';
 import Tramites from '../paginas/Tramites';
 import { Inicio } from '../paginas/Inicio';
+import Quejas from '../paginas/Quejas'
 import '../recursos/css/PaginaPrincipal.css'
 
 import 'primereact/resources/primereact.css';
@@ -26,10 +27,10 @@ const PaginaPrincipal = () => {
           <Route path="/reservacionEnLinea" component={ReservacionEnLinea} />
           <Route path="/tramites" component={Tramites} />
           <Route path="/informacion" component={Informacion} />
+          <Route path="/quejas" component={Quejas} />
         </div>
       </div>
       <div className='footer'>
-        s
         <Footer />
       </div>
     </div>
