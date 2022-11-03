@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Card } from 'primereact/card';
-import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { Divider } from 'primereact/divider'
 import '../recursos/css/Tramites.css'
