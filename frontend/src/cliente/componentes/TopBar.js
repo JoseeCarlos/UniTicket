@@ -23,6 +23,9 @@ export const TopBar = (props) => {
           <NavLink to="/informacion">
             INFORMACIÓN
           </NavLink>
+          <NavLink to="/quejas">
+            QUEJAS
+          </NavLink>
         </div>
 
         <div className="disenio-bar-foto">

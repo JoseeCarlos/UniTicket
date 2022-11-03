@@ -1,0 +1,78 @@
+.contenedor-quejas {
+  width: 50%;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid var(--primary-uni);
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(7, auto);
+  gap: 5px;
+}
+
+.contenedor-quejas h1 {
+  grid-column: 1 / 3;
+  grid-row: 1;
+  text-align: center;
+}
+
+.contenedor-quejas p {
+  grid-column: 1 / 3;
+  grid-row: 2;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.contenedor-quejas .galeria-queja {
+  grid-column: 1;
+  grid-row: 3 / 5;
+}
+
+.contenedor-quejas .razon{
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.contenedor-quejas .descripcion {
+  grid-column: 2;
+  grid-row: 4;
+  margin-top: 10px;
+}
+
+.contenedor-quejas .tipo-atencion {
+  grid-column: 1;
+  grid-row: 5;
+}
+
+.contenedor-quejas .resumen-atencion {
+  grid-column: 1;
+  grid-row: 6;
+  height: 265px;
+}
+
+.contenedor-quejas .resumen-queja {
+  grid-column: 2;
+  grid-row: 5 / 7;
+  height: 300px;
+}
+
+.contenedor-quejas .resumen-atencion,
+.contenedor-quejas .resumen-queja {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid var(--primary-uni);
+  border-radius: 5px;
+  background-color: white;
+  font-size: 12px;
+}
+
+label span {
+  font-weight: 600;
+}
+
+.p-button {
+  grid-column: 1 / 3;
+  grid-row: 7;
+}

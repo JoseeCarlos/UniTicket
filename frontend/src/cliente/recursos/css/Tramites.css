@@ -36,26 +36,26 @@
   overflow: hidden;
 }
 
-.p-card-header {
+.tarjetas-tramites .p-card-header {
   height: 148px;
 }
 
-.p-card-body {
+.tarjetas-tramites .p-card-body {
   padding: 0 !important;
 }
 
-.p-card-title {
+.tarjetas-tramites .p-card-title {
   background-color: var(--primary-uni);
   color: white;
   padding: 8px;
 }
 
-.p-card-content {
+.tarjetas-tramites .p-card-content {
   padding: 5px 10px !important;
   font-size: 12px;
 }
 
-.p-card-header img {
+.tarjetas-tramites .p-card-header img {
   height: 100%;
   object-fit: fill;
 }
@@ -68,15 +68,15 @@ ol li {
   margin-left: 20px;
 }
 
-.p-divider {
+.contenedor-tramites .p-divider {
   width: 95%;
 }
 
-.p-divider-dashed.p-divider-horizontal:before {
+.contenedor-tramites .p-divider-dashed.p-divider-horizontal:before {
   border-top-style: dashed !important;
 }
 
-.p-divider.p-divider-horizontal:before {
+.contenedor-tramites .p-divider.p-divider-horizontal:before {
   border-top: 2px var(--primary-uni);
 }
 
