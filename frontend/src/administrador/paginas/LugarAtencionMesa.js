@@ -41,19 +41,23 @@ const LugarAtencionMesa = () => {
     idUsuarioCreacion: "",
     idUsuarioActualizacion: "",
   };
+  const [valorFiltroEstado, establecerValorFiltroEstado] = useState(null);
   const [productos, establecerProducto] = useState([]);
   const [filasExpandidas, establecerFilasExpandidas] = useState(null);
   const [numero, establecerEnvioNumero] = useState(false);
   const [mesa, establecerMesa] = useState(mesaVacia);
-  const [dialogoInsercionMesa, establecerDialogoInsercionMesa] = useState(false);
+  const [dialogoInsercionMesa, establecerDialogoInsercionMesa] =
+    useState(false);
   const [dialogoEdicionMesa, establecerDialogoEdicionMesa] = useState(false);
   const [dialogoVistaMesa, establecerDialogoVistaMesa] = useState(false);
   const [dialogoBorradoMesa, establecerDialogoBorradoMesa] = useState(false);
   const [nombre, establecerEnvioNombre] = useState(false);
   const [lugarAtencion, establecerLugarAtencion] = useState(lugarAtencionVacio);
 
-  const [dialogoInsercionLugarAtencion, establecerDialogoInsercionLugarAtencion] =
-    useState(false);
+  const [
+    dialogoInsercionLugarAtencion,
+    establecerDialogoInsercionLugarAtencion,
+  ] = useState(false);
   const [dialogoVistaLugarAtencion, establecerDialogoVistaLugarAtencion] =
     useState(false);
   const [dialogoEdicionLugarAtencion, establecerDialogoEdicionLugarAtencion] =
@@ -102,6 +106,10 @@ const LugarAtencionMesa = () => {
     establecerLugarAtencion(_LugarAtencion);
   };
   useEffect(() => {
+    establecerValorFiltroEstado([
+      { id: 1, nombre: "Activo" },
+      { id: 0, nombre: "Inactivo" },
+    ]);
     servicioProducto
       .getProductsWithOrdersSmall()
       .then((dato) => establecerProducto(dato));
@@ -158,7 +166,7 @@ const LugarAtencionMesa = () => {
           header={encabezadoMesa}
         >
           <Column
-            field="id"
+            field="numero"
             header="Numero de Mesa"
             sortable
             headerStyle={{ width: "4rem" }}
@@ -394,8 +402,8 @@ const LugarAtencionMesa = () => {
       />
     </>
   );
-  const borrarMesa = () => { };
-  const borrarLugraAtencion = () => { };
+  const borrarMesa = () => {};
+  const borrarLugraAtencion = () => {};
   const pieDialogoBorradoLugarAtencion = (
     <>
       <Button
@@ -434,10 +442,20 @@ const LugarAtencionMesa = () => {
         Lugares De Atención{" "}
         <i className="pi pi-plus icn" onClick={insertarLugarAtencion} />
       </h5>
-      <span className="p-buttonset">
-        <Button icon="pi pi-plus" label="Expandir" onClick={expandirTodo} />
-        <Button icon="pi pi-minus" label="Colapsar" onClick={colapsarTodo} />
-      </span>
+      <div className="filters">
+        <span className="block mt-2 md:mt-0 p-input-icon-left">
+          <Dropdown
+            optionLabel="nombre"
+            placeholder="Filtro por Estado"
+            options={valorFiltroEstado}
+            emptyMessage="Activo Inactivo"
+          />
+        </span>
+        <span className="p-buttonset">
+          <Button icon="pi pi-plus" label="Expandir" onClick={expandirTodo} />
+          <Button icon="pi pi-minus" label="Colapsar" onClick={colapsarTodo} />
+        </span>
+      </div>
     </div>
   );
   const encabezadoMesa = (
@@ -464,7 +482,9 @@ const LugarAtencionMesa = () => {
             rowExpansionTemplate={baseExpancionFilas}
             dataKey="id"
             header={header}
-            paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
+            paginator
+            rows={10}
+            rowsPerPageOptions={[5, 10, 25]}
             className="datatable-responsive"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
             emptyMessage="No hay lugares de atención."
@@ -479,10 +499,7 @@ const LugarAtencionMesa = () => {
               headerStyle={{ width: "12rem" }}
               body={
                 <span className="p-buttonset">
-                  <Button
-                    icon="pi pi-eye"
-                    onClick={() => verLugarAtencion()}
-                  />
+                  <Button icon="pi pi-eye" onClick={() => verLugarAtencion()} />
                   <Button
                     icon="pi pi-pencil"
                     onClick={() => editarLugarAtencion()}
@@ -511,7 +528,9 @@ const LugarAtencionMesa = () => {
             id="nombre"
             onChange={(e) => cambioEntradaLugarAtencion(e, "nombre")}
             required
-            className={classNames({ "p-invalid": nombre && !lugarAtencion.nombre })}
+            className={classNames({
+              "p-invalid": nombre && !lugarAtencion.nombre,
+            })}
           />
           {nombre && !lugarAtencion.nombre && (
             <small className="p-invalid">El nombre es requerido.</small>
@@ -555,7 +574,9 @@ const LugarAtencionMesa = () => {
             value={"Cajas Tipuipaya"}
             onChange={(e) => cambioEntradaLugarAtencion(e, "nombre")}
             disabled
-            className={classNames({ "p-invalid": nombre && !lugarAtencion.nombre })}
+            className={classNames({
+              "p-invalid": nombre && !lugarAtencion.nombre,
+            })}
           />
           {nombre && !lugarAtencion.nombre && (
             <small className="p-invalid">El nombre es requerido.</small>
@@ -601,7 +622,9 @@ const LugarAtencionMesa = () => {
             onChange={(e) => cambioEntradaLugarAtencion(e, "nombre")}
             required
             autoFocus
-            className={classNames({ "p-invalid": nombre && !lugarAtencion.nombre })}
+            className={classNames({
+              "p-invalid": nombre && !lugarAtencion.nombre,
+            })}
           />
           {nombre && !lugarAtencion.nombre && (
             <small className="p-invalid">El nombre es requerido.</small>
