@@ -17,11 +17,14 @@ export const TopBar = (props) => {
           <NavLink to="/reservacionEnLinea">
             MIS RESERVAS
           </NavLink>
-          <NavLink to="/informacion">
+          <NavLink to="/tramites">
             TRÁMITES
           </NavLink>
           <NavLink to="/informacion">
             INFORMACIÓN
+          </NavLink>
+          <NavLink to="/quejas">
+            QUEJAS
           </NavLink>
         </div>
 
