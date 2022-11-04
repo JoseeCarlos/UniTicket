@@ -7,6 +7,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ServicioEmpleado } from "../servicios/ServicioEmpleado";
 import { Divider } from "primereact/divider";
+import { ListBox } from "primereact/listbox";
 
 const Asignacion = () => {
   let asignacionVacia = {
@@ -21,6 +22,7 @@ const Asignacion = () => {
 
   const [enviado, establecerEnvio] = useState(false);
   const [valorDropdown, establecerValorDropdown] = useState(null);
+  const [empleadoSeleccionado, establecerEmpleadoSeleccionado] = useState(null);
   const [filtroAsignacion, establecerFiltroAsignacion] = useState(null);
   const [filtroEmpleado, establecerFiltroEmpleado] = useState(null);
   const [asignacion, establecerAsignacion] = useState(asignacionVacia);
@@ -180,7 +182,9 @@ const Asignacion = () => {
             header={encabezado}
             value={empleado}
             globalFilter={filtroAsignacion}
-            paginator rows={10} rowsPerPageOptions={[5, 10, 25]} 
+            paginator
+            rows={10}
+            rowsPerPageOptions={[5, 10, 25]}
             className="datatable-responsive"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
             emptyMessage="No hay asignaciones."
@@ -221,21 +225,14 @@ const Asignacion = () => {
               <div className="p-fluid">
                 <div className="field">
                   <label htmlFor="empleado">Empleado</label>
-                  <InputText
-                    type="search"
-                    onInput={(e) => establecerFiltroEmpleado(e.target.value)}
-                    placeholder="Buscar empleado..."
-                  />
-                  <DataTable
+                  <ListBox
                     id="empleado"
-                    value={empleado}
-                    scrollable
-                    scrollHeight="370px"
-                    globalFilter={filtroEmpleado}
-                    emptyMessage="Empleado no encontrado."
-                  >
-                    <Column field="name" header="Nombre Completo" />
-                  </DataTable>
+                    value={empleadoSeleccionado}
+                    options={empleado}
+                    onChange={(e) => establecerEmpleadoSeleccionado(e.value)}
+                    filter
+                    optionLabel="name"
+                  />
                 </div>
               </div>
               <Divider layout="vertical" />

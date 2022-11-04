@@ -7,28 +7,28 @@ import { Toast } from "primereact/toast";
 import { DataView, DataViewLayoutOptions } from "primereact/dataview";
 import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
-const Area = () => {
-  let areaVacia = {
-    idArea: null,
+const RazonQueja = () => {
+  let razonQuejaVacia = {
+    idRazonQuejaVacia: null,
     nombre: "",
     descripcion: "",
+    idUsuarioRegistro: null,
     estado: "",
-    fechaCreacion: "",
-    fechaActualizacion: "",
-    idUsuarioCreacion: "",
-    idUsuarioModificacion: "",
+    fechaRegistro: "",
+    fechaModificacion: "",
   };
+  const [envio, establecerEnvio] = useState(false);
   const [valorDataview, establecerValorDataview] = useState(null);
   const [valorFiltroEstado, establecerValorFiltroEstado] = useState(null);
-  const [envio, establecerEnvio] = useState(false);
-  const [area, establecerArea] = useState(areaVacia);
-  const [dialogoInsercionArea, establecerDialogoInsercionArea] =
+  const [razonQueja, establecerRazonQueja] = useState(razonQuejaVacia);
+  const [dialogoInsercionRazonQueja, establecerDialogoInsercionRazonQueja] =
     useState(false);
-  const [dialogoVistaArea, establecerDialogoVisualizacionArea] =
+  const [dialogoVistaRazonQueja, establecerDialogoVistaRazonQueja] =
     useState(false);
-  const [dialogoEdicionArea, establecerDialogoEdicionArea] = useState(false);
-  const [dialogoBorradoArea, establecerDialogoBorradoArea] = useState(false);
-
+  const [dialogoEdicionRazonQueja, establecerDialogoEdicionRazonQueja] =
+    useState(false);
+  const [dialogoBorradoRazonQueja, establecerDialogoBorradoRazonQueja] =
+    useState(false);
   useEffect(() => {
     establecerValorFiltroEstado([
       { id: 1, nombre: "Activo" },
@@ -36,146 +36,107 @@ const Area = () => {
     ]);
     establecerValorDataview([
       {
-        idArea: 1,
-        nombre: "Cajas",
-        descripcion: "Atencion para pagos al a universidad",
+        idRazonQueja: 1,
+        nombre: "Malos tratos",
+        descripcion: "Mala actitud por parte del empleado",
         estado: "Activo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-        usuarioModificacion: "Jose Matinez",
       },
       {
-        idArea: 2,
-        nombre: "Bienestar Universitario",
-        descripcion: "Atencion para pagos al a universidad",
+        idRazonQueja: 2,
+        nombre: "Largos tiempos de espera",
+        descripcion: "Mucho tiempo en espera para ser atendido",
         estado: "Activo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-        usuarioModificacion: "Jose Matinez",
-      },
-      {
-        idArea: 3,
-        nombre: "Tramites",
-        descripcion: "Atencion para pagos al a universidad",
-        estado: "Activo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-        usuarioModificacion: "Jose Matinez",
-      },
-      {
-        idArea: 4,
-        nombre: "Contabilidad",
-        descripcion: "Atencion para pagos al a universidad",
-        estado: "Activo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-        usuarioModificacion: "Jose Matinez",
-      },
-      {
-        idArea: 5,
-        nombre: "Incripciones",
-        descripcion: "Atencion para pagos al a universidad",
-        estado: "Inactivo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-        usuarioModificacion: "Jose Matinez",
       },
     ]);
   }, []);
-  const verArea = (area) => {
-    establecerArea({ ...area });
-    establecerDialogoVisualizacionArea(true);
+  const verRazonQueja = (razonQueja) => {
+    establecerRazonQueja({ ...razonQueja });
+    establecerDialogoVistaRazonQueja(true);
   };
-  const insercionArea = () => {
-    establecerArea(areaVacia);
-    establecerDialogoInsercionArea(true);
+  const insercionRazonQueja = () => {
+    establecerRazonQueja(razonQuejaVacia);
+    establecerDialogoInsercionRazonQueja(true);
   };
-  const edicionArea = (area) => {
-    establecerArea({ ...area });
-    establecerDialogoEdicionArea(true);
+  const edicionRazonQueja = (razonQueja) => {
+    establecerRazonQueja({ ...razonQueja });
+    establecerDialogoEdicionRazonQueja(true);
   };
-  const borradoArea = (area) => {
-    establecerArea({ ...area });
-    establecerDialogoBorradoArea(true);
+  const borradoRazonQueja = (razonQueja) => {
+    establecerRazonQueja({ ...razonQueja });
+    establecerDialogoBorradoRazonQueja(true);
   };
-  const ocultarDialogoInsercionArea = () => {
+  const ocultarDialogoInsercionRazonQueja = () => {
     establecerEnvio(false);
-    establecerDialogoInsercionArea(false);
+    establecerDialogoInsercionRazonQueja(false);
   };
-  const ocultarDialogoVistaArea = () => {
+  const ocultarDialogoVistaRazonQueja = () => {
     establecerEnvio(false);
-    establecerDialogoVisualizacionArea(false);
+    establecerDialogoVistaRazonQueja(false);
   };
-  const ocultarDialogoEdicionArea = () => {
+  const ocultarDialogoEdicionRazonQueja = () => {
     establecerEnvio(false);
-    establecerDialogoEdicionArea(false);
+    establecerDialogoEdicionRazonQueja(false);
   };
-  const ocultarDialogoBorradoArea = () => {
+  const ocultarDialogoBorradoRazonQueja = () => {
     establecerEnvio(false);
-    establecerDialogoBorradoArea(false);
+    establecerDialogoBorradoRazonQueja(false);
   };
-  const guardarArea = () => {};
 
   const cambioEntrada = (e, nombre) => {
     const valor = (e.target && e.target.value) || "";
-    let _area = { ...area };
-    _area[`${nombre}`] = valor;
+    let _razonQueja = { ...razonQueja };
+    _razonQueja[`${nombre}`] = valor;
 
-    establecerArea(_area);
+    establecerRazonQueja(_razonQueja);
   };
-  const pieDialogoInsercionArea = (
+  const pieDialogoInsercionRazonQueja = (
     <>
       <Button
         label="Cancelar"
         icon="pi pi-times"
         className="p-button-text"
-        onClick={ocultarDialogoInsercionArea}
+        onClick={ocultarDialogoInsercionRazonQueja}
       />
-      <Button label="Guardar" icon="pi pi-check" onClick={guardarArea} />
+      <Button label="Guardar" icon="pi pi-check" />
     </>
   );
-  const pieDialogoVistaArea = (
+  const pieDialogoVistaRazonQueja = (
     <>
       <Button
         label="Cancelar"
         icon="pi pi-times"
         className="p-button-text"
-        onClick={ocultarDialogoVistaArea}
+        onClick={ocultarDialogoVistaRazonQueja}
       />
     </>
   );
 
-  const borrarArea = () => {};
-  const pieDialogoBorradoArea = (
+  const borrarRazonQueja = () => {};
+  const pieDialogoBorradoRazonQueja = (
     <>
       <Button
         label="No"
         icon="pi pi-times"
         className="p-button-text"
-        onClick={ocultarDialogoBorradoArea}
+        onClick={ocultarDialogoBorradoRazonQueja}
       />
       <Button
         label="Si"
         icon="pi pi-check"
         className="p-button-text"
-        onClick={borrarArea}
+        onClick={borrarRazonQueja}
       />
     </>
   );
-  const pieDialogoEdicionArea = (
+  const pieDialogoEdicionRazonQueja = (
     <>
       <Button
         label="Cancelar"
         icon="pi pi-times"
         className="p-button-text"
-        onClick={ocultarDialogoEdicionArea}
+        onClick={ocultarDialogoEdicionRazonQueja}
       />
-      <Button label="Guardar" icon="pi pi-check" onClick={guardarArea} />
+      <Button label="Guardar" icon="pi pi-check" />
     </>
   );
   const listaElementoDataView = (dato) => {
@@ -184,11 +145,6 @@ const Area = () => {
         <div className="col-12">
           <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <div className="flex flex-column md:flex-row align-items-center p-3">
-              <img
-                src={`assets/demo/images/product/${dato.image}`}
-                alt={dato.name}
-                className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5"
-              />
               <div className="flex-1 text-center md:text-left">
                 <div className="font-bold text-2xl">{dato.nombre}</div>
                 <div className="mb-3">{dato.descripcion}</div>
@@ -199,11 +155,17 @@ const Area = () => {
               <Button
                 icon="pi pi-eye"
                 onClick={() => {
-                  verArea(dato);
+                  verRazonQueja(dato);
                 }}
               />
-              <Button icon="pi pi-pencil" onClick={() => edicionArea(dato)} />
-              <Button icon="pi pi-trash" onClick={() => borradoArea(dato)} />
+              <Button
+                icon="pi pi-pencil"
+                onClick={() => edicionRazonQueja(dato)}
+              />
+              <Button
+                icon="pi pi-trash"
+                onClick={() => borradoRazonQueja(dato)}
+              />
             </span>
           </div>
         </div>
@@ -215,8 +177,8 @@ const Area = () => {
       <div className="card">
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
           <h5>
-            Administración de Areas{" "}
-            <i className="pi pi-plus icn" onClick={insercionArea} />
+            Administración de Razones de Queja{" "}
+            <i className="pi pi-plus icn" onClick={insercionRazonQueja} />
           </h5>
           <div className="filters">
             <span className="block mt-2 md:mt-0 p-input-icon-left">
@@ -237,13 +199,13 @@ const Area = () => {
         ></DataView>
       </div>
       <Dialog
-        visible={dialogoInsercionArea}
+        visible={dialogoInsercionRazonQueja}
         style={{ width: "450px" }}
-        header="Nueva Area"
+        header="Nueva Razon de Queja"
         modal
         className="p-fluid"
-        footer={pieDialogoInsercionArea}
-        onHide={ocultarDialogoInsercionArea}
+        footer={pieDialogoInsercionRazonQueja}
+        onHide={ocultarDialogoInsercionRazonQueja}
       >
         <div className="field">
           <label htmlFor="nombre">Nombre</label>
@@ -252,9 +214,9 @@ const Area = () => {
             onChange={(e) => cambioEntrada(e, "nombre")}
             required
             autoFocus
-            className={classNames({ "p-invalid": envio && !area.nombre })}
+            className={classNames({ "p-invalid": envio && !razonQueja.nombre })}
           />
-          {envio && !area.nombre && (
+          {envio && !razonQueja.nombre && (
             <small className="p-invalid">El nombre es requerido.</small>
           )}
         </div>
@@ -265,27 +227,27 @@ const Area = () => {
             autoResize
             onChange={(e) => cambioEntrada(e, "descripcion")}
             required
-            className={classNames({ "p-invalid": envio && !area.descripcion })}
+            className={classNames({ "p-invalid": envio && !razonQueja.descripcion })}
           />
-          {envio && !area.descripcion && (
-            <small className="p-invalid">El nombre es requerido.</small>
+          {envio && !razonQueja.descripcion && (
+            <small className="p-invalid">La descripcion es requerida.</small>
           )}
         </div>
       </Dialog>
       <Dialog
-        visible={dialogoVistaArea}
+        visible={dialogoVistaRazonQueja}
         style={{ width: "450px" }}
-        header="Visualizar Area"
+        header="Visualizar Razon Queja"
         modal
         className="p-fluid"
-        footer={pieDialogoVistaArea}
-        onHide={ocultarDialogoVistaArea}
+        footer={pieDialogoVistaRazonQueja}
+        onHide={ocultarDialogoVistaRazonQueja}
       >
         <div className="field">
           <label htmlFor="nombre">Nombre</label>
           <InputText
             id="nombre"
-            value={area.nombre}
+            value={razonQueja.nombre}
             onChange={(e) => cambioEntrada(e, "nombre")}
             readOnly
           />
@@ -295,25 +257,25 @@ const Area = () => {
           <InputTextarea
             id="descripcion"
             autoResize
-            value={area.descripcion}
+            value={razonQueja.descripcion}
             readOnly
           />
         </div>
         <div className="field">
           <label htmlFor="estado">Estado</label>
-          <InputText id="estado" value={area.estado} readOnly />
+          <InputText id="estado" value={razonQueja.estado} readOnly />
         </div>
         <div className="field">
           <label htmlFor="usuarioCreacion">Responsable de Registro</label>
           <InputText
             id="usuarioCreacion"
-            value={area.usuarioCreacion}
+            value={razonQueja.idUsuarioRegistro}
             readOnly
           />
         </div>
         <div className="field">
           <label htmlFor="fechaCreacion">Fecha de Registro</label>
-          <InputText id="fechaCreacion" value={area.fechaCreacion} readOnly />
+          <InputText id="fechaCreacion" value={razonQueja.fechaRegistro} readOnly />
         </div>
         <div className="field">
           <label htmlFor="fechaActualizacion">
@@ -321,35 +283,25 @@ const Area = () => {
           </label>
           <InputText
             id="fechaActualizacion"
-            value={area.fechaActualizacion}
-            readOnly
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="usuarioModificacion">
-            Responsable de Ultima Modificación
-          </label>
-          <InputText
-            id="usuarioModificacion"
-            value={area.usuarioModificacion}
+            value={razonQueja.fechaModificacion}
             readOnly
           />
         </div>
       </Dialog>
       <Dialog
-        visible={dialogoEdicionArea}
+        visible={dialogoEdicionRazonQueja}
         style={{ width: "450px" }}
-        header="Editar Area"
+        header="Editar Razon de Queja"
         modal
         className="p-fluid"
-        footer={pieDialogoEdicionArea}
-        onHide={ocultarDialogoEdicionArea}
+        footer={pieDialogoEdicionRazonQueja}
+        onHide={ocultarDialogoEdicionRazonQueja}
       >
         <div className="field">
           <label htmlFor="nombre">Nombre</label>
           <InputText
             id="nombre"
-            value={area.nombre}
+            value={razonQueja.nombre}
             onChange={(e) => cambioEntrada(e, "nombre")}
             required
           />
@@ -359,28 +311,19 @@ const Area = () => {
           <InputTextarea
             id="descripcion"
             autoResize
-            value={area.descripcion}
+            value={razonQueja.descripcion}
             onChange={(e) => cambioEntrada(e, "descripcion")}
-            required
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="estado">Estado</label>
-          <InputText
-            id="estado"
-            value={area.estado}
-            onChange={(e) => cambioEntrada(e, "estado")}
             required
           />
         </div>
       </Dialog>
       <Dialog
-        visible={dialogoBorradoArea}
+        visible={dialogoBorradoRazonQueja}
         style={{ width: "450px" }}
-        header="Confirmar"
+        header="Confirm"
         modal
-        footer={pieDialogoBorradoArea}
-        onHide={ocultarDialogoBorradoArea}
+        footer={pieDialogoBorradoRazonQueja}
+        onHide={ocultarDialogoBorradoRazonQueja}
       >
         <div className="flex align-items-center justify-content-center">
           <i
@@ -388,7 +331,7 @@ const Area = () => {
             style={{ fontSize: "2rem" }}
           />
           <span>
-            Estás seguro de que desea elimiar el area <b>{area.nombre}</b>?
+            Estás seguro de que desea elimiar la razon <b>{razonQueja.nombre}</b>?
           </span>
         </div>
       </Dialog>
@@ -399,4 +342,4 @@ const comparisonFn = function (prevProps, nextProps) {
   return prevProps.location.pathname === nextProps.location.pathname;
 };
 
-export default React.memo(Area, comparisonFn);
+export default React.memo(RazonQueja, comparisonFn);

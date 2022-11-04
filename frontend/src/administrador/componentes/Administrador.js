@@ -14,6 +14,15 @@ import GenerarReporte from '../paginas/GenerarReporte';
 import LugarAtencionMesa from '../paginas/LugarAtencionMesa';
 import Area from '../paginas/Area';
 import Asignacion from '../paginas/Asignacion';
+import Confiduracion from '../paginas/Confiduracion';
+import Tramite from '../paginas/Tramite';
+import Requisito from '../paginas/Requisito';
+import RazonQueja from '../paginas/RazonQueja';
+import TicketTransferencia from '../paginas/TicketTransferencia';
+import TipoAtencion from '../paginas/TipoAtencion';
+import TipoUsuario from '../paginas/TipoUsuario';
+import Bitacora from '../paginas/Bitacora';
+
 
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
@@ -140,10 +149,6 @@ const Administrador = () => {
         {
             label: 'ADMINISTRACIÓN', icon: 'pi pi-fw pi-sitemap',
             items: [
-                { label: 'Quejas', icon: 'pi pi-fw pi-comments', to: '/quejas' },
-                { label: 'Areas', icon: 'pi pi-fw pi-table', to: '/area' },
-                { label: 'Lugares de Atencion', icon: 'pi pi-fw pi-check-square', to: '/lugarAtencionMesa' },
-                { label: 'Asignaciones', icon: "pi pi-fw pi-bookmark", to: "/asignacion" },
                 {
                     label: 'Reportes', icon: 'pi pi-fw pi-exclamation-circle',
                     items: [
@@ -151,7 +156,19 @@ const Administrador = () => {
                         { label: 'General', icon: 'pi pi-fw pi-chart-bar', to: '/reporteGeneral' },
                         { label: 'Generar', icon: 'pi pi-fw pi-book', to: '/generarReporte' },
                     ]
-                }
+                },
+                { label: 'Tickets', icon: 'pi pi-fw pi-ticket', to: '/ticketTransferencia' },
+                { label: 'Bitacora', icon: 'pi pi-fw pi-history', to: '/bitacora' },
+                { label: 'Tipos de Atencion', icon: 'pi pi-fw pi-users', to: '/tipoAtencion' },
+                { label: 'Tipos de Usuario', icon: 'pi pi-fw pi-user', to: '/tipoUsuario' },
+                { label: 'Lugares de Atencion', icon: 'pi pi-fw pi-check-square', to: '/lugarAtencionMesa' },
+                { label: 'Areas', icon: 'pi pi-fw pi-table', to: '/area' },
+                { label: 'Asignaciones', icon: "pi pi-fw pi-bookmark", to: "/asignacion" },
+                { label: 'Quejas', icon: 'pi pi-fw pi-comments', to: '/quejas' },
+                { label: 'Razones de Quejas', icon: 'pi pi-fw pi-comment', to: '/razonQueja' },
+                { label: 'Tramites', icon: "pi pi-fw pi-file", to: "/tramite" },
+                { label: 'Requisitos', icon: "pi pi-fw pi-copy", to: "/requisito" },
+                { label: 'Configuraciones', icon: "pi pi-fw pi-cog", to: "/configuracion" }
             ]
         }
     ];
@@ -201,6 +218,14 @@ const Administrador = () => {
                     <Route path="/lugarAtencionMesa" component={LugarAtencionMesa} />
                     <Route path="/area" component={Area} />
                     <Route path="/asignacion" component={Asignacion} />
+                    <Route path="/configuracion" component={Confiduracion} />
+                    <Route path="/tramite" component={Tramite} />
+                    <Route path="/requisito" component={Requisito} />
+                    <Route path="/razonQueja" component={RazonQueja} />
+                    <Route path="/ticketTransferencia" component={TicketTransferencia} />
+                    <Route path="/tipoAtencion" component={TipoAtencion} />
+                    <Route path="/tipoUsuario" component={TipoUsuario} />
+                    <Route path="/bitacora" component={Bitacora} />
                 </div>
 
                 <Footer disenioColorModo={disenioColorModo} />
