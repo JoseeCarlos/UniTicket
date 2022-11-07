@@ -43,7 +43,7 @@ const LugarAtencionMesa = () => {
     idUsuarioActualizacion: "",
   };
   const [productos, establecerProducto] = useState([]);
-  const [filasExpandidas, establecerFilasExpandidas] = useState(null);
+  const [filasExpandidas, establecerFilasExpandidas] = useState(false);
   const [numero, establecerEnvioNumero] = useState(false);
   const [mesa, establecerMesa] = useState(mesaVacia);
   const [dialogoInsercionMesa, establecerDialogoInsercionMesa] = useState(false);
@@ -110,10 +110,10 @@ const LugarAtencionMesa = () => {
   }, []); 
 
   const expandirTodo = () => {
-    let _filasExpandidas = {};
-    productos.forEach((p) => (_filasExpandidas[`${p.id}`] = true));
+    // let _filasExpandidas = {};
+    // productos.forEach((p) => (_filasExpandidas[`${p.id}`] = true));
 
-    establecerFilasExpandidas(_filasExpandidas);
+    establecerFilasExpandidas(true);
   };
 
   const colapsarTodo = () => {
@@ -461,7 +461,7 @@ const LugarAtencionMesa = () => {
           <DataTable
             value={lugarAtencionAreas}
             expandedRows={filasExpandidas}
-            onRowToggle={(e) => establecerFilasExpandidas(e.dato)}
+            onRowToggle={(e) => establecerFilasExpandidas(true)}
             responsiveLayout="scroll"
             rowExpansionTemplate={baseExpancionFilas}
             dataKey="id"
@@ -472,10 +472,10 @@ const LugarAtencionMesa = () => {
             emptyMessage="No hay lugares de atención."
           >
             <Column expander style={{ width: "1em" }} />
-            <Column field="nombre" header="Nombre" sortable />
-            <Column field="area" header="Area Actual" sortable />
-            <Column field="campus" header="Campus" sortable />
-            <Column field="estado" header="Estado" sortable />
+            <Column field="Nombre" header="Nombre" sortable />
+            <Column field="NombreArea" header="Area Actual" sortable />
+            <Column field="IdSedeAcademica" header="Campus" sortable />
+            <Column field="Estado" header="Estado" sortable />
             <Column
               header="Acciones"
               headerStyle={{ width: "12rem" }}

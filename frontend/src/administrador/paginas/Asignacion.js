@@ -7,6 +7,9 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ServicioEmpleado } from "../servicios/ServicioEmpleado";
 import { Divider } from "primereact/divider";
+import { AsignacionServicio } from "../servicios/AsignacionServicio";
+import EmpleadoAtencion from "../../empleado/paginas/EmpleadoAtencion";
+import { EmpeladoServicio } from "../servicios/EmpleadoServicio";
 
 const Asignacion = () => {
   let asignacionVacia = {
@@ -36,15 +39,33 @@ const Asignacion = () => {
     useState(false);
   const [carga, establecerCarga] = useState(true);
   const [empleado, establecerEmpleados] = useState([]);
+  const [asignaciones, establecerAsignaciones] = useState([]);
+
 
   const servicioEmpleado = new ServicioEmpleado();
+  const servicioAsignacion = new AsignacionServicio();
+  const empleadoServicio = new EmpeladoServicio();
+  
 
   useEffect(() => {
-    establecerCarga(true);
-    servicioEmpleado
-      .getEmployeesSmall()
-      .then((data) => establecerEmpleados(data));
-  });
+    // establecerCarga(true);
+    // servicioEmpleado
+    //   .getEmployeesSmall()
+    //   .then((data) => {
+    //     console.log(data);
+    //     establecerEmpleados(data)});
+    
+    servicioAsignacion
+      .obtenerAsignaciones()
+      .then((data) => {console.log(data)});
+    
+    empleadoServicio
+      .obtenerEmpleados()
+      .then((data) => {console.log(data);
+        establecerEmpleados(data);  
+      });
+      
+  }, []);
 
   const valoresDropdown = [
     { name: "Habilitado", code: "1" },
@@ -156,7 +177,7 @@ const Asignacion = () => {
             value={valorDropdown}
             onChange={(e) => establecerValorDropdown(e.value)}
             options={valoresDropdown}
-            optionLabel="nombre"
+            optionLabel="Nombre"
             placeholder="Estado del empleado"
           />
         </span>
@@ -178,7 +199,7 @@ const Asignacion = () => {
           <DataTable
             responsiveLayout="scroll"
             header={encabezado}
-            value={empleado}
+            value={asignaciones}
             globalFilter={filtroAsignacion}
             paginator rows={10} rowsPerPageOptions={[5, 10, 25]} 
             className="datatable-responsive"
@@ -234,7 +255,7 @@ const Asignacion = () => {
                     globalFilter={filtroEmpleado}
                     emptyMessage="Empleado no encontrado."
                   >
-                    <Column field="name" header="Nombre Completo" />
+                    <Column field="Nombres" header="Nombre Completo" />
                   </DataTable>
                 </div>
               </div>

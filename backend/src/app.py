@@ -2,8 +2,7 @@ from flask import Flask, request, jsonify
 from unicodedata import name
 from flask import Flask
 from config import config
-from routes import  Queja, Area, TipoAtencion, LugarAtencion, TipoUsuario, LugarAtencionArea
-
+from routes import  Queja, Area, TipoAtencion, LugarAtencion, TipoUsuario, LugarAtencionArea, Asignacion
 app = Flask(__name__)
 
 def page_not_found(e):
@@ -18,6 +17,8 @@ if __name__ == '__main__':
     app.register_blueprint(LugarAtencion.lugarAtencion, name='lugarAtencion',url_prefix='/api/lugarAtencion')
     app.register_blueprint(TipoUsuario.tipoUsuario, name='tipoUsuario',url_prefix='/api/tipoUsuario')
     app.register_blueprint(LugarAtencionArea.lugarAtencionArea, name='lugarAtencionArea',url_prefix='/api/lugarAtencionArea')
+    app.register_blueprint(Asignacion.asignacion, name='asignacion',url_prefix='/api/asignacion')
     
+
     app.register_error_handler(404, page_not_found)
     app.run(host='0.0.0.0',debug=True,port=5000)
