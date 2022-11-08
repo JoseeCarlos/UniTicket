@@ -1,0 +1,88 @@
+from flask import jsonify
+from database.db import get_connection
+from .UEntidades.Requisito import Requisito
+import json
+from datetime import datetime
+
+class RequisitoModelo():
+    @classmethod
+    def obtener_requisitos(self):
+        try:
+            connection = get_connection()
+            requisitos = []
+            with connection.cursor() as cursor:
+                cursor.execute(""" SELECT IdRequisito, Nombre, Descripcion, IdUsuarioRegistro, Estado, FechaRegistro, FechaModificacion
+                                    FROM URequisito
+                                    WHERE Estado = 1 
+                                """)
+                for row in cursor.fetchall():
+                    requisitos.append(Requisito(IdRequisito=row[0],Nombre=row[1],Descripcion=row[2], IdUsuarioRegistro=row[3], Estado=row[4], FechaRegistro=row[5], FechaModificacion=row[6]).to_JSON())
+            connection.close()
+            return requisitos
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def obtener_requisito(self, requisitoId):
+        try:
+            connection = get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute("""SELECT IdRequisito, Nombre, Descripcion, Estado, FechaCreacion, FechaActualizacion, IdUsuarioCreacion, IdUsuarioActualizacion
+                                    FROM URequisito
+                                    WHERE IdRequisito=%s
+                                """, (requisitoId))
+                row = cursor.fetchone()
+                requisito = Requisito(Requisito(IdRequisito=row[0],Nombre=row[1],Descripcion=row[2], IdUsuarioRegistro=row[3], Estado=row[4], FechaRegistro=row[5], FechaModificacion=row[6]).to_JSON())
+
+            connection.close()
+            return requisito
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def crear_requisito(self, requisito):
+        try:
+            connection = get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute("""INSERT INTO URequisito(Nombre, Descripcion, IdUsuarioRegistro, FechaModificacion)
+                                    VALUES (?, ?, ?, ?)
+                                """, (requisito.Nombre, requisito.Descripcion, requisito.IdUsuarioRegistro, requisito.FechaModificacion))
+                connection.commit()
+                affected_rows = cursor.rowcount
+            connection.close()
+            return affected_rows
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def actualizar_requisito(self, requisito):
+        try:
+            connection = get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute("""UPDATE URequisito
+                                    SET Nombre = ?, Descripcion = ?, IdUsuarioRegistro = ?, FechaModificacion = ?
+                                    WHERE IdRequisito = ?
+                                """, (requisito.Nombre, requisito.Descripcion, requisito.IdUsuarioRegistro, requisito.FechaModificacion, requisito.IdRequisito))
+                connection.commit()
+                affected_rows = cursor.rowcount
+            connection.close()
+            return affected_rows
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def eliminar_requisito(self, requisitoId):
+        try:
+            connection = get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute("""UPDATE URequisito
+                                    SET Estado=0
+                                    WHERE IdRequisito=?
+                                """, (requisitoId))
+                connection.commit()
+                affected_rows = cursor.rowcount
+            connection.close()
+            return affected_rows
+        except Exception as ex:
+            raise Exception(ex)
+

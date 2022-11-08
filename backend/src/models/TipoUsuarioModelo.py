@@ -10,12 +10,12 @@ class TipoUsuarioModelo():
             connection = get_connection()
             tipoUsuario = []
             with connection.cursor() as cursor:
-                cursor.execute("""SELECT IdTipoUsuario, Nombre, Descripcion, Estado, FechaCreacion, FechaActualizacion, IdUsuarioCreacion, IdUsuarioActualizacion 
+                cursor.execute("""SELECT IdTipoUsuario, Nombre, Descripcion, IdUsuarioRegistro, Estado, FechaRegistro, FechaModificacion
                                     FROM UTipoUsuario
                                     WHERE Estado=1  
                                 """)
                 for row in cursor.fetchall():
-                    tipoUsuario.append(TipoUsuario(idTipoUsuario=row[0],Nombre=row[1],Descripcion=row[2], Estado=row[3], FechaCreacion=row[4], FechaActualizacion=row[5], IdUsuarioCreacion=row[6], IdUsuarioActualizacion=row[7]).to_JSON())
+                    tipoUsuario.append(TipoUsuario(idTipoUsuario=row[0],Nombre=row[1],Descripcion=row[2], IdUsuarioRegistro=row[3], Estado=row[4], FechaRegistro=row[5], FechaModificacion=row[6], IdUsuarioActualizacion=row[7]).to_JSON())
             connection.close()
             return tipoUsuario
         except Exception as ex:

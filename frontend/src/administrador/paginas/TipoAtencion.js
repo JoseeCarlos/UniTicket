@@ -64,7 +64,7 @@ const TipoAtencion = () => {
         usuarioCreacion: "Juan Perez",
       },
     ]);
-  });
+  }, []);
   const insercionTipoAtencion = () => {
     establecerTipoAtencion(tipoAtencion);
     establecerDialogoInsercionTipoAtencion(true);

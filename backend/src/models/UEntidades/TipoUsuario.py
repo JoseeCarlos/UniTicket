@@ -1,8 +1,8 @@
 class TipoUsuario():
-    def __init__(self, idTipoUsuario=None, Nombre=None, Descripcion=None, IdUsuarioRegistro=None, Estado=None, FechaRegistro=None, FechaModificacion=None):
+    def __init__(self, idTipoUsuario=None, Nombre=None, Importancia=None, IdUsuarioRegistro=None, Estado=None, FechaRegistro=None, FechaModificacion=None):
         self.idTipoUsuario = idTipoUsuario
         self.Nombre = Nombre
-        self.Descripcion = Descripcion
+        self.Importancia = Importancia
         self.IdUsuarioRegistro = IdUsuarioRegistro
         self.Estado = Estado
         self.FechaRegistro = FechaRegistro
@@ -12,7 +12,7 @@ class TipoUsuario():
         return {
             "idTipoUsuario": self.idTipoUsuario,
             "Nombre": self.Nombre,
-            "Descripcion": self.Descripcion,
+            "Importancia": self.Importancia,
             "IdUsuarioRegistro": self.IdUsuarioRegistro,
             "Estado": self.Estado,
             "FechaRegistro": self.FechaRegistro,

@@ -9,7 +9,7 @@ tipoAtencion = Blueprint('tipoAtencion', __name__)
 @tipoAtencion.route('/', methods=['GET'])
 def get_tipoAtencion():
     try:
-        tipoAtencion = TipoAtencionModelo.obtener_TipoAtencion()
+        tipoAtencion = TipoAtencionModelo.obtener_TipoAtenciones()
         return jsonify(tipoAtencion)
     except Exception as ex:
         return jsonify({'error': str(ex)}), 500
