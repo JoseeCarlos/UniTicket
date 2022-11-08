@@ -9,7 +9,7 @@ function App(){
 
     return (
         <div className="App">
-            { rol === 'Admin' ? <Administrador></Administrador> : <Principal></Principal> } 
+            { rol === 'Admin' ? <Principal></Principal> : <Principal></Principal> } 
         </div>
     );
 }

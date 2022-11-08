@@ -106,14 +106,14 @@ const LugarAtencionMesa = () => {
     establecerLugarAtencion(_LugarAtencion);
   };
   useEffect(() => {
+    servicioProducto
+      .getProductsWithOrdersSmall()
+      .then((dato) => establecerProducto(dato));
     establecerValorFiltroEstado([
       { id: 1, nombre: "Activo" },
       { id: 0, nombre: "Inactivo" },
     ]);
-    servicioProducto
-      .getProductsWithOrdersSmall()
-      .then((dato) => establecerProducto(dato));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const expandirTodo = () => {
     let _filasExpandidas = {};
@@ -164,15 +164,16 @@ const LugarAtencionMesa = () => {
           value={dato.orders}
           responsiveLayout="scroll"
           header={encabezadoMesa}
+          emptyMessage={"No se encontraron mesas asignadas a "+dato.name}
         >
           <Column
-            field="numero"
+            field="id"
             header="Numero de Mesa"
             sortable
             headerStyle={{ width: "4rem" }}
           ></Column>
           <Column
-            field="empleado"
+            field="productCode"
             header="Empleado Actual"
             sortable
             headerStyle={{ width: "12rem" }}
@@ -473,11 +474,10 @@ const LugarAtencionMesa = () => {
           <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <h5>Administración De Lugares De Atención y Mesas</h5>
           </div>
-
           <DataTable
             value={productos}
             expandedRows={filasExpandidas}
-            onRowToggle={(e) => establecerFilasExpandidas(e.dato)}
+            onRowToggle={(e) => establecerFilasExpandidas(e.data)}
             responsiveLayout="scroll"
             rowExpansionTemplate={baseExpancionFilas}
             dataKey="id"
@@ -490,7 +490,7 @@ const LugarAtencionMesa = () => {
             emptyMessage="No hay lugares de atención."
           >
             <Column expander style={{ width: "1em" }} />
-            <Column field="nombre" header="Nombre" sortable />
+            <Column field="name" header="Nombre" sortable />
             <Column field="area" header="Area Actual" sortable />
             <Column field="campus" header="Campus" sortable />
             <Column field="estado" header="Estado" sortable />
