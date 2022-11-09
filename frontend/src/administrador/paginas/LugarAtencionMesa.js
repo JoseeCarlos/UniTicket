@@ -160,15 +160,16 @@ const LugarAtencionMesa = () => {
           value={dato.orders}
           responsiveLayout="scroll"
           header={encabezadoMesa}
+          emptyMessage={"No se encontraron mesas asignadas a "+dato.name}
         >
           <Column
-            field="numero"
+            field="id"
             header="Numero de Mesa"
             sortable
             headerStyle={{ width: "4rem" }}
           ></Column>
           <Column
-            field="empleado"
+            field="productCode"
             header="Empleado Actual"
             sortable
             headerStyle={{ width: "12rem" }}
@@ -469,7 +470,6 @@ const LugarAtencionMesa = () => {
           <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <h5>Administración De Lugares De Atención y Mesas</h5>
           </div>
-
           <DataTable
             value={lugarAtencionAreas}
             expandedRows={filasExpandidas}

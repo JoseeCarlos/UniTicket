@@ -11,6 +11,7 @@ import { AsignacionServicio } from "../servicios/AsignacionServicio";
 import EmpleadoAtencion from "../../empleado/paginas/EmpleadoAtencion";
 import { EmpeladoServicio } from "../servicios/EmpleadoServicio";
 import { ListBox } from "primereact/listbox";
+import { Calendar } from "primereact/calendar";
 import { LugarAtencionServicio } from "../servicios/LugarAtencionServicio";
 import { ServicioMesa } from "../servicios/ServicioMesa";
 
@@ -25,6 +26,9 @@ const Asignacion = () => {
     IdUsuarioModificacion: "",
   };
 
+  const [fechaInicioAsignacion, establecerFechaInicioAsignacion] =
+    useState(null);
+  const [fechaFinAsignacion, establecerFechaFinAsignacion] = useState(null);
   const [enviado, establecerEnvio] = useState(false);
   const [valorDropdown, establecerValorDropdown] = useState(null);
   const [valorLugar, establecerValorLugar] = useState([]);
@@ -296,6 +300,33 @@ const Asignacion = () => {
                       guardarEmpleado(e.value)
                       establecerEmpleadoSeleccionado(e.value)}}
                     filter
+                    filterstyle={{ width: "15rem" }}
+                    listStyle={{ maxHeight: "250px", minHeight: "250px" }}
+                    optionLabel="Nombres"
+                    emptyMessage="No se encontraron empleados"
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="fechaInicioAsignacion">
+                    Fecha de Inicio de Asignacion
+                  </label>
+                  <Calendar
+                    id="fechaInicioAsignacion"
+                    value={fechaInicioAsignacion}
+                    onChange={(e) => establecerFechaInicioAsignacion(e.value)}
+                    required
+                    placeholder="Seleccione la fecha de inicio"
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="fechaFinAsignacion">
+                    Fecha de Finalizacion de Asignacion
+                  </label>
+                  <Calendar
+                    id="fechaFinAsignacion"
+                    value={fechaFinAsignacion}
+                    placeholder="Seleccione la fecha de finalizacion"
+                    onChange={(e) => establecerFechaFinAsignacion(e.value)}
                     optionLabel="Nombres"
                   />
                 </div>
@@ -303,9 +334,9 @@ const Asignacion = () => {
               <Divider layout="vertical" />
               <div className="p-fluid">
                 <div className="field">
-                  <label htmlFor="attentionPlace">Lugares de Atención</label>
+                  <label htmlFor="lugarAtencion">Lugares de Atención</label>
                   <Dropdown
-                    id="attentionPlace"
+                    id="lugarAtencion"
                     placeholder="Seleccione el lugar de atencion"
                     required
                     emptyMessage="No se encontraron lugares de atención"
@@ -360,6 +391,10 @@ const Asignacion = () => {
                     <label htmlFor="fechaInicio">Fecha de Inicio</label>
                     <p id="fechaInicio">24/10/2022</p>
                   </div>
+                  <div className="field">
+                    <label htmlFor="fechaFin">Fecha de Finalizacion</label>
+                    <p id="fechaFin">No definido</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -404,21 +439,40 @@ const Asignacion = () => {
               <div className="p-fluid">
                 <div className="field">
                   <label htmlFor="empleado">Empleado</label>
-                  <InputText
-                    type="search"
-                    onInput={(e) => establecerFiltroEmpleado(e.target.value)}
-                    placeholder="Buscar empleado..."
-                  />
-                  <DataTable
+                  <ListBox
                     id="empleado"
-                    value={empleado}
-                    scrollable
-                    scrollHeight="370px"
-                    globalFilter={filtroEmpleado}
-                    emptyMessage="Empleado no encontrado."
-                  >
-                    <Column field="nombre" header="Nombre Completo" />
-                  </DataTable>
+                    value={empleadoSeleccionado}
+                    options={empleado}
+                    onChange={(e) => establecerEmpleadoSeleccionado(e.value)}
+                    filter
+                    filterstyle={{ width: "15rem" }}
+                    listStyle={{ maxHeight: "250px", minHeight: "250px" }}
+                    optionLabel="name"
+                    emptyMessage="No se encontraron empleados"
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="fechaInicioAsignacion">
+                    Fecha de Inicio de Asignacion
+                  </label>
+                  <Calendar
+                    id="fechaInicioAsignacion"
+                    value={fechaInicioAsignacion}
+                    onChange={(e) => establecerFechaInicioAsignacion(e.value)}
+                    required
+                    placeholder="Seleccione la fecha de inicio"
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="fechaFinAsignacion">
+                    Fecha de Finalizacion de Asignacion
+                  </label>
+                  <Calendar
+                    id="fechaFinAsignacion"
+                    value={fechaFinAsignacion}
+                    placeholder="Seleccione la fecha de finalizacion"
+                    onChange={(e) => establecerFechaFinAsignacion(e.value)}
+                  />
                 </div>
               </div>
               <Divider layout="vertical" />
@@ -456,6 +510,10 @@ const Asignacion = () => {
                   <div className="field">
                     <label htmlFor="fechaInicio">Fecha de Inicio</label>
                     <p id="fechaInicio">24/10/2022</p>
+                  </div>
+                  <div className="field">
+                    <label htmlFor="fechaFin">Fecha de Finalizacion</label>
+                    <p id="fechaFin">No definido</p>
                   </div>
                 </div>
               </div>
