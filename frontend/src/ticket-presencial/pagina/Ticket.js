@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import React, { useState, useEffect, useRef } from "react";
 import { AppBar } from '../componentes/AppBar';
-=======
-import React from 'react';
-import { TopBar } from '../componentes/TopBar';
->>>>>>> bd98a39d1b40559b2d38e4c07056a63e183f61d4
 import '../recursos/ticket.css';
 import { Image } from 'primereact/image';
 import { TicketServicio } from "../servicio/TicketServicio";
@@ -88,13 +83,8 @@ const Ticket = () => {
 
   return (
     <div className='contenedor-ticket'>
-<<<<<<< HEAD
       <AppBar></AppBar>
       <div className={`tarjetas-ticket col-${tiposAtentiones.length >= 4 ? true :false }`}>
-=======
-      <TopBar></TopBar>
-      <div className={`tarjetas-ticket col-${columnas}`}>
->>>>>>> bd98a39d1b40559b2d38e4c07056a63e183f61d4
 
         { 
           typoAttention &&

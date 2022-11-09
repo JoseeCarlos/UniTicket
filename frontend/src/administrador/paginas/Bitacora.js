@@ -51,7 +51,7 @@ const Bitacora = () => {
         usuarioCreacion: "Juan Perez",
       },
     ]);
-  });
+  }, []);
   const verBitacora = (bitacora) => {
     establecerBitacora({ ...bitacora });
     establecerDialogoVisualizacionBitacora(true);

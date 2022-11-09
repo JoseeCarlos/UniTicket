@@ -30,3 +30,34 @@ def create_requisito():
         return jsonify({'message': 'Requisito registrado'}), 200  
     except Exception as ex:
         return jsonify({'error': str(ex)}), 500
+
+@requisito.route('/update', methods=['PUT'])
+def update_requisito():
+    try:
+        requisito = Requisito(IdRequisito=request.json['IdRequisito'], Nombre=request.json['Nombre'], Descripcion=request.json['Descripcion'])
+        filas_afectadas = RequisitoModelo.actualizarRequisito(requisito)
+        if filas_afectadas == 0:
+            return jsonify({'error': 'Requisito no actualizado'}), 500
+        return jsonify({'message': 'Requisito actualizado'}), 200  
+    except Exception as ex:
+        return jsonify({'error': str(ex)}), 500
+
+@requisito.route('/delete/<int:id>', methods=['DELETE'])
+def delete_requisito(id):
+    try:
+        filas_afectadas = RequisitoModelo.eliminarRequisito(id)
+        if filas_afectadas == 0:
+            return jsonify({'error': 'Requisito no eliminado'}), 500
+        return jsonify({'message': 'Requisito eliminado'}), 200  
+    except Exception as ex:
+        return jsonify({'error': str(ex)}), 500
+
+@requisito.route('/tramite/<id>', methods=['GET'] )
+def obtener_tramites(id):
+    try:
+        tramites = RequisitoModelo.obtener_requisito_tramite(id)
+        return jsonify(tramites)
+    except Exception as ex:
+        return jsonify({'error': str(ex)}), 500
+
+    

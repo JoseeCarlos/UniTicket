@@ -473,7 +473,7 @@ const LugarAtencionMesa = () => {
           <DataTable
             value={lugarAtencionAreas}
             expandedRows={filasExpandidas}
-            onRowToggle={(e) => establecerFilasExpandidas(true)}
+            onRowToggle={(e) => establecerFilasExpandidas(e.data)}
             responsiveLayout="scroll"
             rowExpansionTemplate={baseExpancionFilas}
             dataKey="id"

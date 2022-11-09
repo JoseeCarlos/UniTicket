@@ -85,4 +85,25 @@ class RequisitoModelo():
             return affected_rows
         except Exception as ex:
             raise Exception(ex)
+    
+    @classmethod
+    def obtener_requisito_tramite(self, tramiteId):
+        try:
+            connection = get_connection()
+            requisitos = []
+            with connection.cursor() as cursor:
+                cursor.execute("""SELECT R.IdRequisito, R.Nombre, R.Descripcion
+                                    FROM URequisito R
+                                    INNER JOIN UTramite_Requisito TR ON TR.IdRequisitos=R.IdRequisito
+                                    WHERE IdTramite = ?
+                                """, (tramiteId,))
+
+                for row in cursor.fetchall():
+                    requisitos.append(Requisito(IdRequisito=row[0],Nombre=row[1],Descripcion=row[2]).to_JSON())
+            connection.close()
+            return requisitos
+        except Exception as ex:
+            raise Exception(ex)
+
+
 
