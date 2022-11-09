@@ -14,7 +14,7 @@ import Administrador from './administrador/componentes/Administrador';
 ReactDOM.render(
     <HashRouter>
         <ScrollToTop>
-            <Administrador></Administrador>
+            <Principal></Principal>
         </ScrollToTop>
     </HashRouter>,
     document.getElementById('root')

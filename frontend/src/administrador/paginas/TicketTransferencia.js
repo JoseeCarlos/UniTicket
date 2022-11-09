@@ -29,6 +29,7 @@ const TicketTransferencia = () => {
     FechaHoraReservacion: "",
     IdUsuario: null,
   };
+  const [valorFiltroLugarAtencion, establecerValorFiltroLugarAtencion] = useState(null);
   const [valorFiltroEstado, establecerValorFiltroEstado] = useState(null);
   const [valorFiltroAtencion, establecerValorFiltroAtencion] = useState(null);
   const [valorFiltroTipoTicket, establecerValorFiltroTipoTicket] =
@@ -40,10 +41,15 @@ const TicketTransferencia = () => {
     servicioMesa
       .getProductsWithOrdersSmall()
       .then((dato) => establecerProducto(dato));
-    establecerValorFiltroEstado([
-      { id: 1, nombre: "Activo" },
-      { id: 0, nombre: "Inactivo" },
-    ]);
+      establecerValorFiltroLugarAtencion([
+        { id: 1, nombre: "Cajas tiquipaya" },
+        { id: 2, nombre: "Bienestar tiquipaya" },
+        { id: 3, nombre: "Tramites tiquipaya" },
+      ]);
+      establecerValorFiltroEstado([
+        { id: 1, nombre: "Activo" },
+        { id: 0, nombre: "Inactivo" },
+      ]);
     establecerValorFiltroAtencion([
       { id: 1, nombre: "Atendido" },
       { id: 0, nombre: "No Atendido" },
@@ -121,6 +127,12 @@ const TicketTransferencia = () => {
         <span className="block mt-2 md:mt-0 p-input-icon-left">
           <Dropdown
             optionLabel="nombre"
+            placeholder="Filtro por Lugar de Atencion"
+            options={valorFiltroLugarAtencion}
+            emptyMessage="Activo Inactivo"
+          />
+          <Dropdown
+            optionLabel="nombre"
             placeholder="Filtro por Estado"
             options={valorFiltroEstado}
             emptyMessage="Activo Inactivo"
@@ -164,6 +176,7 @@ const TicketTransferencia = () => {
         <Column expander style={{ width: "1em" }} />
         <Column field="name" header="Codigo" sortable />
         <Column field="id" header="Numero" sortable />
+        <Column field="lugaraAtencion" header="Lugar atencion" sortable />
         <Column field="reserva" header="Hora Reserva" sortable />
         <Column field="area" header="Area Origen" sortable />
         <Column field="estado" header="Estado" sortable />
