@@ -1,10 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
+import { ServicioQueja } from '../servicios/ServicioQueja';
 
 const Quejas = () => {
-    const quejas = [];
+    
+    const [quejas, setQuejas] = useState([])
+    const servicioQueja = new ServicioQueja()
+    
+    useEffect(() => {
+        // setLoading2(true);
+
+        // customerService.getCustomersLarge().then(data => { setCustomers1(getCustomers(data)); setLoading1(false) });
+        // customerService.getCustomersLarge().then(data => { setCustomers2(getCustomers(data)); setLoading2(false); });
+        // customerService.getCustomersMedium().then(data => setCustomers3(data));
+        // productService.getProductsWithOrdersSmall().then(data => setProducts(data));
+        console.log('sdasd')
+        servicioQueja.getComplaints().then(data=>{
+            console.log(data)
+            setQuejas(data)
+        })
+        // servicioMesa.getComplaints().then(data => {
+        //     console.log('holaa')
+        //     console.log(data)
+        //     // setComplains(data)
+        // });
+
+
+        // initFilters1();
+    }, []);
 
     const [filasExpandidas, establecerFilasExpandidas] = useState(null);
     const expandirTodo = () => {

@@ -1,0 +1,49 @@
+{
+    "Empleado":[
+        {
+            "Nombre":"Juan",
+            "Apellido":"Perez",
+            "Edad":25,
+            "Direccion":"Calle 1",
+            "Telefono":"123456789",
+            "Email":"perez@gmail.com",
+            "Usuario": "JPA1212",
+            "Password": "123456",
+            "Rol": "Administrador"
+        },
+        {
+            "Nombre":"Maria",
+            "Apellido":"Gomez",
+            "Edad":30,
+            "Direccion":"Calle 2",
+            "Telefono":"987654321",
+            "Email":"Maria@gmail.com",
+            "Usuario": "MGO1212",
+            "Password": "123456",
+            "Rol": "Administrador"
+        },
+        {
+            "Nombre":"Pedro",
+            "Apellido":"Gonzalez",
+            "Edad":35,
+            "Direccion":"Calle 3",
+            "Telefono":"123456789",
+            "Email":"pedro@gmail.com",
+            "Usuario": "PGO1212",
+            "Password": "123456",
+            "Rol": "Empleado"
+        },
+        {
+            "Nombre":"Luis",
+            "Apellido":"Gomez",
+            "Edad":40,
+            "Direccion":"Calle 4",
+            "Telefono":"987654321",
+            "Email":"luis@gmail.com",
+            "Usuario": "LGO1212",
+            "Password": "123456",
+            "Rol": "Empleado"
+        }
+        
+    ]
+}

@@ -22,7 +22,7 @@ const Quejas = () => {
 
   useEffect(() => {
     fotoServicio.getImages().then(datos => establecerImagenes(datos));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); 
 
   const listaRazon = [
     { label: 'New York', value: 'NY' },

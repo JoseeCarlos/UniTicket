@@ -56,7 +56,7 @@ const Requisito = () => {
         estado: "Activo",
       },
     ]);
-  });
+  }, []);
   const insercionRequisito = () => {
     establecerRequisito({ requisitoVacio });
     establecerDialogoInsercionRequisito(true);

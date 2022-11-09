@@ -64,7 +64,7 @@ const TipoUsuario = () => {
         usuarioCreacion: "Juan Perez",
       },
     ]);
-  });
+  },[]);
   const insercionTipoUsuario = () => {
     establecerTipoUsuario(tipoUsuario);
     establecerDialogoInsercionTipoUsuario(true);

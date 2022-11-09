@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { Divider } from 'primereact/divider'
 import '../recursos/css/Tramites.css'
+import { TramiteServicio } from '../servicio/TramiteServicio';
+import { RequisitoServicio } from '../servicio/RequisitoServicio';
 
 const Tramites = () => {
 
 
   const [area, establecerArea] = useState(null);
   const [lugar, establecerLugar] = useState(false);
+  const [tramites,establecerTramites] = useState([]);
+  const [requisitos, establecerRequisitos] = useState([]);
+  
 
   const areaAtencion = [
     { label: 'New York', value: 'NY' },
@@ -18,6 +23,20 @@ const Tramites = () => {
     { label: 'Istanbul', value: 'IST' },
     { label: 'Paris', value: 'PRS' }
   ];
+  
+  const tramiteServicio = new TramiteServicio();
+  const requisitoServicio = new RequisitoServicio();
+  useEffect(() => {
+    tramiteServicio.obtenerTramites().then((data) => {
+      console.log(data);
+      establecerTramites(data);
+    } ); 
+    
+    // requisitoServicio.obtenerRequisitosTramite(item.IdTramite).then((data) => {
+    //   console.log(data);
+    //   establecerRequisitos(data);
+    // } );
+  }, []);
 
   return (
     <div className='contenedor-tramites'>
@@ -27,18 +46,38 @@ const Tramites = () => {
         <Dropdown className='seleccionar-lugar' value={lugar} options={areaAtencion} onChange={(e) => establecerLugar(e.value)} placeholder="Seleccione un Lugar de Atención" />
       </div>
 
-      <Divider type='dashed'/>
+      {/* <Divider type='dashed'/> */}
 
       <div className='tarjetas-tramites'>
-        <Card className='tarjeta-tramite' header={<img alt="Card" src={`assets/layout/images/${Math.floor(Math.random() * 3) + 1}.jpg`} />} title='Certificado de estudiante regular'>
-          <p>El tramite es un tramite que mas pues xd xdxdxdxxd</p>
-          <ol> <span>Requisitos</span>
-            <li>Fotocopia de carnet de identidad</li>
-            <li>Extracto economico</li>
-          </ol>
-        </Card>
+        {tramites.map((item, index) => {
+          
+          requisitoServicio.obtenerRequisitosTramite(item.IdTramite).then((data) => {
+            console.log(data);
+            establecerRequisitos(data)
+          } );
+          
+          return (
+            <Card className='tarjeta-tramite' header={<img alt="Card" src={`assets/layout/images/${Math.floor(Math.random() * 3) + 1}.jpg`} />} title={ item.Nombre }>
+              <p>{item.Descripcion}</p>
+              <ol> <span>Requisitos</span>
+              {
+                requisitos.map((item, index) => {
+                  return (
+                    <li>{item.Nombre}</li>
+                  )
+                }
+                )
+              }
+              </ol>
+            </Card>
+          )
+        } )
+
+        }
+
+        
        
-        <Card className='tarjeta-tramite' header={<img alt="Card" src={`assets/layout/images/${Math.floor(Math.random() * 3) + 1}.jpg`} />} title='Certificado de estudiante regular'>
+        {/* <Card className='tarjeta-tramite' header={<img alt="Card" src={`assets/layout/images/${Math.floor(Math.random() * 3) + 1}.jpg`} />} title='Certificado de estudiante regular'>
           <p>El tramite es un tramite que mas pues xd xdxdxdxxd</p>
           <ol> <span>Requisitos</span>
             <li>Fotocopia de carnet de identidad</li>
@@ -52,7 +91,7 @@ const Tramites = () => {
             <li>Fotocopia de carnet de identidad</li>
             <li>Extracto economico</li>
           </ol>
-        </Card>
+        </Card> */}
       </div>
     </div >
   );
