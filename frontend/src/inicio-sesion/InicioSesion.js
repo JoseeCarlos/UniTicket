@@ -4,6 +4,7 @@ import { Button } from 'primereact/button';
 import { Divider } from 'primereact/divider';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
+import { ServicioEmpleado } from '../administrador/servicios/ServicioEmpleado';
 
 function InicioSesion() {
 
@@ -17,6 +18,64 @@ function InicioSesion() {
     { name: 'Padre', code: '3' }
   ];
 
+  // const history = useHistory();
+
+  let emptyUser = {
+    userName: '',
+    password: ''
+  }
+  const [userSeleted, setUserSeleted] = useState(emptyUser);
+
+
+  const setValueUser = (e, name) => {
+    let _user = { ...userSeleted };
+    _user[name] = e.target.value;
+    setUserSeleted(_user);
+    console.log(e.target.value);
+
+  }
+  const nextPath = (path)=> {
+    this.props.history.push(path);
+  }
+
+
+  const login = () => {
+    console.log("hola");
+    console.log(userSeleted);
+    const employeeService = new ServicioEmpleado();
+    employeeService.loginEstudent(userSeleted).then(data => {
+      data.map((item) => {
+        // console.log(item);
+        if (item.Usuario == userSeleted.userName && item.Contrasenia == userSeleted.password) {
+          sessionStorage.setItem('userId', item.idEstudiante);
+          sessionStorage.setItem('name', item.Nombres);
+          if (item.Rol == "Administrador" || item.Rol == "Supervisor") {
+            sessionStorage.setItem('role', "admin");
+          }
+          if (item.Rol == "Empleado") {
+            sessionStorage.setItem('role', "Empleado");
+          }
+          if (item.Rol == "Estudiante") {
+            sessionStorage.setItem('role', "Estudiante");
+          }
+          // sessionStorage.setItem('role', "estudiante");
+          // history.push("/admin");
+          console.log(item);
+        }
+      }
+      )
+    });
+  
+    // employeeService.login(userSeleted).then(data => {
+    //   console.log(data);
+    //   sessionStorage.setItem('userId', data.userId);
+    //   sessionStorage.setItem('name', data.firstName+" "+data.firstSurname);
+    //   sessionStorage.setItem('role', data.role);
+    //   console.log(sessionStorage.getItem('userId'), sessionStorage.getItem('name'), sessionStorage.getItem('role'));
+    // }
+    // );
+  }
+
   return (
     <div className="rejilla-inicio-sesion">
       <div className="col-12">
@@ -28,14 +87,14 @@ function InicioSesion() {
                 <form>
                   <div className="field">
                     <span className="p-float-label">
-                      <InputText type="text" id="usuario" value={value1} onChange={(e) => setValue1(e.target.value)} className="p-invalid" />
+                      <InputText type="text" id="user" onChange={(e)=>{setValueUser(e,"userName")}} className="p-invalid" />
                       <label htmlFor="usuario">Usuario</label>
                     </span>
                   </div>
 
                   <div className="field">
                     <span className="p-float-label">
-                      <Password inputId="contrasenia" value={value10} onChange={(e) => setValue10(e.target.value)} className="p-invalid" />
+                      <Password inputId="password" onChange={(e)=>{setValueUser(e,"password")}} className="p-invalid" />
                       <label htmlFor="contrasenia">Contraseña</label>
                     </span>
                   </div>
@@ -51,7 +110,7 @@ function InicioSesion() {
                     <label htmlFor="recuerdame">Recuerdame</label>
                   </div>
 
-                  <Button label="Ingresar"></Button>
+                  <Button label="Ingresar" onClick={login} ></Button>
 
                   <p className="forgot-password text-right">
                     <a href="#">Olvidaste tu contraseña?</a>

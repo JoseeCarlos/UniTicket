@@ -7,6 +7,7 @@ import { Button } from "primereact/button";
 import { ServicioMesa } from "../servicios/ServicioMesa";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
+import { LugarAtencionServicio } from "../servicios/LugarAtencionServicio";
 
 const LugarAtencionMesa = () => {
   let mesaVacia = {
@@ -43,7 +44,7 @@ const LugarAtencionMesa = () => {
   };
   const [valorFiltroEstado, establecerValorFiltroEstado] = useState(null);
   const [productos, establecerProducto] = useState([]);
-  const [filasExpandidas, establecerFilasExpandidas] = useState(null);
+  const [filasExpandidas, establecerFilasExpandidas] = useState(false);
   const [numero, establecerEnvioNumero] = useState(false);
   const [mesa, establecerMesa] = useState(mesaVacia);
   const [dialogoInsercionMesa, establecerDialogoInsercionMesa] =
@@ -53,20 +54,16 @@ const LugarAtencionMesa = () => {
   const [dialogoBorradoMesa, establecerDialogoBorradoMesa] = useState(false);
   const [nombre, establecerEnvioNombre] = useState(false);
   const [lugarAtencion, establecerLugarAtencion] = useState(lugarAtencionVacio);
+  const [lugarAtencionAreas, establecerLugarAtencionAreas] = useState([])
 
-  const [
-    dialogoInsercionLugarAtencion,
-    establecerDialogoInsercionLugarAtencion,
-  ] = useState(false);
-  const [dialogoVistaLugarAtencion, establecerDialogoVistaLugarAtencion] =
-    useState(false);
-  const [dialogoEdicionLugarAtencion, establecerDialogoEdicionLugarAtencion] =
-    useState(false);
-  const [dialogoBorradoLugarAtencion, establecerDialogoBorradoLugarAtencion] =
-    useState(false);
+  const [dialogoInsercionLugarAtencion, establecerDialogoInsercionLugarAtencion] = useState(false);
+  const [dialogoVistaLugarAtencion, establecerDialogoVistaLugarAtencion] = useState(false);
+  const [dialogoEdicionLugarAtencion, establecerDialogoEdicionLugarAtencion] = useState(false);
+  const [dialogoBorradoLugarAtencion, establecerDialogoBorradoLugarAtencion] = useState(false);
   const [valorDropdown, establecerValorDropdown] = useState(null);
 
   const servicioProducto = new ServicioMesa();
+  const lugarAtencionServio = new LugarAtencionServicio();
 
   const valoresDropdown = [
     { nombre: "Cajas Tiquipaya", code: "1" },
@@ -106,20 +103,19 @@ const LugarAtencionMesa = () => {
     establecerLugarAtencion(_LugarAtencion);
   };
   useEffect(() => {
-    establecerValorFiltroEstado([
-      { id: 1, nombre: "Activo" },
-      { id: 0, nombre: "Inactivo" },
-    ]);
-    servicioProducto
-      .getProductsWithOrdersSmall()
-      .then((dato) => establecerProducto(dato));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    lugarAtencionServio
+        .obtenerLugarAtencionArea()
+        .then((dato) => {
+          console.log(dato)
+          establecerLugarAtencionAreas(dato)
+        });
+  }, []); 
 
   const expandirTodo = () => {
-    let _filasExpandidas = {};
-    productos.forEach((p) => (_filasExpandidas[`${p.id}`] = true));
+    // let _filasExpandidas = {};
+    // productos.forEach((p) => (_filasExpandidas[`${p.id}`] = true));
 
-    establecerFilasExpandidas(_filasExpandidas);
+    establecerFilasExpandidas(true);
   };
 
   const colapsarTodo = () => {
@@ -475,9 +471,9 @@ const LugarAtencionMesa = () => {
           </div>
 
           <DataTable
-            value={productos}
+            value={lugarAtencionAreas}
             expandedRows={filasExpandidas}
-            onRowToggle={(e) => establecerFilasExpandidas(e.dato)}
+            onRowToggle={(e) => establecerFilasExpandidas(e.data)}
             responsiveLayout="scroll"
             rowExpansionTemplate={baseExpancionFilas}
             dataKey="id"
@@ -490,10 +486,10 @@ const LugarAtencionMesa = () => {
             emptyMessage="No hay lugares de atención."
           >
             <Column expander style={{ width: "1em" }} />
-            <Column field="nombre" header="Nombre" sortable />
-            <Column field="area" header="Area Actual" sortable />
-            <Column field="campus" header="Campus" sortable />
-            <Column field="estado" header="Estado" sortable />
+            <Column field="Nombre" header="Nombre" sortable />
+            <Column field="NombreArea" header="Area Actual" sortable />
+            <Column field="IdSedeAcademica" header="Campus" sortable />
+            <Column field="Estado" header="Estado" sortable />
             <Column
               header="Acciones"
               headerStyle={{ width: "12rem" }}

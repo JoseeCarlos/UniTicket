@@ -1,0 +1,11 @@
+{
+    "SedeAcademica" : [
+        {
+            "idSedeAcademica": "1",
+            "nombre": "Sede Academica 1",
+            "direccionSedeAcademica": "Calle 1",
+            "telefonoSedeAcademica": "1234567"
+        }
+
+    ]
+}

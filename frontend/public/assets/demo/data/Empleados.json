@@ -1,0 +1,8 @@
+{
+    "data":[
+        {"idEmpleado": 1 , "Nombres": "Juan Luis", "PrimerApellido": "Guerra", "SegundoApellido": "Suarez", "CedulaIdentidad": "121332", "EmitidoEn": "CBBA", "Celular": "12344321","Telefono":"12344321", "CorreoElectronico" : "juan@gmail.com", "Usuario": "JLA1212", "Contrasenia": "12121212"},
+        {"idEmpleado": 2 , "Nombres": "Maria", "PrimerApellido": "Perez", "SegundoApellido": "Suarez", "CedulaIdentidad": "121332", "EmitidoEn": "CBBA", "Celular": "12344321","Telefono":"12344321", "CorreoElectronico" : "maria@gmail.com", "Usuario": "MPA1212", "Contrasenia": "12121212"},
+        {"idEmpleado": 3 , "Nombres": "Pedro", "PrimerApellido": "Perez", "SegundoApellido": "Suarez", "CedulaIdentidad": "121332", "EmitidoEn": "CBBA", "Celular": "12344321","Telefono":"12344321", "CorreoElectronico" : "pedro@gmail.com", "Usuario": "PPA1212", "Contrasenia": "12121212"},
+        {"idEmpleado": 4 , "Nombres": "Luis", "PrimerApellido": "Perez", "SegundoApellido": "Suarez", "CedulaIdentidad": "121332", "EmitidoEn": "CBBA", "Celular": "12344321","Telefono":"12344321", "CorreoElectronico" : "luis@gmail.com", "Usuario": "LPA1212", "Contrasenia": "12121212"}
+    ]
+}

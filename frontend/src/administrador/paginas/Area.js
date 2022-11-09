@@ -1,209 +1,211 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { DataView, DataViewLayoutOptions } from "primereact/dataview";
-import { Dropdown } from "primereact/dropdown";
-import { InputTextarea } from "primereact/inputtextarea";
+import { AreaService } from "../servicios/AreaService";
+
 const Area = () => {
-  let areaVacia = {
-    idArea: null,
-    nombre: "",
-    descripcion: "",
-    estado: "",
-    fechaCreacion: "",
-    fechaActualizacion: "",
-    idUsuarioCreacion: "",
-    idUsuarioModificacion: "",
+  let emptyArea = {
+    IdArea: null,
+    Nombre: "",
+    Descripcion: "",
+    NumeroMaximoTicketsParaEstudiantes: null,
+    Estado: "",
+    IdUsuarioRegistro: sessionStorage.getItem('userId'),
+    FechaRegistro: "",
+    FechaModificacion: ""
   };
-  const [valorDataview, establecerValorDataview] = useState(null);
-  const [valorFiltroEstado, establecerValorFiltroEstado] = useState(null);
-  const [envio, establecerEnvio] = useState(false);
-  const [area, establecerArea] = useState(areaVacia);
-  const [dialogoInsercionArea, establecerDialogoInsercionArea] =
-    useState(false);
-  const [dialogoVistaArea, establecerDialogoVisualizacionArea] =
-    useState(false);
-  const [dialogoEdicionArea, establecerDialogoEdicionArea] = useState(false);
-  const [dialogoBorradoArea, establecerDialogoBorradoArea] = useState(false);
+  const [dataviewValue, setDataviewValue] = useState(null);
+  const [layout, setLayout] = useState("grid");
+  const [sortOrder, setSortOrder] = useState(null);
+  const [sortField, setSortField] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
+  const [area, setArea] = useState(emptyArea);
+  const [areaInsertDialog, setAreaInsertDialog] = useState(false);
+  const [areaViewDialog, setAreaViewDialog] = useState(false);
+  const [areaEditDialog, setAreaEditDialog] = useState(false);
+  const [areaDeleteDialog, setAreaDeleteDialog] = useState(false);
+  const toast = useRef(null);
 
   useEffect(() => {
-    establecerValorFiltroEstado([
-      { id: 1, nombre: "Activo" },
-      { id: 0, nombre: "Inactivo" },
-    ]);
-    establecerValorDataview([
-      {
-        idArea: 1,
-        nombre: "Cajas",
-        descripcion: "Atencion para pagos al a universidad",
-        estado: "Activo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-        usuarioModificacion: "Jose Matinez",
-      },
-      {
-        idArea: 2,
-        nombre: "Bienestar Universitario",
-        descripcion: "Atencion para pagos al a universidad",
-        estado: "Activo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-        usuarioModificacion: "Jose Matinez",
-      },
-      {
-        idArea: 3,
-        nombre: "Tramites",
-        descripcion: "Atencion para pagos al a universidad",
-        estado: "Activo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-        usuarioModificacion: "Jose Matinez",
-      },
-      {
-        idArea: 4,
-        nombre: "Contabilidad",
-        descripcion: "Atencion para pagos al a universidad",
-        estado: "Activo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-        usuarioModificacion: "Jose Matinez",
-      },
-      {
-        idArea: 5,
-        nombre: "Incripciones",
-        descripcion: "Atencion para pagos al a universidad",
-        estado: "Inactivo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-        usuarioModificacion: "Jose Matinez",
-      },
-    ]);
+    const areaService = new AreaService();
+    areaService.getAreas().then((data) => {
+      console.log(data);
+      setDataviewValue(data)});
   }, []);
-  const verArea = (area) => {
-    establecerArea({ ...area });
-    establecerDialogoVisualizacionArea(true);
+  const viewArea = (area) => {
+    setArea({ ...area });
+    setAreaViewDialog(true);
   };
-  const insercionArea = () => {
-    establecerArea(areaVacia);
-    establecerDialogoInsercionArea(true);
+  const openAreaInsertDialog = () => {
+    setArea(emptyArea);
+    setAreaInsertDialog(true);
   };
-  const edicionArea = (area) => {
-    establecerArea({ ...area });
-    establecerDialogoEdicionArea(true);
+  const editArea = (area) => {
+    setArea({ ...area });
+    setAreaEditDialog(true);
   };
-  const borradoArea = (area) => {
-    establecerArea({ ...area });
-    establecerDialogoBorradoArea(true);
+  const deleteArea = (area) => {
+    setArea({ ...area });
+    setAreaDeleteDialog(true);
   };
-  const ocultarDialogoInsercionArea = () => {
-    establecerEnvio(false);
-    establecerDialogoInsercionArea(false);
+  const hideAreaInsertDialog = () => {
+    setSubmitted(false);
+    setAreaInsertDialog(false);
   };
-  const ocultarDialogoVistaArea = () => {
-    establecerEnvio(false);
-    establecerDialogoVisualizacionArea(false);
+  const hideAreaViewDialog = () => {
+    setSubmitted(false);
+    setAreaViewDialog(false);
   };
-  const ocultarDialogoEdicionArea = () => {
-    establecerEnvio(false);
-    establecerDialogoEdicionArea(false);
+  const hideAreaEditDialog = () => {
+    setSubmitted(false);
+    setAreaEditDialog(false);
   };
-  const ocultarDialogoBorradoArea = () => {
-    establecerEnvio(false);
-    establecerDialogoBorradoArea(false);
+  const hideAreaDeleteDialog = () => {
+    setSubmitted(false);
+    setAreaDeleteDialog(false);
   };
-  const guardarArea = () => {};
+  const saveArea = () => {
+    setSubmitted(true)
 
-  const cambioEntrada = (e, nombre) => {
-    const valor = (e.target && e.target.value) || "";
+    if(area.Nombre.trim())
+    {
+      let _area = {...area};
+      if(area.IdArea){
+        console.log("update");
+        // _area.userIdMod = 1;
+        // _area.updateDate = "2021-01-01";
+        console.log(_area)
+        const areaService = new AreaService();
+        areaService.updateArea(_area).then(data => {
+          console.log(data);
+        });
+        areaService.getAreas().then((data) => {
+          console.log(data);
+          setDataviewValue(data)
+        });
+        toast.current.show({ severity: "success", summary: "Successful", detail: "Area Updated", life: 3000 });
+        setAreaEditDialog(false);
+      }else{
+        console.log("create")
+        console.log(_area)
+        const areaService = new AreaService();
+        areaService.addArea(_area).then(data => {
+          console.log(data);
+          if (data.status === 200) {
+            toast.current.show({ severity: "success", summary: "Successful", detail: "Area Creada con Exito", life: 3000 });
+            setAreaInsertDialog(false);
+            setArea(emptyArea);
+            areaService.getAreas().then((data) => setDataviewValue(data));
+          } else {
+            toast.current.show({ severity: "error", summary: "Error", detail: "Area No Creada", life: 3000 });
+          }
+        }
+        );
+      }
+    }
+  };
+
+  const onInputChange = (e, name) => {
+    const val = (e.target && e.target.value) || "";
     let _area = { ...area };
-    _area[`${nombre}`] = valor;
+    _area[`${name}`] = val;
 
-    establecerArea(_area);
+    setArea(_area);
   };
-  const pieDialogoInsercionArea = (
+  const areaInsertDialogFooter = (
     <>
       <Button
         label="Cancelar"
         icon="pi pi-times"
         className="p-button-text"
-        onClick={ocultarDialogoInsercionArea}
+        onClick={hideAreaInsertDialog}
       />
-      <Button label="Guardar" icon="pi pi-check" onClick={guardarArea} />
+      <Button
+        label="Guardar"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={saveArea}
+      />
     </>
   );
-  const pieDialogoVistaArea = (
+  const areaViewDialogFooter = (
     <>
       <Button
         label="Cancelar"
         icon="pi pi-times"
         className="p-button-text"
-        onClick={ocultarDialogoVistaArea}
+        onClick={hideAreaViewDialog}
       />
     </>
   );
 
-  const borrarArea = () => {};
-  const pieDialogoBorradoArea = (
+  const deleteAttentionPlace = () => {
+    const areaService = new AreaService();
+    areaService.deleteArea(area.IdArea).then(data => {
+      console.log(data);
+    }
+    );
+    areaService.getAreas().then((data) => setDataviewValue(data));
+    toast.current.show({ severity: "success", summary: "Successful", detail: "Area Eliminada con Exito", life: 3000 });
+  };
+  const areaDeleteDialogFooter = (
     <>
       <Button
         label="No"
         icon="pi pi-times"
         className="p-button-text"
-        onClick={ocultarDialogoBorradoArea}
+        onClick={hideAreaDeleteDialog}
       />
       <Button
         label="Si"
         icon="pi pi-check"
         className="p-button-text"
-        onClick={borrarArea}
+        onClick={deleteAttentionPlace}
       />
     </>
   );
-  const pieDialogoEdicionArea = (
+  const areaEditDialogFooter = (
     <>
       <Button
         label="Cancelar"
         icon="pi pi-times"
         className="p-button-text"
-        onClick={ocultarDialogoEdicionArea}
+        onClick={hideAreaEditDialog}
       />
-      <Button label="Guardar" icon="pi pi-check" onClick={guardarArea} />
+      <Button
+        label="Guardar"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={saveArea}
+      />
     </>
   );
-  const listaElementoDataView = (dato) => {
+  const dataviewListItem = (data) => {
     return (
       <>
         <div className="col-12">
           <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <div className="flex flex-column md:flex-row align-items-center p-3">
-              <img
-                src={`assets/demo/images/product/${dato.image}`}
-                alt={dato.name}
-                className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5"
-              />
+               <img src={`assets/layout/images/campusDef.jpg`} alt={data.name} className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
               <div className="flex-1 text-center md:text-left">
-                <div className="font-bold text-2xl">{dato.nombre}</div>
-                <div className="mb-3">{dato.descripcion}</div>
-                <div className="mb-3">{dato.estado}</div>
+                <div className="font-bold text-2xl">{data.Nombre}</div>
+                <div className="mb-3">{data.Descripcion}</div>
+                <div className="mb-3">{data.Estado == 1 ? 'Activo':'Inactivo'}</div>
               </div>
             </div>
             <span className="p-buttonset">
               <Button
                 icon="pi pi-eye"
                 onClick={() => {
-                  verArea(dato);
+                  viewArea(data);
                 }}
               />
-              <Button icon="pi pi-pencil" onClick={() => edicionArea(dato)} />
-              <Button icon="pi pi-trash" onClick={() => borradoArea(dato)} />
+              <Button icon="pi pi-pencil" onClick={() => editArea(data)} />
+              <Button icon="pi pi-trash" onClick={() => deleteArea(data)} />
             </span>
           </div>
         </div>
@@ -211,176 +213,185 @@ const Area = () => {
     );
   };
   return (
-    <React.Fragment>
+    <>
       <div className="card">
-        <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-          <h5>
-            Administración de Areas{" "}
-            <i className="pi pi-plus icn" onClick={insercionArea} />
-          </h5>
-          <div className="filters">
-            <span className="block mt-2 md:mt-0 p-input-icon-left">
-              <Dropdown
-                optionLabel="nombre"
-                placeholder="Filtro por Estado"
-                options={valorFiltroEstado}
-                emptyMessage="Activo Inactivo"
-              />
-            </span>
-          </div>
-        </div>
+        <h5>
+          Administración De Areas{" "}
+          <i className="pi pi-plus icn" onClick={openAreaInsertDialog} />
+        </h5>
+        <Toast ref={toast} />
         <DataView
-          value={valorDataview}
+          value={dataviewValue}
+          layout={layout}
           paginator
-          rows={5}
-          itemTemplate={listaElementoDataView}
+          rows={9}
+          sortOrder={sortOrder}
+          sortField={sortField}
+          itemTemplate={dataviewListItem}
         ></DataView>
       </div>
       <Dialog
-        visible={dialogoInsercionArea}
+        visible={areaInsertDialog}
         style={{ width: "450px" }}
         header="Nueva Area"
         modal
         className="p-fluid"
-        footer={pieDialogoInsercionArea}
-        onHide={ocultarDialogoInsercionArea}
+        footer={areaInsertDialogFooter}
+        onHide={hideAreaInsertDialog}
       >
         <div className="field">
-          <label htmlFor="nombre">Nombre</label>
+          <label htmlFor="name">Nombre</label>
           <InputText
-            id="nombre"
-            onChange={(e) => cambioEntrada(e, "nombre")}
+            id="name"
+            value={area.Nombre}
+            onChange={(e) => onInputChange(e, "name")}
             required
             autoFocus
-            className={classNames({ "p-invalid": envio && !area.nombre })}
+            className={classNames({ "p-invalid": submitted && !area.Nombre })}
           />
-          {envio && !area.nombre && (
-            <small className="p-invalid">El nombre es requerido.</small>
-          )}
+          {submitted && !area.Nombre && (<small className="p-invalid">El nombre es requerido.</small>)}
         </div>
         <div className="field">
-          <label htmlFor="descripcion">Descripción</label>
-          <InputTextarea
-            id="descripcion"
-            autoResize
-            onChange={(e) => cambioEntrada(e, "descripcion")}
-            required
-            className={classNames({ "p-invalid": envio && !area.descripcion })}
+          <label htmlFor="description">Descripción</label>
+          <InputText id="description" value={area.Descripcion} onChange={(e) => onInputChange(e, "Descripcion")} required
+            autoFocus
+            className={classNames({ "p-invalid": submitted && !area.Descripcion })}
           />
-          {envio && !area.descripcion && (
-            <small className="p-invalid">El nombre es requerido.</small>
+          {submitted && !area.Descripcion && (
+            <small className="p-invalid">La Descripcion es requerido.</small>
           )}
         </div>
       </Dialog>
       <Dialog
-        visible={dialogoVistaArea}
+        visible={areaInsertDialog}
+        style={{ width: "450px" }}
+        header="Nueva Area"
+        modal
+        className="p-fluid"
+        footer={areaInsertDialogFooter}
+        onHide={hideAreaInsertDialog}
+      >
+        <div className="field">
+          <label htmlFor="name">Nombre</label>
+          <InputText
+            id="name"
+            value={area.Nombre}
+            onChange={(e) => onInputChange(e, "Nombre")}
+            required
+            autoFocus
+            className={classNames({ "p-invalid": submitted && !area.name })}
+          />
+          {submitted && !area.Nombre && (
+            <small className="p-invalid">El nombre es requerido.</small>
+          )}
+        </div>
+        <div className="field">
+          <label htmlFor="description">Descripción</label>
+          <InputText
+            id="description"
+            value={area.Descripcion}
+            onChange={(e) => onInputChange(e, "Descripcion")}
+            required
+            autoFocus
+            className={classNames({ "p-invalid": submitted && !area.Descripcion })}
+          />
+          {submitted && !area.Descripcion && (
+            <small className="p-invalid">La Descripcion es requerida.</small>
+          )}
+        </div>
+        <div className="field">
+          <label htmlFor="Numero">Numero maximo de Tickect </label>
+          <InputText
+            id="description"
+            value={area.NumeroMaximoTicketsParaEstudiantes}
+            onChange={(e) => onInputChange(e, "NumeroMaximoTicketsParaEstudiantes")}
+            required
+            autoFocus
+            className={classNames({ "p-invalid": submitted && !area.NumeroMaximoTicketsParaEstudiantes })}
+          />
+          {submitted && !area.NumeroMaximoTicketsParaEstudiantes && (
+            <small className="p-invalid">El Numeor es requerido.</small>
+          )}
+        </div>
+      </Dialog>
+      <Dialog
+        visible={areaViewDialog}
         style={{ width: "450px" }}
         header="Visualizar Area"
         modal
         className="p-fluid"
-        footer={pieDialogoVistaArea}
-        onHide={ocultarDialogoVistaArea}
+        footer={areaViewDialogFooter}
+        onHide={hideAreaViewDialog}
       >
         <div className="field">
-          <label htmlFor="nombre">Nombre</label>
+          <label htmlFor="name">Nombre</label>
           <InputText
-            id="nombre"
-            value={area.nombre}
-            onChange={(e) => cambioEntrada(e, "nombre")}
+            id="name"
+            value={area.Nombre}
+            onChange={(e) => onInputChange(e, "Nombre")}
             readOnly
           />
         </div>
         <div className="field">
-          <label htmlFor="descripcion">Descripción</label>
-          <InputTextarea
-            id="descripcion"
-            autoResize
-            value={area.descripcion}
-            readOnly
-          />
+          <label htmlFor="description">Descripción</label>
+          <InputText id="description" value={area.Descripcion} readOnly />
         </div>
         <div className="field">
-          <label htmlFor="estado">Estado</label>
-          <InputText id="estado" value={area.estado} readOnly />
+          <label htmlFor="status">Estado</label>
+          <InputText id="status" value={area.Estado} readOnly />
         </div>
         <div className="field">
-          <label htmlFor="usuarioCreacion">Responsable de Registro</label>
-          <InputText
-            id="usuarioCreacion"
-            value={area.usuarioCreacion}
-            readOnly
-          />
+          <label htmlFor="userCreate">Responsable de Registro</label>
+          <InputText id="userCreate" value={area.userCreate} readOnly />
         </div>
         <div className="field">
-          <label htmlFor="fechaCreacion">Fecha de Registro</label>
-          <InputText id="fechaCreacion" value={area.fechaCreacion} readOnly />
+          <label htmlFor="createDate">Fecha de Registro</label>
+          <InputText id="createDate" value={area.createDate} readOnly />
         </div>
         <div className="field">
-          <label htmlFor="fechaActualizacion">
-            Fecha de Ultima Modificación
-          </label>
-          <InputText
-            id="fechaActualizacion"
-            value={area.fechaActualizacion}
-            readOnly
-          />
+          <label htmlFor="updateDate">Fecha de Ultima Modificación</label>
+          <InputText id="updateDate" value={area.updateDate} readOnly />
         </div>
         <div className="field">
-          <label htmlFor="usuarioModificacion">
-            Responsable de Ultima Modificación
-          </label>
-          <InputText
-            id="usuarioModificacion"
-            value={area.usuarioModificacion}
-            readOnly
-          />
+          <label htmlFor="userMod">Responsable de Ultima Modificación</label>
+          <InputText id="userMod" value={area.userMod} readOnly />
         </div>
       </Dialog>
       <Dialog
-        visible={dialogoEdicionArea}
+        visible={areaEditDialog}
         style={{ width: "450px" }}
         header="Editar Area"
         modal
         className="p-fluid"
-        footer={pieDialogoEdicionArea}
-        onHide={ocultarDialogoEdicionArea}
+        footer={areaEditDialogFooter}
+        onHide={hideAreaEditDialog}
       >
         <div className="field">
-          <label htmlFor="nombre">Nombre</label>
+          <label htmlFor="name">Nombre</label>
           <InputText
-            id="nombre"
-            value={area.nombre}
-            onChange={(e) => cambioEntrada(e, "nombre")}
+            id="name"
+            value={area.Nombre}
+            onChange={(e) => onInputChange(e, "Nombre")}
             required
           />
         </div>
         <div className="field">
-          <label htmlFor="descripcion">Descripción</label>
-          <InputTextarea
-            id="descripcion"
-            autoResize
-            value={area.descripcion}
-            onChange={(e) => cambioEntrada(e, "descripcion")}
-            required
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="estado">Estado</label>
+          <label htmlFor="description">Descripción</label>
           <InputText
-            id="estado"
-            value={area.estado}
-            onChange={(e) => cambioEntrada(e, "estado")}
+            id="description"
+            value={area.Descripcion}
+            onChange={(e) => onInputChange(e, "Descripcion")}
             required
           />
         </div>
       </Dialog>
       <Dialog
-        visible={dialogoBorradoArea}
+        visible={areaDeleteDialog}
         style={{ width: "450px" }}
-        header="Confirmar"
+        header="Confirm"
         modal
-        footer={pieDialogoBorradoArea}
-        onHide={ocultarDialogoBorradoArea}
+        footer={areaDeleteDialogFooter}
+        onHide={hideAreaDeleteDialog}
       >
         <div className="flex align-items-center justify-content-center">
           <i
@@ -388,11 +399,11 @@ const Area = () => {
             style={{ fontSize: "2rem" }}
           />
           <span>
-            Estás seguro de que desea elimiar el area <b>{area.nombre}</b>?
+            Estás seguro de que desea elimiar el area <b>{area.Nombre}</b>?
           </span>
         </div>
       </Dialog>
-    </React.Fragment>
+    </>
   );
 };
 const comparisonFn = function (prevProps, nextProps) {

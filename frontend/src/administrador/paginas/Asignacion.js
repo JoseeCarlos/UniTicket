@@ -7,22 +7,29 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ServicioEmpleado } from "../servicios/ServicioEmpleado";
 import { Divider } from "primereact/divider";
+import { AsignacionServicio } from "../servicios/AsignacionServicio";
+import EmpleadoAtencion from "../../empleado/paginas/EmpleadoAtencion";
+import { EmpeladoServicio } from "../servicios/EmpleadoServicio";
 import { ListBox } from "primereact/listbox";
+import { LugarAtencionServicio } from "../servicios/LugarAtencionServicio";
+import { ServicioMesa } from "../servicios/ServicioMesa";
 
 const Asignacion = () => {
   let asignacionVacia = {
-    idEmpleado: null,
+    IdEmpleado: null,
     IdMesa: null,
-    estado: "",
-    fechaCreacion: "",
-    fechaActualizacion: "",
-    idUsuarioCreacion: "",
-    idUsuarioModificacion: "",
+    Estado: "",
+    FechaCreacion: "",
+    FechaActualizacion: "",
+    IdUsuarioRegistro: sessionStorage.getItem('userId'),
+    IdUsuarioModificacion: "",
   };
 
   const [enviado, establecerEnvio] = useState(false);
   const [valorDropdown, establecerValorDropdown] = useState(null);
-  const [empleadoSeleccionado, establecerEmpleadoSeleccionado] = useState(null);
+  const [valorLugar, establecerValorLugar] = useState([]);
+  const [valorMesa, establecerValorMesa] = useState([]);
+  const [empleadoSeleccionado, establecerEmpleadoSeleccionado] = useState([]);
   const [filtroAsignacion, establecerFiltroAsignacion] = useState(null);
   const [filtroEmpleado, establecerFiltroEmpleado] = useState(null);
   const [asignacion, establecerAsignacion] = useState(asignacionVacia);
@@ -38,22 +45,59 @@ const Asignacion = () => {
     useState(false);
   const [carga, establecerCarga] = useState(true);
   const [empleado, establecerEmpleados] = useState([]);
+  const [asignaciones, establecerAsignaciones] = useState([]);
+  const [lugaresAtencion, establecerLugaresAtencion] = useState([]);
+  const [obtenerMesas, establecerObtenerMesas] = useState([]);
+
 
   const servicioEmpleado = new ServicioEmpleado();
+  const servicioAsignacion = new AsignacionServicio();
+  const empleadoServicio = new EmpeladoServicio();
+  const lugarAtencionServicio = new LugarAtencionServicio();
+  const servicioMesa = new ServicioMesa();
 
   useEffect(() => {
-    establecerCarga(true);
-    servicioEmpleado
-      .getEmployeesSmall()
-      .then((data) => establecerEmpleados(data));
-  });
+
+    servicioAsignacion
+      .obtenerAsignaciones()
+      .then((data) => {console.log(data)
+        establecerAsignaciones(data);});
+    
+    empleadoServicio
+      .obtenerEmpleados()
+      .then((data) => {console.log(data);
+        establecerEmpleados(data);  
+      });
+
+    lugarAtencionServicio
+      .obtenerLugarAtencionArea()
+      .then((data) => {console.log(data);
+        establecerLugaresAtencion(data);
+      });
+
+    servicioMesa
+      .obtenerMesasLugar("1")
+      .then((data) => {console.log(data);
+        // establecerLugaresAtencion(data);
+      });
+
+  }, []);
 
   const valoresDropdown = [
     { name: "Habilitado", code: "1" },
     { name: "Inhabilitado", code: "0" },
   ];
 
-  const guardarAsignacion = () => {};
+  const guardarAsignacion = () => {
+    console.log(asignacion)
+    servicioAsignacion.agregarAsignacion(asignacion)
+    .then((data) => {
+      console.log(data);
+      // establecerAsignaciones([...asignaciones, data]);
+      // establecerDialogoInsercionAsignacion(false);
+      // establecerAsignacion(asignacionVacia);
+    });
+  };
   const insercionAsignacion = () => {
     establecerAsignacion(asignacionVacia);
     establecerDialogoInsercionAsignacion(true);
@@ -146,6 +190,24 @@ const Asignacion = () => {
     establecerEnvio(false);
     establecerDialogoBorradoAsignacion(false);
   };
+  const obtenerMesasLugar = (lugar) => {
+    servicioMesa
+      .obtenerMesasLugar(lugar.IdLugarAtencion)
+      .then((data) => {console.log(data);
+        establecerObtenerMesas(data)
+      });
+  }
+
+  const guardarEmpleado = (empleado) => {
+    let _asignacion = asignacion
+    _asignacion.IdEmpleado = empleado.idEmpleado
+    establecerAsignacion(_asignacion)
+  }
+  const guardarMesa = (mesa) => {
+    let _asignacion = asignacion
+    _asignacion.IdMesa = mesa.IdMesa
+    establecerAsignacion(_asignacion)
+  }
   const encabezado = (
     <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
       <h5 className="m-0">
@@ -158,7 +220,7 @@ const Asignacion = () => {
             value={valorDropdown}
             onChange={(e) => establecerValorDropdown(e.value)}
             options={valoresDropdown}
-            optionLabel="nombre"
+            optionLabel="name"
             placeholder="Estado del empleado"
           />
         </span>
@@ -180,7 +242,7 @@ const Asignacion = () => {
           <DataTable
             responsiveLayout="scroll"
             header={encabezado}
-            value={empleado}
+            value={asignaciones}
             globalFilter={filtroAsignacion}
             paginator
             rows={10}
@@ -189,14 +251,14 @@ const Asignacion = () => {
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
             emptyMessage="No hay asignaciones."
           >
-            <Column field="nombre" header="Nombre Completo" sortable></Column>
-            <Column field="area" header="Area" sortable></Column>
+            <Column field="IdEmpleado" header="Nombre Completo" sortable></Column>
+            <Column field="NombreArea" header="Area" sortable></Column>
             <Column
-              field="attentionPlace"
+              field="NombreLugarAtencion"
               header="Lugar de atencion"
               sortable
             ></Column>
-            <Column field="mesa" header="Mesa" sortable></Column>
+            <Column field="Numero" header="Mesa" sortable></Column>
             <Column
               header="Acciones"
               headerStyle={{ width: "12rem" }}
@@ -229,9 +291,12 @@ const Asignacion = () => {
                     id="empleado"
                     value={empleadoSeleccionado}
                     options={empleado}
-                    onChange={(e) => establecerEmpleadoSeleccionado(e.value)}
+                    onChange={(e) => {
+                      console.log(e.value)
+                      guardarEmpleado(e.value)
+                      establecerEmpleadoSeleccionado(e.value)}}
                     filter
-                    optionLabel="name"
+                    optionLabel="Nombres"
                   />
                 </div>
               </div>
@@ -244,6 +309,15 @@ const Asignacion = () => {
                     placeholder="Seleccione el lugar de atencion"
                     required
                     emptyMessage="No se encontraron lugares de atención"
+                    options={lugaresAtencion}
+                    value={valorLugar}
+                    onChange={(e) => {
+                      console.log(e.value)
+                      establecerValorLugar(e.value)
+                      obtenerMesasLugar(e.value)
+                    }}
+                    optionLabel="Nombre"
+                    label="Nombre"
                   ></Dropdown>
                 </div>
                 <div className="field">
@@ -253,19 +327,34 @@ const Asignacion = () => {
                     placeholder="Seleccione la mesa"
                     required
                     emptyMessage="No se encontraron mesas"
+                    options={obtenerMesas}
+                    value={valorMesa}
+                    onChange={(e) => {
+                      console.log(e.value)
+                      guardarMesa(e.value)
+                      establecerValorMesa(e.value)
+                    }}
+                    label="Numero"
+                    optionLabel="Numero"
                   ></Dropdown>
                 </div>
                 <div className="card p-fluid">
                   <h5>Resumen de la Asignación</h5>
                   <div className="field">
                     <label htmlFor="empleadoSeleccionado">Empleado</label>
-                    <p id="empleadoSeleccionado">Juan Perez</p>
+                    <p id="empleadoSeleccionado">{empleadoSeleccionado.Nombres ? ""+empleadoSeleccionado.Nombres : 'Seleccione un empleado' }</p>
                   </div>
                   <div className="field">
                     <label htmlFor="lugarAtencionSeleccionado">
                       Lugar de Atención
                     </label>
-                    <p id="lugarAtencionSeleccionado">Cajas Tiquipaya</p>
+                    <p id="lugarAtencionSeleccionado">{valorLugar.Nombre ? ""+valorLugar.Nombre : 'Seleccione un Lugar de atencion' }</p>
+                  </div>
+                  <div className="field">
+                    <label htmlFor="NumeroMesaSeleccionado">
+                      Numero de Mesa
+                    </label>
+                    <p id="numeroMesaSeleccionado">{valorMesa.Numero ? ""+valorMesa.Numero : 'Seleccione una Mesa' }</p>
                   </div>
                   <div className="field">
                     <label htmlFor="fechaInicio">Fecha de Inicio</label>
@@ -285,7 +374,7 @@ const Asignacion = () => {
             <div className="p-fluid">
               <div className="field">
                 <label htmlFor="empleado">Empleado</label>
-                <p id="empleado">Juan Perez</p>
+                <p id="empleado">Pedor</p>
               </div>
             </div>
             <div className="p-fluid">
@@ -293,7 +382,7 @@ const Asignacion = () => {
                 <label htmlFor="lugarAtencionSeleccionado">
                   Lugar de Atención
                 </label>
-                <p id="lugarAtencionSeleccionado">Cajas Tiquipaya</p>
+                <p id="lugarAtencionSeleccionado">Cajas</p>
               </div>
               <div className="field">
                 <label htmlFor="fechaInicio">Fecha de Inicio</label>
@@ -356,7 +445,7 @@ const Asignacion = () => {
                   <h5>Resumen de la Asignación</h5>
                   <div className="field">
                     <label htmlFor="empleadoSeleccionado">Empleado</label>
-                    <p id="empleadoSeleccionado">Juan Perez</p>
+                    <p id="empleadoSeleccionado"></p>
                   </div>
                   <div className="field">
                     <label htmlFor="lugarAtencionSeleccionado">
