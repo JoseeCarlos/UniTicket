@@ -1,6 +1,7 @@
 from flask import jsonify
 from database.db import get_connection
 from .UEntidades.LugarAtencion_Area import LugarAtencion_Area
+from .MesaModelo import MesaModelo
 import json
 
 class LugarAtencion_AreaModelo():
@@ -21,7 +22,7 @@ class LugarAtencion_AreaModelo():
                                     inner join UArea A on A.IdArea=LU.IdArea
                                 """)
                 for row in cursor.fetchall():
-                    lugaAtencionAreas.append(LugarAtencion_Area(IdLugarAtencion=row[0], Nombre=row[1], IdSedeAcademica=row[2], IdSitio=row[3], NombreArea=row[4], IdArea=row[5], Estado=row[6]).to_JSON())
+                    lugaAtencionAreas.append(LugarAtencion_Area(IdLugarAtencion=row[0], Nombre=row[1], IdSedeAcademica=row[2], IdSitio=row[3], NombreArea=row[4], IdArea=row[5], Estado=row[6], Mesas=MesaModelo.obtenerMesaLugarAtencion(row[0])).to_JSON())
 
             connection.close()
             return lugaAtencionAreas

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import classNames from "classnames";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
@@ -9,16 +9,19 @@ import { Divider } from "primereact/divider";
 import { PickList } from "primereact/picklist";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from "primereact/dropdown";
+import { RequisitoServicio } from "../servicios/RequisitoServicio";
+import { Toast } from "primereact/toast";
 const Requisito = () => {
   let requisitoVacio = {
-    idRequisito: null,
-    nombre: "",
-    descripcion: "",
-    idUsuarioRegistro: null,
-    estado: "",
-    fechaRegistro: "",
-    fechaModificacion: "",
+    IdRequisito: null,
+    Nombre: "",
+    Descripcion: "",
+    IdUsuarioRegistro: 1,
+    Estado: "",
+    FechaRegistro: "",
+    FechaModificacion: "",
   };
+  const toast = useRef(null);
   const [envio, establecerEnvio] = useState(false);
   const [valorDataview, establecerValorDataview] = useState(null);
   const [valorFiltroEstado, establecerValorFiltroEstado] = useState(null);
@@ -31,34 +34,42 @@ const Requisito = () => {
     useState(false);
   const [dialogoBorradoRequisito, establecerDialogoBorradoRequisito] =
     useState(false);
+  
+  const requisitoServicio = new RequisitoServicio();
+
   useEffect(() => {
+    requisitoServicio.obtenerRequisitos().then((datos) => {
+      console.log(datos);
+      establecerValorDataview(datos);
+    });
+
     establecerValorFiltroEstado([
       { id: 1, nombre: "Activo" },
       { id: 0, nombre: "Inactivo" },
     ]);
-    establecerValorDataview([
-      {
-        idRequisito: 1,
-        nombre: "Carnet",
-        descripcion: "Documento de identificacion personal",
-        estado: "Activo",
-      },
-      {
-        idRequisito: 2,
-        nombre: "Titulo Bachiller",
-        descripcion: "Titulo de culminacion de educacion",
-        estado: "Activo",
-      },
-      {
-        idRequisito: 1,
-        nombre: "Carnet de estudiante",
-        descripcion: "Documento de identificacion estudiantil",
-        estado: "Activo",
-      },
-    ]);
+    // establecerValorDataview([
+    //   {
+    //     idRequisito: 1,
+    //     nombre: "Carnet",
+    //     descripcion: "Documento de identificacion personal",
+    //     estado: "Activo",
+    //   },
+    //   {
+    //     idRequisito: 2,
+    //     nombre: "Titulo Bachiller",
+    //     descripcion: "Titulo de culminacion de educacion",
+    //     estado: "Activo",
+    //   },
+    //   {
+    //     idRequisito: 1,
+    //     nombre: "Carnet de estudiante",
+    //     descripcion: "Documento de identificacion estudiantil",
+    //     estado: "Activo",
+    //   },
+    // ]);
   }, []);
   const insercionRequisito = () => {
-    establecerRequisito({ requisitoVacio });
+    establecerRequisito(requisitoVacio);
     establecerDialogoInsercionRequisito(true);
   };
   const vistaRequisito = (requisito) => {
@@ -90,6 +101,69 @@ const Requisito = () => {
     establecerEnvio(false);
     establecerDialogoBorradoRequisito(false);
   };
+
+  const guardarRequisito = () => {
+    console.log(requisito);
+    if (requisito.IdRequisito) {
+      requisitoServicio
+        .actualizarRequisito(requisito)
+        .then((datos) => {
+          console.log(datos)
+          if(datos.status === 200){
+            toast.current.show({severity:'success', summary: 'Exito', detail:'Requisito actualizado', life: 3000});
+            requisitoServicio.obtenerRequisitos().then((datos) => {
+              console.log(datos);
+              establecerValorDataview(datos);
+            });
+          
+          }else{
+            toast.current.show({severity: 'error', summary: 'Error', detail: 'Error al actualizar requisito', life: 3000});
+          }
+        });
+    }
+    else {
+      requisitoServicio
+        .crearRequisito(requisito)
+        .then((datos) => {
+          console.log(datos);
+          if(datos.status === 200){
+            toast.current.show({severity:'success', summary: 'Exito', detail:'Requisito creado', life: 3000});
+            requisitoServicio.obtenerRequisitos().then((datos) => {
+              console.log(datos);
+              establecerValorDataview(datos);
+            });
+
+          }else{
+            toast.current.show({severity: 'error', summary: 'Error', detail: 'Error al crear requisito', life: 3000});
+          }
+        });
+
+    }
+    establecerEnvio(true);
+    establecerDialogoInsercionRequisito(false);
+    establecerDialogoEdicionRequisito(false);
+  
+  }
+
+  const eliminarRequisito = () => {
+    requisitoServicio
+      .eliminarRequisito(requisito.IdRequisito)
+      .then((datos) => {
+        console.log(datos);
+        if(datos.status === 200){
+          toast.current.show({severity:'success', summary: 'Exito', detail:'Requisito eliminado', life: 3000});
+          requisitoServicio.obtenerRequisitos().then((datos) => {
+            console.log(datos);
+            establecerValorDataview(datos);
+          });
+        }else{
+          toast.current.show({severity: 'error', summary: 'Error', detail: 'Error al eliminar requisito', life: 3000});
+        }
+      });
+    establecerEnvio(true);
+    establecerDialogoBorradoRequisito(false);
+  };
+
   const pieDialogoInsercionRequisito = (
     <>
       <Button
@@ -98,7 +172,7 @@ const Requisito = () => {
         className="p-button-text"
         onClick={ocultarDialogoInsercionRequisito}
       />
-      <Button label="Guardar" icon="pi pi-check" />
+      <Button label="Guardar" onClick={guardarRequisito} icon="pi pi-check" />
     </>
   );
   const pieDialogoVistaRequisito = (
@@ -117,7 +191,7 @@ const Requisito = () => {
         className="p-button-text"
         onClick={ocultarDialogoEdicionRequisito}
       />
-      <Button label="Guardar" icon="pi pi-check" />
+      <Button label="Guardar" onClick={guardarRequisito} icon="pi pi-check" />
     </>
   );
   const pieDialogoBorradoRequisito = (
@@ -128,7 +202,7 @@ const Requisito = () => {
         className="p-button-text"
         onClick={ocultarDialogoBorradoRequisito}
       />
-      <Button label="Si" icon="pi pi-check" />
+      <Button label="Si" onClick={eliminarRequisito} icon="pi pi-check" />
     </>
   );
   const listaElementoDataView = (dato) => {
@@ -138,9 +212,9 @@ const Requisito = () => {
           <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <div className="flex flex-column md:flex-row align-items-center p-3">
               <div className="flex-1 text-center md:text-left">
-                <div className="font-bold text-2xl">{dato.nombre}</div>
-                <div className="mb-3">{dato.descripcion}</div>
-                <div className="mb-3">{dato.estado}</div>
+                <div className="font-bold text-2xl">{dato.Nombre}</div>
+                <div className="mb-3">{dato.Descripcion}</div>
+                <div className="mb-3">{dato.Estado}</div>
               </div>
             </div>
             <span className="p-buttonset">
@@ -168,6 +242,7 @@ const Requisito = () => {
   return (
     <React.Fragment>
       <div className="card">
+      <Toast ref={toast} />
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
           <h5>
             Administración de Requisitos{" "}
@@ -206,9 +281,10 @@ const Requisito = () => {
             id="nombre"
             required
             autoFocus
-            className={classNames({ "p-invalid": envio && !requisito.nombre })}
+            onChange={(e) => cambioEntrada(e, "Nombre")}
+            className={classNames({ "p-invalid": envio && !requisito.Nombre })}
           />
-          {envio && !requisito.nombre && (
+          {envio && !requisito.Nombre && (
             <small className="p-invalid">El nombre es requerido.</small>
           )}
         </div>
@@ -218,11 +294,12 @@ const Requisito = () => {
             id="descripcion"
             autoResize
             required
+            onChange={(e) => cambioEntrada(e, "Descripcion")}
             className={classNames({
-              "p-invalid": envio && !requisito.descripcion,
+              "p-invalid": envio && !requisito.Descripcion,
             })}
           />
-          {envio && !requisito.descripcion && (
+          {envio && !requisito.Descripcion && (
             <small className="p-invalid">La descripcion es requerida.</small>
           )}
         </div>
@@ -239,10 +316,10 @@ const Requisito = () => {
           <label htmlFor="nombre">Nombre</label>
           <InputText
             id="nombre"
-            value={requisito.nombre}
-            className={classNames({ "p-invalid": envio && !requisito.nombre })}
+            value={requisito.Nombre}
+            className={classNames({ "p-invalid": envio && !requisito.Nombre })}
           />
-          {envio && !requisito.nombre && (
+          {envio && !requisito.Nombre && (
             <small className="p-invalid">El nombre es requerido.</small>
           )}
         </div>
@@ -250,13 +327,13 @@ const Requisito = () => {
           <label htmlFor="descripcion">Descripción</label>
           <InputTextarea
             id="descripcion"
-            value={requisito.descripcion}
+            value={requisito.Descripcion}
             autoResize
             className={classNames({
-              "p-invalid": envio && !requisito.descripcion,
+              "p-invalid": envio && !requisito.Descripcion,
             })}
           />
-          {envio && !requisito.descripcion && (
+          {envio && !requisito.Descripcion && (
             <small className="p-invalid">La descripcion es requerida.</small>
           )}
         </div>
@@ -273,12 +350,12 @@ const Requisito = () => {
           <label htmlFor="nombre">Nombre</label>
           <InputText
             id="nombre"
-            value={requisito.nombre}
-            onChange={(e) => cambioEntrada(e, "nombre")}
+            value={requisito.Nombre}
+            onChange={(e) => cambioEntrada(e, "Nombre")}
             autoFocus
             className={classNames({ "p-invalid": envio && !requisito.nombre })}
           />
-          {envio && !requisito.nombre && (
+          {envio && !requisito.Nombre && (
             <small className="p-invalid">El nombre es requerido.</small>
           )}
         </div>
@@ -286,14 +363,14 @@ const Requisito = () => {
           <label htmlFor="descripcion">Descripción</label>
           <InputTextarea
             id="descripcion"
-            value={requisito.descripcion}
-            onChange={(e) => cambioEntrada(e, "descripcion")}
+            value={requisito.Descripcion}
+            onChange={(e) => cambioEntrada(e, "Descripcion")}
             autoResize
             className={classNames({
-              "p-invalid": envio && !requisito.descripcion,
+              "p-invalid": envio && !requisito.Descripcion,
             })}
           />
-          {envio && !requisito.descripcion && (
+          {envio && !requisito.Descripcion && (
             <small className="p-invalid">La descripcion es requerida.</small>
           )}
         </div>
@@ -313,7 +390,7 @@ const Requisito = () => {
           />
           <span>
             Estás seguro de que desea elimiar el requisito{" "}
-            <b>{requisito.nombre}</b>?
+            <b>{requisito.Nombre}</b>?
           </span>
         </div>
       </Dialog>

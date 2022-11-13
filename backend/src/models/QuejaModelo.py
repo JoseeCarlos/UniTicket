@@ -1,6 +1,8 @@
 from flask import jsonify
 from database.db import get_connection
 from .UEntidades.QuejaS import QuejaS
+from .UEntidades.Queja import Queja
+from .ObtenerId import ObtenerId
 import json
 
 
@@ -49,23 +51,34 @@ class QuejaModelo():
                                     WHERE complainId=%s
                                 """, (complainId))
                 row = cursor.fetchone()
-                complain = ComplainS(complainId=row[0],userName=row[1],name=row[2],description=row[3], complainType=row[4], attentionType=row[5], tableName=row[6], startTime=row[7], finishTime=row[8], createDate=row[9], employeeName=row[10]).to_JSON()
+                complain = QuejaS(complainId=row[0],userName=row[1],name=row[2],description=row[3], complainType=row[4], attentionType=row[5], tableName=row[6], startTime=row[7], finishTime=row[8], createDate=row[9], employeeName=row[10]).to_JSON()
             connection.close()
             return complain
         except Exception as ex:
             raise Exception(ex)
     
     @classmethod
-    def crear_queja(self, complain):
+    def crear_queja(self, queja, quejaEnLinea):
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("""INSERT INTO complain (userName, name, description, complainType, attentionType, tableName, startTime, finishTime, createDate, employeeName)
-                                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                                """, (complain.userName, complain.name, complain.description, complain.complainType, complain.attentionType, complain.tableName, complain.startTime, complain.finishTime, complain.createDate, complain.employeeName))
+                id = ObtenerId.obtener_id('UQueja')
+                query1 = """
+                    INSERT INTO UQueja (TIpoQueja, IdRazonQueja, IdAtencion)
+                    VALUES (?, ?, ?)
+                """
+                cursor.execute(query1, (queja.TipoQueja, queja.IdRazonQueja, queja.IdAtencion))
+                connection.commit()
+                query2 = """
+                    INSERT INTO UQuejaEnLinea (IdQueja, Descripcion, IdUsuarioRegistro)
+                    VALUES (?, ?, ?)
+                """
+                cursor.execute(query2, (id, quejaEnLinea.Descripcion, quejaEnLinea.IdUsuarioRegistro))
                 connection.commit()
                 affected_rows = cursor.rowcount
-            connection.close()
             return affected_rows
         except Exception as ex:
+            connection.rollback()
             raise Exception(ex)
+        finally:
+            connection.close()

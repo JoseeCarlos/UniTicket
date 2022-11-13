@@ -1,13 +1,13 @@
 class QuejaEnLinea():
-    def __init__(self, IdQueja=None, Nombre=None, Contacto=None):
+    def __init__(self, IdQueja=None, Descripcion=None, IdUsuarioRegistro=None):
         self.IdQueja = IdQueja
-        self.Nombre = Nombre
-        self.Contacto = Contacto
+        self.Descripcion = Descripcion
+        self.IdUsuarioRegistro = IdUsuarioRegistro
     
     def to_JSON(self):
         return {
-            "IdQueja": self.IdQueja,
-            "Nombre": self.Nombre,
-            "Contacto": self.Contacto
+            'IdQueja': self.IdQueja,
+            'Descripcion': self.Descripcion,
+            'IdUsuarioRegistro': self.IdUsuarioRegistro
         }
         

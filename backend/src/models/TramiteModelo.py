@@ -2,6 +2,7 @@ from flask import jsonify
 from database.db import get_connection
 from .UEntidades.Tramite import Tramite
 from .UEntidades.TramiteRequisito import TramiteRequisito
+from .RequisitoModelo import RequisitoModelo
 import json
 from datetime import datetime
 
@@ -17,7 +18,7 @@ class TramiteModelo():
                                     WHERE Estado = 1 
                                 """)
                 for row in cursor.fetchall():
-                    tramites.append(Tramite(IdTramite=row[0],Nombre=row[1],Descripcion=row[2], IdArea=row[3], IdUsuarioRegistro=row[4], Estado=row[5], FechaRegistro=row[6], FechaModificacion=row[7]).to_JSON())
+                    tramites.append(Tramite(IdTramite=row[0],Nombre=row[1],Descripcion=row[2], IdArea=row[3], IdUsuarioRegistro=row[4], Estado=row[5], FechaRegistro=row[6], FechaModificacion=row[7], Requisitos=RequisitoModelo.obtener_requisito_tramite(tramiteId=row[0])).to_JSON())
             connection.close()
             return tramites
         except Exception as ex:

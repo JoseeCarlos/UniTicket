@@ -8,6 +8,9 @@ import { Divider } from "primereact/divider";
 import { PickList } from "primereact/picklist";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from "primereact/dropdown";
+import { Toast } from "primereact/toast";
+import { TramiteServicio } from "../servicios/TramiteServicio";
+
 const Tramite = () => {
   let tramiteVacio = {
     idTramite: null,
@@ -32,7 +35,14 @@ const Tramite = () => {
     useState(false);
   const [dialogoBorradoTramite, establecerDialogoBorradoTramite] =
     useState(false);
+  
+  const tramiteServicio = new TramiteServicio();
+
   useEffect(() => {
+    tramiteServicio.obtenerTramites().then((datos) => {
+      console.log(datos);
+      establecerValorDataview(datos);
+    });
     establecerFuente([
       {
         idRequisito: 1,
@@ -50,36 +60,36 @@ const Tramite = () => {
         descripcion: "Carnet de identificacion de estudiante",
       },
     ]);
-    establecerValorDataview([
-      {
-        idTramite: 1,
-        nombre: "Inscripcion",
-        descripcion: "Tramite para inscripcion de estudiantes",
-        idArea: "Tramites",
-        idUsuarioRegistro: 1,
-        estado: "Activo",
-        fechaRegistro: "01/10/2022",
-        fechaModificacion: "01/11/2022",
-        requisitos: [
-          { idRequisito: 1, nombre: "Carnet de identidad" },
-          { idRequisito: 2, nombre: "Titulo Bachiller" },
-        ],
-      },
-      {
-        idTramite: 2,
-        nombre: "Certificado de estudiante regular",
-        descripcion: "Tramite para certificado de estudiante regular",
-        idArea: "Tramites",
-        idUsuarioRegistro: 1,
-        estado: "Activo",
-        fechaRegistro: "01/10/2022",
-        fechaModificacion: "01/11/2022",
-        requisitos: [
-          { idRequisito: 1, nombre: "Carnet de identidad" },
-          { idRequisito: 3, nombre: "Carnet de estudiante" },
-        ],
-      },
-    ]);
+    // establecerValorDataview([
+    //   {
+    //     idTramite: 1,
+    //     nombre: "Inscripcion",
+    //     descripcion: "Tramite para inscripcion de estudiantes",
+    //     idArea: "Tramites",
+    //     idUsuarioRegistro: 1,
+    //     estado: "Activo",
+    //     fechaRegistro: "01/10/2022",
+    //     fechaModificacion: "01/11/2022",
+    //     requisitos: [
+    //       { idRequisito: 1, nombre: "Carnet de identidad" },
+    //       { idRequisito: 2, nombre: "Titulo Bachiller" },
+    //     ],
+    //   },
+    //   {
+    //     idTramite: 2,
+    //     nombre: "Certificado de estudiante regular",
+    //     descripcion: "Tramite para certificado de estudiante regular",
+    //     idArea: "Tramites",
+    //     idUsuarioRegistro: 1,
+    //     estado: "Activo",
+    //     fechaRegistro: "01/10/2022",
+    //     fechaModificacion: "01/11/2022",
+    //     requisitos: [
+    //       { idRequisito: 1, nombre: "Carnet de identidad" },
+    //       { idRequisito: 3, nombre: "Carnet de estudiante" },
+    //     ],
+    //   },
+    // ]);
   }, []);
   const insercionTramite = () => {
     establecerTramite({ tramiteVacio });
@@ -164,9 +174,9 @@ const Tramite = () => {
           <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <div className="flex flex-column md:flex-row align-items-center p-3">
               <div className="flex-1 text-center md:text-left">
-                <div className="font-bold text-2xl">{dato.nombre}</div>
-                <div className="mb-3">{dato.descripcion}</div>
-                <div className="mb-3">{dato.estado}</div>
+                <div className="font-bold text-2xl">{dato.Nombre}</div>
+                <div className="mb-3">{dato.Descripcion}</div>
+                <div className="mb-3">{dato.Estado}</div>
               </div>
             </div>
             <span className="p-buttonset">
@@ -268,19 +278,19 @@ const Tramite = () => {
           <div className="p-fluid">
             <div className="field">
               <label htmlFor="nombre">Nombre</label>
-              <InputText id="nombre" value={tramite.nombre} />
+              <InputText id="nombre" value={tramite.Nombre} />
             </div>
             <div className="field">
               <label htmlFor="descripcion">Descripción</label>
               <InputTextarea
                 id="descripcion"
-                value={tramite.descripcion}
+                value={tramite.Descripcion}
                 autoResize
               />
             </div>
             <div className="field">
               <label htmlFor="area">Area</label>
-              <InputText id="area" value={tramite.idArea} />
+              <InputText id="area" value={tramite.IdArea} />
             </div>
           </div>
           <Divider layout="vertical" />
@@ -289,8 +299,8 @@ const Tramite = () => {
               <label htmlFor="requisitos">Requisitos</label>
               <ListBox
                 id="requisitos"
-                options={tramite.requisitos}
-                optionLabel="nombre"
+                options={tramite.Requisitos}
+                optionLabel="Nombre"
                 style={{ width: "100%" }}
               />
             </div>

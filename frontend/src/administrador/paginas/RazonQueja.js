@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import classNames from "classnames";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
@@ -6,17 +6,20 @@ import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { DataView, DataViewLayoutOptions } from "primereact/dataview";
 import { Dropdown } from "primereact/dropdown";
-import { InputTextarea } from "primereact/inputtextarea";
+import { InputTextarea } from "primereact/inputtextarea"; 
+import { RazonQuejaServicio } from "../servicios/RazonQuejaServicio";
+
 const RazonQueja = () => {
   let razonQuejaVacia = {
-    idRazonQuejaVacia: null,
-    nombre: "",
-    descripcion: "",
-    idUsuarioRegistro: null,
-    estado: "",
-    fechaRegistro: "",
-    fechaModificacion: "",
+    IdRazonQuejaVacia: null,
+    Nombre: "",
+    Descripcion: "",
+    IdUsuarioRegistro: 1,
+    Estado: "",
+    FechaRegistro: "",
+    FechaModificacion: "",
   };
+  const toast = useRef(null);
   const [envio, establecerEnvio] = useState(false);
   const [valorDataview, establecerValorDataview] = useState(null);
   const [valorFiltroEstado, establecerValorFiltroEstado] = useState(null);
@@ -29,25 +32,31 @@ const RazonQueja = () => {
     useState(false);
   const [dialogoBorradoRazonQueja, establecerDialogoBorradoRazonQueja] =
     useState(false);
+
+  const razonQuejaServicio =new RazonQuejaServicio();
   useEffect(() => {
+    razonQuejaServicio.obtenerRazonQuejas().then((datos) =>{
+      console.log(datos);
+      establecerValorDataview(datos);
+    })
     establecerValorFiltroEstado([
       { id: 1, nombre: "Activo" },
       { id: 0, nombre: "Inactivo" },
     ]);
-    establecerValorDataview([
-      {
-        idRazonQueja: 1,
-        nombre: "Malos tratos",
-        descripcion: "Mala actitud por parte del empleado",
-        estado: "Activo",
-      },
-      {
-        idRazonQueja: 2,
-        nombre: "Largos tiempos de espera",
-        descripcion: "Mucho tiempo en espera para ser atendido",
-        estado: "Activo",
-      },
-    ]);
+    // establecerValorDataview([
+    //   {
+    //     idRazonQueja: 1,
+    //     nombre: "Malos tratos",
+    //     descripcion: "Mala actitud por parte del empleado",
+    //     estado: "Activo",
+    //   },
+    //   {
+    //     idRazonQueja: 2,
+    //     nombre: "Largos tiempos de espera",
+    //     descripcion: "Mucho tiempo en espera para ser atendido",
+    //     estado: "Activo",
+    //   },
+    // ]);
   }, []);
   const verRazonQueja = (razonQueja) => {
     establecerRazonQueja({ ...razonQueja });
@@ -89,6 +98,59 @@ const RazonQueja = () => {
 
     establecerRazonQueja(_razonQueja);
   };
+
+  const guardarRazonQueja = () => {
+    establecerEnvio(true);
+    console.log(razonQueja);
+    if(razonQueja.IdRazonQueja){
+      razonQuejaServicio.actualizarRazonQueja(razonQueja).then((datos) =>{
+        console.log(datos);
+        if(datos.status===200){
+          toast.current.show({severity:'success', summary: 'Éxito', detail: 'Razón de queja actualizada', life: 3000});
+          razonQuejaServicio.obtenerRazonQuejas().then((datos) =>{
+            establecerValorDataview(datos);
+          }
+          )
+        }else{
+          toast.current.show({severity:'error', summary: 'Error', detail: 'Razón de queja no actualizada', life: 3000});
+        }
+      })
+    }else{
+      razonQuejaServicio.crearRazonQueja(razonQueja).then((datos) =>{
+        if(datos.status === 200){
+          toast.current.show({severity : 'success', summary : 'Exito', detail : 'Razon de queja creada', life : 3000});
+          razonQuejaServicio.obtenerRazonQuejas().then((datos) =>{
+            establecerValorDataview(datos);
+          })
+        }else{
+          toast.current.show({severity : 'error', summary : 'Error', detail : 'Razon de queja no creada', life : 3000});
+        }
+
+      
+      })
+
+    }
+    establecerEnvio(false);
+    establecerDialogoInsercionRazonQueja(false);
+    establecerDialogoEdicionRazonQueja(false);
+  }
+  const eliminarRazonQueja = () => {
+    establecerEnvio(true);
+    razonQuejaServicio.eliminarRazonQueja(razonQueja.IdRazonQueja).then((datos) =>{
+      if(datos.status === 200){
+        toast.current.show({severity : 'success', summary : 'Exito', detail : 'Razon de queja eliminada', life : 3000});
+        razonQuejaServicio.obtenerRazonQuejas().then((datos) =>{
+          establecerValorDataview(datos);
+        })
+      }else{
+        toast.current.show({severity : 'error', summary : 'Error', detail : 'Razon de queja no eliminada', life : 3000});
+      }
+    } 
+    )
+    establecerEnvio(false);
+    establecerDialogoBorradoRazonQueja(false);
+  };
+  
   const pieDialogoInsercionRazonQueja = (
     <>
       <Button
@@ -97,7 +159,7 @@ const RazonQueja = () => {
         className="p-button-text"
         onClick={ocultarDialogoInsercionRazonQueja}
       />
-      <Button label="Guardar" icon="pi pi-check" />
+      <Button label="Guardar" onClick={guardarRazonQueja} icon="pi pi-check" />
     </>
   );
   const pieDialogoVistaRazonQueja = (
@@ -111,7 +173,6 @@ const RazonQueja = () => {
     </>
   );
 
-  const borrarRazonQueja = () => {};
   const pieDialogoBorradoRazonQueja = (
     <>
       <Button
@@ -124,7 +185,7 @@ const RazonQueja = () => {
         label="Si"
         icon="pi pi-check"
         className="p-button-text"
-        onClick={borrarRazonQueja}
+        onClick={eliminarRazonQueja}
       />
     </>
   );
@@ -136,7 +197,7 @@ const RazonQueja = () => {
         className="p-button-text"
         onClick={ocultarDialogoEdicionRazonQueja}
       />
-      <Button label="Guardar" icon="pi pi-check" />
+      <Button label="Guardar" onClick={guardarRazonQueja} icon="pi pi-check" />
     </>
   );
   const listaElementoDataView = (dato) => {
@@ -146,9 +207,9 @@ const RazonQueja = () => {
           <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <div className="flex flex-column md:flex-row align-items-center p-3">
               <div className="flex-1 text-center md:text-left">
-                <div className="font-bold text-2xl">{dato.nombre}</div>
-                <div className="mb-3">{dato.descripcion}</div>
-                <div className="mb-3">{dato.estado}</div>
+                <div className="font-bold text-2xl">{dato.Nombre}</div>
+                <div className="mb-3">{dato.Descripcion}</div>
+                <div className="mb-3">{dato.Estado}</div>
               </div>
             </div>
             <span className="p-buttonset">
@@ -175,6 +236,7 @@ const RazonQueja = () => {
   return (
     <React.Fragment>
       <div className="card">
+      <Toast ref={toast} />
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
           <h5>
             Administración de Razones de Queja{" "}
@@ -211,12 +273,12 @@ const RazonQueja = () => {
           <label htmlFor="nombre">Nombre</label>
           <InputText
             id="nombre"
-            onChange={(e) => cambioEntrada(e, "nombre")}
+            onChange={(e) => cambioEntrada(e, "Nombre")}
             required
             autoFocus
-            className={classNames({ "p-invalid": envio && !razonQueja.nombre })}
+            className={classNames({ "p-invalid": envio && !razonQueja.Nombre })}
           />
-          {envio && !razonQueja.nombre && (
+          {envio && !razonQueja.Nombre && (
             <small className="p-invalid">El nombre es requerido.</small>
           )}
         </div>
@@ -225,11 +287,11 @@ const RazonQueja = () => {
           <InputTextarea
             id="descripcion"
             autoResize
-            onChange={(e) => cambioEntrada(e, "descripcion")}
+            onChange={(e) => cambioEntrada(e, "Descripcion")}
             required
-            className={classNames({ "p-invalid": envio && !razonQueja.descripcion })}
+            className={classNames({ "p-invalid": envio && !razonQueja.Descripcion })}
           />
-          {envio && !razonQueja.descripcion && (
+          {envio && !razonQueja.Descripcion && (
             <small className="p-invalid">La descripcion es requerida.</small>
           )}
         </div>
@@ -247,8 +309,8 @@ const RazonQueja = () => {
           <label htmlFor="nombre">Nombre</label>
           <InputText
             id="nombre"
-            value={razonQueja.nombre}
-            onChange={(e) => cambioEntrada(e, "nombre")}
+            value={razonQueja.Nombre}
+            onChange={(e) => cambioEntrada(e, "Nombre")}
             readOnly
           />
         </div>
@@ -257,25 +319,25 @@ const RazonQueja = () => {
           <InputTextarea
             id="descripcion"
             autoResize
-            value={razonQueja.descripcion}
+            value={razonQueja.Descripcion}
             readOnly
           />
         </div>
         <div className="field">
           <label htmlFor="estado">Estado</label>
-          <InputText id="estado" value={razonQueja.estado} readOnly />
+          <InputText id="estado" value={razonQueja.Estado} readOnly />
         </div>
         <div className="field">
           <label htmlFor="usuarioCreacion">Responsable de Registro</label>
           <InputText
             id="usuarioCreacion"
-            value={razonQueja.idUsuarioRegistro}
+            value={razonQueja.IdUsuarioRegistro}
             readOnly
           />
         </div>
         <div className="field">
           <label htmlFor="fechaCreacion">Fecha de Registro</label>
-          <InputText id="fechaCreacion" value={razonQueja.fechaRegistro} readOnly />
+          <InputText id="fechaCreacion" value={razonQueja.FechaRegistro} readOnly />
         </div>
         <div className="field">
           <label htmlFor="fechaActualizacion">
@@ -283,7 +345,7 @@ const RazonQueja = () => {
           </label>
           <InputText
             id="fechaActualizacion"
-            value={razonQueja.fechaModificacion}
+            value={razonQueja.FechaModificacion}
             readOnly
           />
         </div>
@@ -301,8 +363,8 @@ const RazonQueja = () => {
           <label htmlFor="nombre">Nombre</label>
           <InputText
             id="nombre"
-            value={razonQueja.nombre}
-            onChange={(e) => cambioEntrada(e, "nombre")}
+            value={razonQueja.Nombre}
+            onChange={(e) => cambioEntrada(e, "Nombre")}
             required
           />
         </div>
@@ -311,8 +373,8 @@ const RazonQueja = () => {
           <InputTextarea
             id="descripcion"
             autoResize
-            value={razonQueja.descripcion}
-            onChange={(e) => cambioEntrada(e, "descripcion")}
+            value={razonQueja.Descripcion}
+            onChange={(e) => cambioEntrada(e, "Descripcion")}
             required
           />
         </div>
@@ -331,7 +393,7 @@ const RazonQueja = () => {
             style={{ fontSize: "2rem" }}
           />
           <span>
-            Estás seguro de que desea elimiar la razon <b>{razonQueja.nombre}</b>?
+            Estás seguro de que desea elimiar la razon <b>{razonQueja.Nombre}</b>?
           </span>
         </div>
       </Dialog>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Dropdown } from "primereact/dropdown";
 import classNames from "classnames";
 import { Dialog } from "primereact/dialog";
@@ -6,18 +6,20 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { DataView } from "primereact/dataview";
+import { TipoUsuarioServicio } from "../servicios/TipoUsuarioServicio";
+import { Toast } from "primereact/toast";
 
 const TipoUsuario = () => {
   let tipoUsuarioVacio = {
-    idTipoUsuario: null,
-    nombre: "",
-    descripcion: "",
-    estado: "",
-    fechaCreacion: "",
-    fechaActualizacion: "",
-    idUsuarioCreacion: "",
-    idUsuarioModificacion: "",
+    IdTipoUsuario: null,
+    Nombre: "",
+    Descripcion: "",
+    IdUsuarioRegistro: 1,
+    Estado: "",
+    FechaRegistro: "",
+    FechaModificacion: ""
   };
+  const toast = useRef(null);
   const [valorDataview, establecerValorDataview] = useState(null);
   const [tipoUsuario, establecerTipoUsuario] = useState(tipoUsuarioVacio);
   const [valorFiltroEstado, establecerValorFiltroEstado] = useState(null);
@@ -30,40 +32,49 @@ const TipoUsuario = () => {
     useState(false);
   const [dialogoBorradoTipoUsuario, establecerDialogoBorradoTipoUsuario] =
     useState(false);
+  
+  const tipoUsuarioServicio = new TipoUsuarioServicio();
+  
+  // const tipo = new TipoUsuarioServicio();
+
   useEffect(() => {
+    tipoUsuarioServicio.obtenerTipoUsuario().then((datos) => {
+      console.log(datos);
+      establecerValorDataview(datos);
+    });
     establecerValorFiltroEstado([
       { id: 1, nombre: "Activo" },
       { id: 0, nombre: "Inactivo" },
     ]);
-    establecerValorDataview([
-      {
-        idTipoUsuario: 1,
-        nombre: "Padre",
-        descripcion: "Padre de estudiante",
-        estado: "Activo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-      },
-      {
-        idTipoUsuario: 2,
-        nombre: "Madre",
-        descripcion: "Madre de estudiante",
-        estado: "Activo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-      },
-      {
-        idTipoUsuario: 3,
-        nombre: "Familiar",
-        descripcion: "Familiar de estudiante",
-        estado: "Activo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-      },
-    ]);
+    // establecerValorDataview([
+    //   {
+    //     idTipoUsuario: 1,
+    //     nombre: "Padre",
+    //     descripcion: "Padre de estudiante",
+    //     estado: "Activo",
+    //     fechaCreacion: "10/10/2022",
+    //     fechaActualizacion: "12/10/2022",
+    //     usuarioCreacion: "Juan Perez",
+    //   },
+    //   {
+    //     idTipoUsuario: 2,
+    //     nombre: "Madre",
+    //     descripcion: "Madre de estudiante",
+    //     estado: "Activo",
+    //     fechaCreacion: "10/10/2022",
+    //     fechaActualizacion: "12/10/2022",
+    //     usuarioCreacion: "Juan Perez",
+    //   },
+    //   {
+    //     idTipoUsuario: 3,
+    //     nombre: "Familiar",
+    //     descripcion: "Familiar de estudiante",
+    //     estado: "Activo",
+    //     fechaCreacion: "10/10/2022",
+    //     fechaActualizacion: "12/10/2022",
+    //     usuarioCreacion: "Juan Perez",
+    //   },
+    // ]);
   },[]);
   const insercionTipoUsuario = () => {
     establecerTipoUsuario(tipoUsuario);
@@ -104,6 +115,62 @@ const TipoUsuario = () => {
 
     establecerTipoUsuario(_tipoUsuario);
   };
+
+  const guardarTipoUsuario = () => {
+      console.log(tipoUsuario);
+      let _tipoUsuario = {...tipoUsuario}
+      
+      if(tipoUsuario.idTipoUsuario){
+        console.log("editar");
+        tipoUsuarioServicio.actualizarTipoUsuario(_tipoUsuario).then(datos => {
+          console.log(datos);
+          if(datos.status === 200){
+            toast.current.show({severity: 'success', summary: 'Éxito', detail: 'Tipo de usuario actualizado', life: 3000});
+            tipoUsuarioServicio.obtenerTipoUsuario().then(datos => {
+              establecerValorDataview(datos);
+            }
+            );
+          }
+          else{
+            toast.current.show({severity: 'error', summary: 'Error', detail: 'Error al actualizar el tipo de usuario', life: 3000});
+          }
+        })
+
+     
+      }else{
+        console.log("crear");
+        tipoUsuarioServicio.crearTipoUsuario(tipoUsuario).then(datos => {
+          console.log(datos);
+          if(datos.status === 200){
+            toast.current.show({severity: 'success', summary: 'Éxito', detail: 'Tipo de usuario insertado', life: 3000});
+            tipoUsuarioServicio.obtenerTipoUsuario().then(datos => {
+              establecerValorDataview(datos);
+            }
+            );
+          }
+          else{
+            toast.current.show({severity: 'error', summary: 'Error', detail: 'Error al insertar el tipo de usuario', life: 3000});
+          }
+        })
+      }
+  }
+  const eliminarTipoUsuario = () => {
+    tipoUsuarioServicio.eliminarTipoUsuario(tipoUsuario.idTipoUsuario).then(datos => {
+      console.log(datos);
+      if(datos.status === 200){
+        toast.current.show({severity: 'success', summary: 'Éxito', detail: 'Tipo de usuario eliminado', life: 3000});
+        tipoUsuarioServicio.obtenerTipoUsuario().then(datos => {
+          establecerValorDataview(datos);
+        }
+        );
+      }
+      else{
+        toast.current.show({severity: 'error', summary: 'Error', detail: 'Error al eliminar el tipo de usuario', life: 3000});
+      }
+    })
+  }
+
+
   const pieDialogoInsercionTipoUsuario = (
     <>
       <Button
@@ -112,7 +179,7 @@ const TipoUsuario = () => {
         className="p-button-text"
         onClick={ocultarDialogoInsercionTipoUsuario}
       />
-      <Button label="Guardar" icon="pi pi-check" />
+      <Button label="Guardar" onClick={guardarTipoUsuario} icon="pi pi-check" />
     </>
   );
   const pieDialogoVistaTipoUsuario = (
@@ -133,7 +200,7 @@ const TipoUsuario = () => {
         className="p-button-text"
         onClick={ocultarDialogoBorradoTipoUsuario}
       />
-      <Button label="Si" icon="pi pi-check" className="p-button-text" />
+      <Button label="Si" icon="pi pi-check" onClick={eliminarTipoUsuario} className="p-button-text" />
     </>
   );
   const pieDialogoEdicionTipoUsuario = (
@@ -144,7 +211,7 @@ const TipoUsuario = () => {
         className="p-button-text"
         onClick={ocultarDialogoEdicionTipoUsuario}
       />
-      <Button label="Guardar" icon="pi pi-check" />
+      <Button label="Guardar" onClick={guardarTipoUsuario} icon="pi pi-check" />
     </>
   );
   const listaElementoDataView = (dato) => {
@@ -154,9 +221,9 @@ const TipoUsuario = () => {
           <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <div className="flex flex-column md:flex-row align-items-center p-3">
               <div className="flex-1 text-center md:text-left">
-                <div className="font-bold text-2xl">{dato.nombre}</div>
-                <div className="mb-3">{dato.descripcion}</div>
-                <div className="mb-3">{dato.estado}</div>
+                <div className="font-bold text-2xl">{dato.Nombre}</div>
+                <div className="mb-3">{dato.Descripcion}</div>
+                <div className="mb-3">{dato.Estado}</div>
               </div>
             </div>
             <span className="p-buttonset">
@@ -183,6 +250,7 @@ const TipoUsuario = () => {
   return (
     <React.Fragment>
       <div className="card">
+      <Toast ref={toast} />
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
           <h5>
             Administración de Tipos de Usuario{" "}
@@ -219,14 +287,14 @@ const TipoUsuario = () => {
           <label htmlFor="nombre">Nombre</label>
           <InputText
             id="nombre"
-            onChange={(e) => cambioEntrada(e, "nombre")}
+            onChange={(e) => cambioEntrada(e, "Nombre")}
             required
             autoFocus
             className={classNames({
-              "p-invalid": envio && !tipoUsuario.nombre,
+              "p-invalid": envio && !tipoUsuario.Nombre,
             })}
           />
-          {envio && !tipoUsuario.nombre && (
+          {envio && !tipoUsuario.Nombre && (
             <small className="p-invalid">El nombre es requerido.</small>
           )}
         </div>
@@ -235,13 +303,13 @@ const TipoUsuario = () => {
           <InputTextarea
             id="descripcion"
             autoResize
-            onChange={(e) => cambioEntrada(e, "descripcion")}
+            onChange={(e) => cambioEntrada(e, "Descripcion")}
             required
             className={classNames({
-              "p-invalid": envio && !tipoUsuario.descripcion,
+              "p-invalid": envio && !tipoUsuario.Descripcion,
             })}
           />
-          {envio && !tipoUsuario.descripcion && (
+          {envio && !tipoUsuario.Descripcion && (
             <small className="p-invalid">El nombre es requerido.</small>
           )}
         </div>
@@ -259,8 +327,8 @@ const TipoUsuario = () => {
           <label htmlFor="nombre">Nombre</label>
           <InputText
             id="nombre"
-            value={tipoUsuario.nombre}
-            onChange={(e) => cambioEntrada(e, "nombre")}
+            value={tipoUsuario.Nombre}
+            onChange={(e) => cambioEntrada(e, "Nombre")}
             readOnly
           />
         </div>
@@ -269,13 +337,13 @@ const TipoUsuario = () => {
           <InputTextarea
             id="descripcion"
             autoResize
-            value={tipoUsuario.descripcion}
+            value={tipoUsuario.Descripcion}
             readOnly
           />
         </div>
         <div className="field">
           <label htmlFor="estado">Estado</label>
-          <InputText id="estado" value={tipoUsuario.estado} readOnly />
+          <InputText id="estado" value={tipoUsuario.Estado} readOnly />
         </div>
         <div className="field">
           <label htmlFor="usuarioCreacion">Responsable de Registro</label>
@@ -317,8 +385,8 @@ const TipoUsuario = () => {
           <label htmlFor="nombre">Nombre</label>
           <InputText
             id="nombre"
-            value={tipoUsuario.nombre}
-            onChange={(e) => cambioEntrada(e, "nombre")}
+            value={tipoUsuario.Nombre}
+            onChange={(e) => cambioEntrada(e, "Nombre")}
             required
           />
         </div>
@@ -327,8 +395,8 @@ const TipoUsuario = () => {
           <InputTextarea
             id="descripcion"
             autoResize
-            value={tipoUsuario.descripcion}
-            onChange={(e) => cambioEntrada(e, "descripcion")}
+            value={tipoUsuario.Descripcion}
+            onChange={(e) => cambioEntrada(e, "Descripcion")}
             required
           />
         </div>
@@ -336,8 +404,8 @@ const TipoUsuario = () => {
           <label htmlFor="estado">Estado</label>
           <InputText
             id="estado"
-            value={tipoUsuario.estado}
-            onChange={(e) => cambioEntrada(e, "estado")}
+            value={tipoUsuario.Estado}
+            onChange={(e) => cambioEntrada(e, "Estado")}
             required
           />
         </div>
@@ -357,7 +425,7 @@ const TipoUsuario = () => {
           />
           <span>
             Estás seguro de que desea elimiar el tipo de usuario{" "}
-            <b>{tipoUsuario.nombre}</b>?
+            <b>{tipoUsuario.Nombre}</b>?
           </span>
         </div>
       </Dialog>
