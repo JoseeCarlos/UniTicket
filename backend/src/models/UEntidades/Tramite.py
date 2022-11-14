@@ -1,5 +1,6 @@
+
 class Tramite():
-    def __init__(self,IdTramite=None, Nombre=None, Descripcion=None, IdArea=None, IdUsuarioRegistro=None, Estado=None, FechaRegistro=None, FechaModificacion=None):
+    def __init__(self,IdTramite=None, Nombre=None, Descripcion=None, IdArea=None, IdUsuarioRegistro=None, Estado=None, FechaRegistro=None, FechaModificacion=None, Requisitos=None):
         self.IdTramite = IdTramite
         self.Nombre = Nombre
         self.Descripcion = Descripcion
@@ -8,6 +9,7 @@ class Tramite():
         self.Estado = Estado
         self.FechaRegistro = FechaRegistro
         self.FechaModificacion = FechaModificacion
+        self.Requisitos = Requisitos
 
     def to_JSON(self):
         return {
@@ -18,5 +20,9 @@ class Tramite():
             "IdUsuarioRegistro": self.IdUsuarioRegistro,
             "Estado": self.Estado,
             "FechaRegistro": self.FechaRegistro,
-            "FechaModificacion": self.FechaModificacion
+            "FechaModificacion": self.FechaModificacion,
+            "Requisitos": self.Requisitos
+
         }
+
+   

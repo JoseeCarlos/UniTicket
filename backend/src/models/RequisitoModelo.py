@@ -27,9 +27,9 @@ class RequisitoModelo():
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("""SELECT IdRequisito, Nombre, Descripcion, Estado, FechaCreacion, FechaActualizacion, IdUsuarioCreacion, IdUsuarioActualizacion
+                cursor.execute("""SELECT IdRequisito, Nombre, Descripcion, IdUsuarioRegistro, Estado, FechaRegistro, FechaModificacion
                                     FROM URequisito
-                                    WHERE IdRequisito=%s
+                                    WHERE Estado = 1 AND IdRequisito= ?
                                 """, (requisitoId))
                 row = cursor.fetchone()
                 requisito = Requisito(Requisito(IdRequisito=row[0],Nombre=row[1],Descripcion=row[2], IdUsuarioRegistro=row[3], Estado=row[4], FechaRegistro=row[5], FechaModificacion=row[6]).to_JSON())
@@ -44,9 +44,9 @@ class RequisitoModelo():
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("""INSERT INTO URequisito(Nombre, Descripcion, IdUsuarioRegistro, FechaModificacion)
-                                    VALUES (?, ?, ?, ?)
-                                """, (requisito.Nombre, requisito.Descripcion, requisito.IdUsuarioRegistro, requisito.FechaModificacion))
+                cursor.execute("""INSERT INTO URequisito(Nombre, Descripcion, IdUsuarioRegistro)
+                                    VALUES (?, ?, ?)
+                                """, (requisito.Nombre, requisito.Descripcion, requisito.IdUsuarioRegistro, ))
                 connection.commit()
                 affected_rows = cursor.rowcount
             connection.close()
@@ -60,9 +60,9 @@ class RequisitoModelo():
             connection = get_connection()
             with connection.cursor() as cursor:
                 cursor.execute("""UPDATE URequisito
-                                    SET Nombre = ?, Descripcion = ?, IdUsuarioRegistro = ?, FechaModificacion = ?
+                                    SET Nombre = ?, Descripcion = ?, FechaModificacion = ?
                                     WHERE IdRequisito = ?
-                                """, (requisito.Nombre, requisito.Descripcion, requisito.IdUsuarioRegistro, requisito.FechaModificacion, requisito.IdRequisito))
+                                """, (requisito.Nombre, requisito.Descripcion, requisito.FechaModificacion, requisito.IdRequisito))
                 connection.commit()
                 affected_rows = cursor.rowcount
             connection.close()
@@ -95,7 +95,7 @@ class RequisitoModelo():
                 cursor.execute("""SELECT R.IdRequisito, R.Nombre, R.Descripcion
                                     FROM URequisito R
                                     INNER JOIN UTramite_Requisito TR ON TR.IdRequisitos=R.IdRequisito
-                                    WHERE IdTramite = ?
+                                    WHERE R.Estado=1 AND IdTramite = ?
                                 """, (tramiteId,))
 
                 for row in cursor.fetchall():

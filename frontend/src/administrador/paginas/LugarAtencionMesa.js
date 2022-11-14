@@ -157,13 +157,13 @@ const LugarAtencionMesa = () => {
     return (
       <div className="orders-subtable">
         <DataTable
-          value={dato.orders}
+          value={dato.Mesas}
           responsiveLayout="scroll"
           header={encabezadoMesa}
           emptyMessage={"No se encontraron mesas asignadas a "+dato.name}
         >
           <Column
-            field="id"
+            field="Numero"
             header="Numero de Mesa"
             sortable
             headerStyle={{ width: "4rem" }}
@@ -175,7 +175,7 @@ const LugarAtencionMesa = () => {
             headerStyle={{ width: "12rem" }}
           ></Column>
           <Column
-            field="estado"
+            field="Estado"
             header="Estado"
             sortable
             headerStyle={{ width: "4rem" }}

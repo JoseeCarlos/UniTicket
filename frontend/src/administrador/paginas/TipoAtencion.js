@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect,useRef} from "react";
 import { InputText } from "primereact/inputtext";
 import { Dialog } from "primereact/dialog";
 import classNames from "classnames";
@@ -7,17 +7,19 @@ import { Dropdown } from "primereact/dropdown";
 import { DataView } from "primereact/dataview";
 import { Button } from "primereact/button";
 import { InputNumber } from "primereact/inputnumber";
+import { TipoAtencionServicio } from "../servicios/TipoAtencionServicio";
+import { Toast } from "primereact/toast";
 const TipoAtencion = () => {
   let tipoAtencionVacio = { 
-    idTipoAtencion: null,
-    nombre: "",
-    descripcion: "",
-    estado: "",
-    fechaCreacion: "",
-    fechaActualizacion: "",
-    idUsuarioCreacion: "",
-    idUsuarioModificacion: "",
+    IdTipoAtencion: null,
+    Nombre: "",
+    Importancia: "",
+    IdUsuarioRegistro: 1,
+    Estado: null,
+    FechaRegistro: null,
+    FechaModificacion: null,
   };
+  const toast = useRef(null);
   const [valorDataview, establecerValorDataview] = useState(null);
   const [tipoAtencion, establecerTipoAtencion] = useState(tipoAtencionVacio);
   const [valorFiltroEstado, establecerValorFiltroEstado] = useState(null);
@@ -30,39 +32,18 @@ const TipoAtencion = () => {
     useState(false);
   const [dialogoBorradoTipoAtencion, establecerDialogoBorradoTipoAtencion] =
     useState(false);
+  
+  const tipoAtencionServicio = new TipoAtencionServicio();
+
   useEffect(() => {
+    tipoAtencionServicio.obtenerTipoAtencion().then((datos) => {
+      console.log(datos);
+      establecerValorDataview(datos);
+    });
+    
     establecerValorFiltroEstado([
       { id: 1, nombre: "Activo" },
       { id: 0, nombre: "Inactivo" },
-    ]);
-    establecerValorDataview([
-      {
-        idTipoAtencion: 1,
-        nombre: "Tercera Edad",
-        importancia:5,
-        estado: "Activo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-      },
-      {
-        idTipoAtencion: 2,
-        nombre: "Mujers Embarazadas",
-        importancia:3,
-        estado: "Activo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-      },
-      {
-        idTipoAtencion: 3,
-        nombre: "Casos especiales",
-        importancia:4,
-        estado: "Activo",
-        fechaCreacion: "10/10/2022",
-        fechaActualizacion: "12/10/2022",
-        usuarioCreacion: "Juan Perez",
-      },
     ]);
   }, []);
   const insercionTipoAtencion = () => {
@@ -104,6 +85,61 @@ const TipoAtencion = () => {
 
     establecerTipoAtencion(_tipoAtencion);
   };
+  const cambioEntradaNumero = (e, nombre) => {
+    const valor = (e.value) || "";
+    let _tipoAtencion = { ...tipoAtencion };
+    _tipoAtencion[`${nombre}`] = valor;
+
+    establecerTipoAtencion(_tipoAtencion);
+  };
+
+  const guardarTipoAtencion = () =>{
+    if(tipoAtencion.Nombre.trim())
+    {
+      let _tipoAtencion = {...tipoAtencion}
+      
+      if(tipoAtencion.IdTipoAtencion){
+        tipoAtencionServicio.actualizarTipoAtencion(_tipoAtencion).then(datos => {
+          if(datos.status === 200){
+            toast.current.show({severity: 'success', summary: 'Éxito', detail: 'Tipo de atención actualizado', life: 3000});
+            tipoAtencionServicio.obtenerTipoAtencion().then(datos => establecerValorDataview(datos));
+          }
+          else{
+            toast.current.show({severity: 'error', summary: 'Error', detail: 'Tipo de atención no actualizado', life: 3000});
+          }
+        })
+     
+      }else{
+        tipoAtencionServicio.crearTipoAtencion(tipoAtencion).then(datos =>{
+          if(datos.status === 200){
+            tipoAtencionServicio.obtenerTipoAtencion().then(datos => establecerValorDataview(datos));
+            toast.current.show({ severity: 'success', summary: 'Queja', detail: 'Tipo de Atencion registrada', life: 3000 });
+
+          }else{
+            toast.current.show({ severity: 'error', summary: 'Queja', detail: 'Tipo de Atencion no registrada', life: 3000 });
+          }
+          
+        })
+      }
+    }
+    establecerEnvio(true);
+    establecerDialogoInsercionTipoAtencion(false);
+  }
+
+  const eliminar = () => {
+    tipoAtencionServicio.eliminarTipoAtencion(tipoAtencion.IdTipoAtencion).then(datos => {
+      if(datos.status === 200){
+        tipoAtencionServicio.obtenerTipoAtencion().then(datos => establecerValorDataview(datos));
+        toast.current.show({ severity: 'success', summary: 'Queja', detail: 'Tipo de Atencion eliminada', life: 3000 });
+      }else{
+        toast.current.show({ severity: 'error', summary: 'Queja', detail: 'Tipo de Atencion no eliminada', life: 3000 });
+      }
+    })
+    establecerEnvio(true);
+    establecerDialogoBorradoTipoAtencion(false);
+
+  }
+
   const pieDialogoInsercionTipoAtencion = (
     <>
       <Button
@@ -112,7 +148,7 @@ const TipoAtencion = () => {
         className="p-button-text"
         onClick={ocultarDialogoInsercionTipoAtencion}
       />
-      <Button label="Guardar" icon="pi pi-check" />
+      <Button label="Guardar" onClick={guardarTipoAtencion} icon="pi pi-check" />
     </>
   );
   const pieDialogoVistaTipoAtencion = (
@@ -133,7 +169,7 @@ const TipoAtencion = () => {
         className="p-button-text"
         onClick={ocultarDialogoBorradoTipoAtencion}
       />
-      <Button label="Si" icon="pi pi-check" className="p-button-text" />
+      <Button label="Si" icon="pi pi-check" onClick={eliminar} className="p-button-text" />
     </>
   );
   const pieDialogoEdicionTipoAtencion = (
@@ -144,7 +180,7 @@ const TipoAtencion = () => {
         className="p-button-text"
         onClick={ocultarDialogoEdicionTipoAtencion}
       />
-      <Button label="Guardar" icon="pi pi-check" />
+      <Button label="Guardar" onClick={guardarTipoAtencion} icon="pi pi-check" />
     </>
   );
   const listaElementoDataView = (dato) => {
@@ -154,9 +190,9 @@ const TipoAtencion = () => {
           <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <div className="flex flex-column md:flex-row align-items-center p-3">
               <div className="flex-1 text-center md:text-left">
-                <div className="font-bold text-2xl">{dato.nombre}</div>
-                <div className="mb-3">{"Nivel de importancia: "+dato.importancia}</div>
-                <div className="mb-3">{dato.estado}</div>
+                <div className="font-bold text-2xl">{dato.Nombre}</div>
+                <div className="mb-3">{"Nivel de importancia: "+dato.Importancia}</div>
+                <div className="mb-3">{dato.Estado}</div>
               </div>
             </div>
             <span className="p-buttonset">
@@ -184,6 +220,7 @@ const TipoAtencion = () => {
     <React.Fragment>
       <div className="card">
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+        <Toast ref={toast} />
           <h5>
             Administración de Tipos de Atencion{" "}
             <i className="pi pi-plus icn" onClick={insercionTipoAtencion} />
@@ -219,14 +256,14 @@ const TipoAtencion = () => {
           <label htmlFor="nombre">Nombre</label>
           <InputText
             id="nombre"
-            onChange={(e) => cambioEntrada(e, "nombre")}
+            onChange={(e) => cambioEntrada(e, "Nombre")}
             required
             autoFocus
             className={classNames({
-              "p-invalid": envio && !tipoAtencion.nombre,
+              "p-invalid": envio && !tipoAtencion.Nombre,
             })}
           />
-          {envio && !tipoAtencion.nombre && (
+          {envio && !tipoAtencion.Nombre && (
             <small className="p-invalid">El nombre es requerido.</small>
           )}
         </div>
@@ -234,13 +271,13 @@ const TipoAtencion = () => {
           <label htmlFor="importancia">Importancia</label>
           <InputNumber
             id="importancia"
-            onChange={(e) => cambioEntrada(e, "importancia")}
+            onChange={(e) => cambioEntradaNumero(e, "Importancia")}
             required
             className={classNames({
-              "p-invalid": envio && !tipoAtencion.importancia,
+              "p-invalid": envio && !tipoAtencion.Importancia,
             })}
           />
-          {envio && !tipoAtencion.importancia && (
+          {envio && !tipoAtencion.Importancia && (
             <small className="p-invalid">La importancia es requerida.</small>
           )}
         </div>
@@ -315,8 +352,8 @@ const TipoAtencion = () => {
           <label htmlFor="nombre">Nombre</label>
           <InputText
             id="nombre"
-            value={tipoAtencion.nombre}
-            onChange={(e) => cambioEntrada(e, "nombre")}
+            value={tipoAtencion.Nombre}
+            onChange={(e) => cambioEntrada(e, "Nombre")}
             required
           />
         </div>
@@ -324,8 +361,8 @@ const TipoAtencion = () => {
           <label htmlFor="importancia">Importancia</label>
           <InputNumber
             id="importancia"
-            value={tipoAtencion.importancia}
-            onChange={(e) => cambioEntrada(e, "importancia")}
+            value={tipoAtencion.Importancia}
+            onChange={(e) => cambioEntradaNumero(e, "Importancia")}
             required
           />
         </div>
@@ -333,8 +370,8 @@ const TipoAtencion = () => {
           <label htmlFor="estado">Estado</label>
           <InputText
             id="estado"
-            value={tipoAtencion.estado}
-            onChange={(e) => cambioEntrada(e, "estado")}
+            value={tipoAtencion.Estado}
+            onChange={(e) => cambioEntrada(e, "Estado")}
             required
           />
         </div>
@@ -354,7 +391,7 @@ const TipoAtencion = () => {
           />
           <span>
             Estás seguro de que desea elimiar el tipo de usuario{" "}
-            <b>{tipoAtencion.nombre}</b>?
+            <b>{tipoAtencion.Nombre}</b>?
           </span>
         </div>
       </Dialog>

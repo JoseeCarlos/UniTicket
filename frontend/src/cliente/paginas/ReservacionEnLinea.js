@@ -9,6 +9,7 @@ import { ReservaServicio } from '../servicio/ReservacionEnLineaServicio';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
+import { TicketServicio } from '../servicio/TicketServicio';
 
 const ReservacionEnLinea = () => {
   let reservaVacia = {
@@ -40,16 +41,29 @@ const ReservacionEnLinea = () => {
   const [horaSeleccionada, comprobarHoraSeleccionada] = useState(null);
   const [seleccionArea, establecerSeleccionArea] = useState(null);
   const toast = useRef(null);
+  const [historial, establecerHistorial] = useState([])
 
-
+  const ticketServicio = new TicketServicio();
   useEffect(() => {
-    fotoServicio.getImages().then(datos => establecerImagenes(datos));
+    // fotoServicio.getImages().then(datos =>  {
+    //   console.log(datos)
+    //   establecerImagenes(datos)});
+    ticketServicio.obtenerTicketsUsuario(parseInt( sessionStorage.getItem('userId'))).then(datos => {
+      console.log(datos)
+      establecerImagenes(datos)
+    });
+
+    ticketServicio.obtenerHistorialTicket(sessionStorage.getItem('userId')).then(datos => {
+      console.log(datos)
+      establecerHistorial(datos)
+    });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-
+ 
   useEffect(() => {
     const reservaServicio = new ReservaServicio();
     reservaServicio.getProductsSmall().then(datos => establecerReservas(datos));
+    
   }, []);
 
   const abrirDialogo = () => {
@@ -100,15 +114,15 @@ const ReservacionEnLinea = () => {
       <div className='informacion-ticket'>
         <div className='numero-ticket'>
           <img src='assets/layout/images/logo.svg' alt='Número de ticket' />
-          <h1>{elemento.title}</h1>
+          <h1>{elemento.Codigo}-{elemento.Numero}</h1>
         </div>
 
         <div className='detalle-ticket'>
           <h3>Datos de la reserva</h3>
-          <label>Lugar de atención: <span>Tiquipaya</span> </label>
-          <label>Área: <span>Tiquipaya</span></label>
-          <label>Fecha y Hora: <span>Tiquipaya</span></label>
-          <label>Sitio: <span>Tiquipaya</span></label>
+          <label>Lugar de atención: <span>{ elemento.NombreLugar }</span> </label>
+          <label>Área: <span>{elemento.Nombre}</span></label>
+          <label>Fecha y Hora: <span>{elemento.FechaHoraReservacion}</span></label>
+          <label>Sitio: <span>{elemento.Id_Sitio}</span></label>
         </div>
       </div>
     );
@@ -122,16 +136,17 @@ const ReservacionEnLinea = () => {
 
   const botones = (
     <>
-      <Button label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={ocultarDialogo} />
+      <Button label="Cancelar" icon="pi pi-times" className="p-button-text"  onClick={ocultarDialogo} />
       <Button label="Reservar" icon="pi pi-check" className="p-button" onClick={reservarTicket} />
     </>
   );
 
   const carrusel = (elemento) => {
+    console.log(elemento)
     return (
       <div className='numero-ticket-lista'>
         <img src='assets/layout/images/logo.svg' alt='Número de ticket' />
-        <h5>{elemento.title}</h5>
+        <h5>{elemento.Codigo}-{elemento.Numero}</h5>
       </div>
     );
   }
@@ -149,15 +164,15 @@ const ReservacionEnLinea = () => {
       <h2>HISTORIAL DE TICKETS RESERVADOS</h2>
       <div className='historial-enLinea-ticket'>
         <Toast ref={toast} />
-        <DataTable value={reservas} selectionMode="single"
+        <DataTable value={historial} selectionMode="single"
           selection={reservaSeleccionada} onSelectionChange={e => establecerReservaSeleccionada(e.value)}
           dataKey="id" responsiveLayout="stack" breakpoint="960px" paginator
           paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
           currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords}" rows={10} rowsPerPageOptions={[10, 20, 50]}>
-          <Column field="ticket" header="Ticket"></Column>
-          <Column field="fecha" header="Fecha"></Column>
-          <Column field="area" header="Área"></Column>
-          <Column field="atencion" header="Lugar de atención"></Column>
+          <Column field="Codigo" header="Ticket"></Column>
+          <Column field="FechaHoraReservacion" header="Fecha"></Column>
+          <Column field="Nombre" header="Área"></Column>
+          <Column field="NombreLugar" header="Lugar de atención"></Column>
         </DataTable>
       </div>
 
@@ -186,11 +201,11 @@ const ReservacionEnLinea = () => {
             </div>
           </div>
 
-          <DataTable className='datatable-horas' selectionMode="multiple" cellSelection 
+          <DataTable  value={historial} className='datatable-horas' selectionMode="multiple" cellSelection 
                      selection={horaSeleccionada} onSelectionChange={e => comprobarHoraSeleccionada(e.value)} 
                      dataKey="id" responsiveLayout="scroll"
                      emptyMessage="Sin atención.">
-            <Column field="lunes" header="Lunes"></Column>
+            <Column field="Codigo" header="Lunes"></Column>
             <Column field="martes" header="Martes"></Column>
             <Column field="miercoeles" header="Miercoles"></Column>
             <Column field="jueves" header="Jueves"></Column>

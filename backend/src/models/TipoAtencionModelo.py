@@ -10,9 +10,9 @@ class TipoAtencionModelo():
             connection = get_connection()
             tipoAtencion = []
             with connection.cursor() as cursor:
-                cursor.execute("""SELECT IdTipoAtencion, Nombre, Importancion, IdUsuarioRegistro, Estado, FechaRegistro, FechaModifcacion
+                cursor.execute("""SELECT IdTipoAtencion, Nombre, Importancia, IdUsuarioRegistro, Estado, FechaRegistro, FechaModificacion
                                     FROM UTipoAtencion
-                                    WHERE Estado = 1 
+                                    WHERE Estado = 1  
                                 """)
                 for row in cursor.fetchall():
                     tipoAtencion.append(TipoAtencion(IdTipoAtencion=row[0],Nombre=row[1],Importancia=row[2], IdUsuarioRegistro=row[3], Estado=row[4], FechaRegistro=row[5], FechaModificacion=row[6]).to_JSON())
@@ -44,9 +44,9 @@ class TipoAtencionModelo():
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("""INSERT INTO UTipoAtencion(Nombre, Importancion, IdUsuarioRegistro, FechaModificacion)
-                                    VALUES (?, ?, ?, ?)
-                                """, (tipoAtencion.Nombre, tipoAtencion.Importancia, tipoAtencion.IdUsuarioRegistro, tipoAtencion.FechaModificacion))
+                cursor.execute("""INSERT INTO UTipoAtencion(Nombre, Importancia, IdUsuarioRegistro )
+                                    VALUES (?, ?, ?)
+                                """, (tipoAtencion.Nombre, tipoAtencion.Importancia, tipoAtencion.IdUsuarioRegistro))
                 connection.commit()
                 affected_rows = cursor.rowcount
             connection.close()
@@ -60,9 +60,9 @@ class TipoAtencionModelo():
             connection = get_connection()
             with connection.cursor() as cursor:
                 cursor.execute("""UPDATE UTipoAtencion
-                                    SET Nombre = ?, Importancia = ?, IdUsuarioRegistro = ?, FechaModificacion = ?
+                                    SET Nombre = ?, Importancia = ?, FechaModificacion = ?
                                     WHERE IdTipoAtencion = ?
-                                """, (tipoAtencion.Nombre, tipoAtencion.Importancia, tipoAtencion.IdUsuarioRegistro, tipoAtencion.FechaModificacion, tipoAtencion.IdTipoAtencion))
+                                """, (tipoAtencion.Nombre, tipoAtencion.Importancia, tipoAtencion.FechaModificacion, tipoAtencion.IdTipoAtencion))
                 connection.commit()
                 affected_rows = cursor.rowcount
             connection.close()

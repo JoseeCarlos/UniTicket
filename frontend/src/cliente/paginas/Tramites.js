@@ -31,11 +31,6 @@ const Tramites = () => {
       console.log(data);
       establecerTramites(data);
     } ); 
-    
-    // requisitoServicio.obtenerRequisitosTramite(item.IdTramite).then((data) => {
-    //   console.log(data);
-    //   establecerRequisitos(data);
-    // } );
   }, []);
 
   return (
@@ -45,28 +40,20 @@ const Tramites = () => {
         <Dropdown className='seleccionar-lugar' value={area} options={areaAtencion} onChange={(e) => establecerArea(e.value)} placeholder="Seleccione un Área" />
         <Dropdown className='seleccionar-lugar' value={lugar} options={areaAtencion} onChange={(e) => establecerLugar(e.value)} placeholder="Seleccione un Lugar de Atención" />
       </div>
-
-      {/* <Divider type='dashed'/> */}
-
+      <Divider type='dashed'/>
       <div className='tarjetas-tramites'>
         {tramites.map((item, index) => {
-          
-          requisitoServicio.obtenerRequisitosTramite(item.IdTramite).then((data) => {
-            console.log(data);
-            establecerRequisitos(data)
-          } );
           
           return (
             <Card className='tarjeta-tramite' header={<img alt="Card" src={`assets/layout/images/${Math.floor(Math.random() * 3) + 1}.jpg`} />} title={ item.Nombre }>
               <p>{item.Descripcion}</p>
               <ol> <span>Requisitos</span>
               {
-                requisitos.map((item, index) => {
-                  return (
+                item.Requisitos.map((item, index)=>{
+                  return(
                     <li>{item.Nombre}</li>
                   )
-                }
-                )
+                })
               }
               </ol>
             </Card>
@@ -75,23 +62,6 @@ const Tramites = () => {
 
         }
 
-        
-       
-        {/* <Card className='tarjeta-tramite' header={<img alt="Card" src={`assets/layout/images/${Math.floor(Math.random() * 3) + 1}.jpg`} />} title='Certificado de estudiante regular'>
-          <p>El tramite es un tramite que mas pues xd xdxdxdxxd</p>
-          <ol> <span>Requisitos</span>
-            <li>Fotocopia de carnet de identidad</li>
-            <li>Extracto economico</li>
-          </ol>
-        </Card>
-
-        <Card className='tarjeta-tramite' header={<img alt="Card" src={`assets/layout/images/${Math.floor(Math.random() * 3) + 1}.jpg`} />} title='Certificado de estudiante regular'>
-          <p>El tramite es un tramite que mas pues xd xdxdxdxxd</p>
-          <ol> <span>Requisitos</span>
-            <li>Fotocopia de carnet de identidad</li>
-            <li>Extracto economico</li>
-          </ol>
-        </Card> */}
       </div>
     </div >
   );

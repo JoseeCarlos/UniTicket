@@ -85,4 +85,5 @@ class AsignacionModelo():
             return jsonify({"message": "Asignacion eliminada con exito"}), 200
         except Exception as ex:
             raise Exception(ex)
+    
 
