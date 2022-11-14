@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
@@ -7,7 +7,10 @@ import '../recursos/css/Quejas.css'
 import { Galleria } from 'primereact/galleria';
 import { FotoServicio } from '../servicio/FotoServicio';
 import { InputTextarea } from 'primereact/inputtextarea';
-
+import { TicketServicio } from '../servicio/TicketServicio';
+import { AtencionServicio } from '../servicio/AtencionServicio';
+import { QuejasServicio } from '../servicio/QuejasServicio';
+import { Toast } from "primereact/toast";
 
 const Quejas = () => {
 
@@ -19,10 +22,43 @@ const Quejas = () => {
   const [value2, setValue2] = useState('');
 
   const fotoServicio = new FotoServicio();
+  const ticketServicio = new TicketServicio();
+  const atencionServicio = new AtencionServicio();
+  const quejasServicio = new QuejasServicio();
+
+  const [ticketSeleccionado, establecerTicketSeleccionado] = useState([]);
+  const [atenciones, establecerAtenciones] = useState([]);
+  const [atencion, establecerAtencion] = useState([]);
+  const [razonesQuejas, establecerRazonesQuejas] = useState([]);
+  const [razonQuejas, establecerRazonQuejas] = useState([]);
+  const toast = useRef(null);
+  const [tipoAtencion, establecerTipoAtencion] = useState([]);
+
+  const quejaVacia = {
+    IdQueja: null,
+    TipoQueja: 0,
+    IdRazonQueja: 0,
+    IdAtencion: 0,
+    Estado: 0,
+    FechaRegistro: 0,
+    FechaModificacion:0,
+    Descripcion: '',
+    IdUsuarioRegistro: 1
+  }
+
+  const [queja, establecerQueja] = useState(quejaVacia);
 
   useEffect(() => {
-    fotoServicio.getImages().then(datos => establecerImagenes(datos));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    ticketServicio.obtenerTicketsUsuario(parseInt(sessionStorage.getItem('userId'))).then(datos => {
+      console.log(datos)
+      establecerImagenes(datos)
+    });
+    quejasServicio.obtenerRazonQuejas().then(datos=>{
+      console.log(datos);
+      establecerRazonesQuejas(datos);
+    })
+  }, []); 
 
   const listaRazon = [
     { label: 'New York', value: 'NY' },
@@ -51,17 +87,59 @@ const Quejas = () => {
     }
   ];
 
+  const guardarQueja = () => {
+    console.log(queja);
+    quejasServicio.crearQueja(queja).then(datos => {
+      if (datos.status === 200) {
+        toast.current.show({ severity: 'success', summary: 'Queja', detail: 'Queja registrada', life: 3000 });
+      }
+      else{
+        toast.current.show({ severity: 'error', summary: 'Queja', detail: 'Error al registrar queja', life: 3000 });
+      }
+    });
+  }
+
+  const selecionarRazonQueja= (e) => {
+    let _queja = queja;
+    
+    queja.IdRazonQueja = e.value.IdRazonQueja;
+    establecerQueja(_queja);
+  }
+
+  const selecionarAtencion = (e) => {
+    let _queja = queja;
+    queja.IdAtencion = e.value.IdAtencion;
+    establecerQueja(_queja);
+  }
+
+  const guardarDescripcion = (e) => {
+    let _queja = queja;
+    queja.Descripcion = e.target.value;
+    establecerQueja(_queja);
+  }
+
+
   const carrusel = (elemento) => {
+    establecerTicketSeleccionado(elemento);
+    // console.log(elemento.idTicket)
+    
     return (
-      <div className='numero-ticket-lista'>
-        <img src='assets/layout/images/logo.svg' alt='Número de ticket' />
-        <h5>{elemento.title}</h5>
+      <div className='numero-ticket-lista' onClick={() => {
+        console.log("Holaa")
+        atencionServicio.obtenerAtencionesTicket(elemento.idTicket).then(datos=>{
+          console.log(datos)
+          establecerAtenciones(datos)
+        });
+      }} >
+        <img src='assets/layout/images/logo.svg' alt='Número de ticket'  />
+        <h5>{elemento.Codigo}-{elemento.Numero}</h5>
       </div>
     );
   }
 
   return (
     <div className='contenedor-quejas'>
+      <Toast ref={toast} />
       <h1>QUEJAS</h1>
 
       <p>
@@ -70,36 +148,74 @@ const Quejas = () => {
       </p>
 
       <div className="galeria-queja">
-        <Galleria value={imagenes} responsiveOptions={opcionesResponsivas} numVisible={3} circular style={{ maxWidth: '300px' }} thumbnail={carrusel} />
+        <Galleria value={imagenes} responsiveOptions={opcionesResponsivas} on  numVisible={3} circular style={{ maxWidth: '300px' }} thumbnail={carrusel} />
       </div>
 
-      <Dropdown className='seleccionar-opcion razon' value={dropdownValue} onChange={(e) => establecerArea(e.value)} options={listaRazon} placeholder="Razon de la queja" />
+      <Dropdown className='seleccionar-opcion razon' 
+            value={razonQuejas}
+            options={razonesQuejas}
+            optionLabel="Nombre"
+            placeholder="Razon de la queja"
+            onChange={(e) => {
+              establecerRazonQuejas(e.value);
+              selecionarRazonQueja(e);
+              // console.log(e.value.IdAtencion)
+              // atencionServicio.obtenerTipoAtencion(e.value.IdAtencion).then(datos =>{
+              //   console.log(datos)
+              //   establecerTipoAtencion(datos)
+              // })
+            }}
+          />
+
+      {/* <Dropdown className='seleccionar-opcion razon' value={dropdownValue} onChange={(e) => establecerArea(e.value)} options={listaRazon} placeholder="Razon de la queja" /> */}
 
       <div className='field descripcion'>
         <span className='p-float-label'>
-          <InputTextarea id='descripcion' rows={5} cols={60} value={value2} onChange={(e) => setValue2(e.target.value)} autoResize />
+          <InputTextarea id='descripcion' rows={5} cols={60} value={value2} onChange={(e) => {
+            setValue2(e.target.value)
+            guardarDescripcion(e);
+            }} autoResize />
           <label htmlFor="descripcion">Descripcion de la queja</label>
         </span>
       </div>
+      <Dropdown className='seleccionar-opcion tipo-atencion' 
+            value={atencion}
+            options={atenciones}
+            optionLabel="Atenciones"
+            placeholder="Lugares de atencion de un ticket"
+            onChange={(e) => {
+              establecerAtencion(e.value);
+              selecionarAtencion(e);
+              console.log(e.value.IdAtencion)
+              atencionServicio.obtenerTipoAtencion(e.value.IdAtencion).then(datos =>{
+                console.log(datos)
+                establecerTipoAtencion(datos)
+              })
+            }}
+          />
 
-      <Dropdown className='seleccionar-opcion tipo-atencion' value={antencionTicket} options={listaRazon} onChange={(e) => establecerLugar(e.value)} placeholder="Seleccione un Lugar de Atención" />
-
+      {/* <Dropdown className='seleccionar-opcion tipo-atencion'  options={listaRazon}  label='Atenciones' placeholder="Seleccione un Lugar de Atención" /> */}
+      
+      
       <div className='resumen-atencion'>
         <h4>Resumen de la atencion</h4>
-        <label><span>Area:</span> Cajas</label>
-        <label><span>Lugar de Atencion:</span> Cajas tiquipaya</label>
-        <label><span>Numero de Mesa:</span> 1</label>
-        <label><span>Empleado:</span> Juan perez</label>
-        <label><span>Tipo de atencion:</span> Transferencia</label>
+        <label><span>Area:</span> {tipoAtencion.NombreArea} </label>
+        <label><span>Lugar de Atencion:</span> {tipoAtencion.NombreLugarAtencion}</label>
+        <label><span>Numero de Mesa:</span> {tipoAtencion.Numero}</label>
+        <label><span>Empleado:</span> {tipoAtencion.IdEmpleado}</label>
+        <label><span>Tipo de atencion:</span> {tipoAtencion.TipoAtencion}</label>
       </div>
 
       <div className='resumen-queja'>
         <h4>Resumen de la Queja</h4>
         <label><span>Contacto:</span> juanperez@gmail.com</label>
-        <label><span>Razon de la queja:</span> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</label>
-        <label><span>Descripcion:</span> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</label>
+        <label><span>Razon de la queja: </span>{razonQuejas.Nombre} </label>
+        <label><span>Descripcion: </span>{value2}</label>
       </div>
-      <Button label="ENVIAR QUEJA"></Button>
+      <Button label="ENVIAR QUEJA" onClick={()=>{
+        console.log(queja)
+        guardarQueja()
+      }}></Button>
     </div >
   );
 }

@@ -7,6 +7,7 @@ import { Button } from "primereact/button";
 import { ServicioMesa } from "../servicios/ServicioMesa";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
+import { LugarAtencionServicio } from "../servicios/LugarAtencionServicio";
 
 const LugarAtencionMesa = () => {
   let mesaVacia = {
@@ -41,28 +42,28 @@ const LugarAtencionMesa = () => {
     idUsuarioCreacion: "",
     idUsuarioActualizacion: "",
   };
+  const [valorFiltroEstado, establecerValorFiltroEstado] = useState(null);
   const [productos, establecerProducto] = useState([]);
-  const [filasExpandidas, establecerFilasExpandidas] = useState(null);
+  const [filasExpandidas, establecerFilasExpandidas] = useState(false);
   const [numero, establecerEnvioNumero] = useState(false);
   const [mesa, establecerMesa] = useState(mesaVacia);
-  const [dialogoInsercionMesa, establecerDialogoInsercionMesa] = useState(false);
+  const [dialogoInsercionMesa, establecerDialogoInsercionMesa] =
+    useState(false);
   const [dialogoEdicionMesa, establecerDialogoEdicionMesa] = useState(false);
   const [dialogoVistaMesa, establecerDialogoVistaMesa] = useState(false);
   const [dialogoBorradoMesa, establecerDialogoBorradoMesa] = useState(false);
   const [nombre, establecerEnvioNombre] = useState(false);
   const [lugarAtencion, establecerLugarAtencion] = useState(lugarAtencionVacio);
+  const [lugarAtencionAreas, establecerLugarAtencionAreas] = useState([])
 
-  const [dialogoInsercionLugarAtencion, establecerDialogoInsercionLugarAtencion] =
-    useState(false);
-  const [dialogoVistaLugarAtencion, establecerDialogoVistaLugarAtencion] =
-    useState(false);
-  const [dialogoEdicionLugarAtencion, establecerDialogoEdicionLugarAtencion] =
-    useState(false);
-  const [dialogoBorradoLugarAtencion, establecerDialogoBorradoLugarAtencion] =
-    useState(false);
+  const [dialogoInsercionLugarAtencion, establecerDialogoInsercionLugarAtencion] = useState(false);
+  const [dialogoVistaLugarAtencion, establecerDialogoVistaLugarAtencion] = useState(false);
+  const [dialogoEdicionLugarAtencion, establecerDialogoEdicionLugarAtencion] = useState(false);
+  const [dialogoBorradoLugarAtencion, establecerDialogoBorradoLugarAtencion] = useState(false);
   const [valorDropdown, establecerValorDropdown] = useState(null);
 
   const servicioProducto = new ServicioMesa();
+  const lugarAtencionServio = new LugarAtencionServicio();
 
   const valoresDropdown = [
     { nombre: "Cajas Tiquipaya", code: "1" },
@@ -102,16 +103,19 @@ const LugarAtencionMesa = () => {
     establecerLugarAtencion(_LugarAtencion);
   };
   useEffect(() => {
-    servicioProducto
-      .getProductsWithOrdersSmall()
-      .then((dato) => establecerProducto(dato));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    lugarAtencionServio
+        .obtenerLugarAtencionArea()
+        .then((dato) => {
+          console.log(dato)
+          establecerLugarAtencionAreas(dato)
+        });
+  }, []); 
 
   const expandirTodo = () => {
-    let _filasExpandidas = {};
-    productos.forEach((p) => (_filasExpandidas[`${p.id}`] = true));
+    // let _filasExpandidas = {};
+    // productos.forEach((p) => (_filasExpandidas[`${p.id}`] = true));
 
-    establecerFilasExpandidas(_filasExpandidas);
+    establecerFilasExpandidas(true);
   };
 
   const colapsarTodo = () => {
@@ -153,24 +157,25 @@ const LugarAtencionMesa = () => {
     return (
       <div className="orders-subtable">
         <DataTable
-          value={dato.orders}
+          value={dato.Mesas}
           responsiveLayout="scroll"
           header={encabezadoMesa}
+          emptyMessage={"No se encontraron mesas asignadas a "+dato.name}
         >
           <Column
-            field="id"
+            field="Numero"
             header="Numero de Mesa"
             sortable
             headerStyle={{ width: "4rem" }}
           ></Column>
           <Column
-            field="empleado"
+            field="productCode"
             header="Empleado Actual"
             sortable
             headerStyle={{ width: "12rem" }}
           ></Column>
           <Column
-            field="estado"
+            field="Estado"
             header="Estado"
             sortable
             headerStyle={{ width: "4rem" }}
@@ -394,8 +399,8 @@ const LugarAtencionMesa = () => {
       />
     </>
   );
-  const borrarMesa = () => { };
-  const borrarLugraAtencion = () => { };
+  const borrarMesa = () => {};
+  const borrarLugraAtencion = () => {};
   const pieDialogoBorradoLugarAtencion = (
     <>
       <Button
@@ -434,10 +439,20 @@ const LugarAtencionMesa = () => {
         Lugares De Atención{" "}
         <i className="pi pi-plus icn" onClick={insertarLugarAtencion} />
       </h5>
-      <span className="p-buttonset">
-        <Button icon="pi pi-plus" label="Expandir" onClick={expandirTodo} />
-        <Button icon="pi pi-minus" label="Colapsar" onClick={colapsarTodo} />
-      </span>
+      <div className="filters">
+        <span className="block mt-2 md:mt-0 p-input-icon-left">
+          <Dropdown
+            optionLabel="nombre"
+            placeholder="Filtro por Estado"
+            options={valorFiltroEstado}
+            emptyMessage="Activo Inactivo"
+          />
+        </span>
+        <span className="p-buttonset">
+          <Button icon="pi pi-plus" label="Expandir" onClick={expandirTodo} />
+          <Button icon="pi pi-minus" label="Colapsar" onClick={colapsarTodo} />
+        </span>
+      </div>
     </div>
   );
   const encabezadoMesa = (
@@ -455,34 +470,32 @@ const LugarAtencionMesa = () => {
           <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <h5>Administración De Lugares De Atención y Mesas</h5>
           </div>
-
           <DataTable
-            value={productos}
+            value={lugarAtencionAreas}
             expandedRows={filasExpandidas}
-            onRowToggle={(e) => establecerFilasExpandidas(e.dato)}
+            onRowToggle={(e) => establecerFilasExpandidas(e.data)}
             responsiveLayout="scroll"
             rowExpansionTemplate={baseExpancionFilas}
             dataKey="id"
             header={header}
-            paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
+            paginator
+            rows={10}
+            rowsPerPageOptions={[5, 10, 25]}
             className="datatable-responsive"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
             emptyMessage="No hay lugares de atención."
           >
             <Column expander style={{ width: "1em" }} />
-            <Column field="nombre" header="Nombre" sortable />
-            <Column field="area" header="Area Actual" sortable />
-            <Column field="campus" header="Campus" sortable />
-            <Column field="estado" header="Estado" sortable />
+            <Column field="Nombre" header="Nombre" sortable />
+            <Column field="NombreArea" header="Area Actual" sortable />
+            <Column field="IdSedeAcademica" header="Campus" sortable />
+            <Column field="Estado" header="Estado" sortable />
             <Column
               header="Acciones"
               headerStyle={{ width: "12rem" }}
               body={
                 <span className="p-buttonset">
-                  <Button
-                    icon="pi pi-eye"
-                    onClick={() => verLugarAtencion()}
-                  />
+                  <Button icon="pi pi-eye" onClick={() => verLugarAtencion()} />
                   <Button
                     icon="pi pi-pencil"
                     onClick={() => editarLugarAtencion()}
@@ -511,7 +524,9 @@ const LugarAtencionMesa = () => {
             id="nombre"
             onChange={(e) => cambioEntradaLugarAtencion(e, "nombre")}
             required
-            className={classNames({ "p-invalid": nombre && !lugarAtencion.nombre })}
+            className={classNames({
+              "p-invalid": nombre && !lugarAtencion.nombre,
+            })}
           />
           {nombre && !lugarAtencion.nombre && (
             <small className="p-invalid">El nombre es requerido.</small>
@@ -555,7 +570,9 @@ const LugarAtencionMesa = () => {
             value={"Cajas Tipuipaya"}
             onChange={(e) => cambioEntradaLugarAtencion(e, "nombre")}
             disabled
-            className={classNames({ "p-invalid": nombre && !lugarAtencion.nombre })}
+            className={classNames({
+              "p-invalid": nombre && !lugarAtencion.nombre,
+            })}
           />
           {nombre && !lugarAtencion.nombre && (
             <small className="p-invalid">El nombre es requerido.</small>
@@ -601,7 +618,9 @@ const LugarAtencionMesa = () => {
             onChange={(e) => cambioEntradaLugarAtencion(e, "nombre")}
             required
             autoFocus
-            className={classNames({ "p-invalid": nombre && !lugarAtencion.nombre })}
+            className={classNames({
+              "p-invalid": nombre && !lugarAtencion.nombre,
+            })}
           />
           {nombre && !lugarAtencion.nombre && (
             <small className="p-invalid">El nombre es requerido.</small>
