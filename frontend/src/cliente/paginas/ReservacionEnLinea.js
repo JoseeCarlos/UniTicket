@@ -100,7 +100,7 @@ const ReservacionEnLinea = () => {
       <div className='informacion-ticket'>
         <div className='numero-ticket'>
           <img src='assets/layout/images/logo.svg' alt='Número de ticket' />
-          <h1>{elemento.title}</h1>
+          <h1>CR-1</h1>
         </div>
 
         <div className='detalle-ticket'>

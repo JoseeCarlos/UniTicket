@@ -10,11 +10,12 @@ import Principal from './cliente/componentes/PaginaPrincipal';
 import Inicio from './inicio-sesion/InicioSesion';
 import Empleado from './empleado/paginas/EmpleadoAtencion';
 import Administrador from './administrador/componentes/Administrador';
+import Ticket from './ticket-presencial/pagina/Ticket'
 
 ReactDOM.render(
     <HashRouter>
         <ScrollToTop>
-            <Principal></Principal>
+            <VistaAtencion></VistaAtencion>
         </ScrollToTop>
     </HashRouter>,
     document.getElementById('root')
