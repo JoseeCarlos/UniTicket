@@ -22,7 +22,7 @@ const Principal = () => {
         </div>
         <h3>VISTA PARA LA ATENCIÓN</h3>
       </NavLink>
-      <NavLink to="/vistaAtencion" className='opcion'>
+      <NavLink to="/quejas" className='opcion'>
         <div className='imagen'>
           <img src='assets/layout/images/quejas.jpg' alt='Quejas'></img>
         </div>
