@@ -24,7 +24,7 @@ def get_asignacion_id(id):
 @asignacion.route('/add', methods=['POST'])
 def create_asignacion():
     try:
-        asignacion = Asignacion(IdEmpleado=request.json['IdEmpleado'], IdMesa=request.json['IdMesa'], IdUsuarioRegistro=request.json['IdUsuarioRegistro'])
+        asignacion = Asignacion(IdEmpleado=request.json['IdEmpleado'], IdMesa=request.json['IdMesa'], FechaInicio=request.json['FechaInicio'], FechaFin=request.json['FechaFin'], IdUsuarioRegistro=request.json['IdUsuarioRegistro'])
         filas_afectadas = AsignacionModelo.crearAsignacion(asignacion)
         if filas_afectadas == 0:
             return jsonify({'error': 'Asignacion no registrado'}), 500

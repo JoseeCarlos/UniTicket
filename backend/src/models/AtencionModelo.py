@@ -3,6 +3,7 @@ from database.db import get_connection
 from .UEntidades.AtencionQueja import AtencionQueja
 from .UEntidades.Atencion import Atencion
 from .UEntidades.AsigancionEmpleado import AsignacionEmpleado
+from .UEntidades.AtencionHistorial import AtencionHistorial
 import json
 
 class AtencionModelo():
@@ -126,4 +127,28 @@ class AtencionModelo():
                     return tipoAtencion
                 except Exception as ex:
                     raise Exception(ex)
+        
+        @classmethod
+        def obtenerAtencionHistorial(self, idTicket):
+            try:
+                connection = get_connection()
+                atenciones = []
+                with connection.cursor() as cursor:
+                    cursor.execute("""SELECT UA.IdEmpleado,M.Numero,
+                                        (SELECT LA.Nombre FROM ULugarAtencion LA WHERE LA.IdLugarAtencion=M.IdLugarAtencion),
+                                        (SELECT LA.Nombre FROM ULugarAtencion LA WHERE LA.IdLugarAtencion=T.IdLugarAtencionDestino),
+                                        (SELECT A.Nombre FROM UArea A WHERE A.IdArea=T.IdAreaDestino),
+                                        A.Estado,A.FechaRegistro,A.IdUsuarioRegistro
+                                        FROM UAtencion A
+                                        LEFT JOIN UAsignacion UA ON UA.IdAsignacion=A.IdAsignacion
+                                        LEFT JOIN UMesa M ON M.IdMesa =UA.IdMesa
+                                        LEFT JOIN UTransferencia T ON T.IdTransferencia=A.IdTransferencia
+                                        WHERE A.IdTicket= ?
+                                    """, (idTicket))
+                    for row in cursor.fetchall():
+                        atenciones.append(AtencionHistorial(IdEmpleado=row[0], Numero=row[1], LugarAtencion=row[2], LugarAtencionDestino=row[3], AreaDestino=row[4], Estado=row[5], FechaRegistro=row[6], IdUsuarioRegistro=row[7]).to_JSON()) 
+                connection.close()
+                return atenciones
+            except Exception as ex:
+                raise Exception(ex)
                     

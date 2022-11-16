@@ -5,10 +5,10 @@ export class AsignacionServicio{
     agregarAsignacion(asignacion){
         return fetch('/api/asignacion/add',{
             method: 'POST',
-            body: JSON.stringify(asignacion),
-            headers:{
+            headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            body: JSON.stringify(asignacion)
         }).then(res => res.json()).then(data => data);
     }
 }

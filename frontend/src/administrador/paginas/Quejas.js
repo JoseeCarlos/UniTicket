@@ -69,13 +69,13 @@ const Quejas = () => {
                         className="datatable-responsive" paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} Quejas" emptyMessage="No hay quejas :D.">
                         <Column expander style={{ width: '3em' }} />
-                        <Column field="nombre" header="nombre" sortable />
-                        <Column field="tipo" header="Tipo" sortable />
-                        <Column field="tipoAtencion" header="Tipo de atención" sortable />
-                        <Column field="lugarAtencion" header="Lugar de atención" sortable />
-                        <Column field="fechaIncio" header="Inicio" sortable />
-                        <Column field="fechaFin" header="Fin" sortable />
-                        <Column field="empleado" header="Encargado" sortable />
+                        <Column field="NombreUsuario" header="nombre" sortable />
+                        <Column field="TipoQueja" header="Tipo" sortable />
+                        <Column field="TipoAtencion" header="Tipo de atención" sortable />
+                        <Column field="LugarAtencion" header="Lugar de atención" sortable />
+                        <Column field="FechaInicio" header="Inicio" sortable />
+                        <Column field="FechaFin" header="Fin" sortable />
+                        <Column field="NombreEmpleado" header="Encargado" sortable />
                     </DataTable>
                 </div>
             </div>

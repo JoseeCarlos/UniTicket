@@ -2,6 +2,7 @@ from flask import jsonify
 from database.db import get_connection
 from .UEntidades.Ticket import Ticket
 from .UEntidades.TicketUsuario import TicketUsuario
+from .AtencionModelo import AtencionModelo
 import json
 
 class TicketModelo():
@@ -131,6 +132,26 @@ class TicketModelo():
             return tickets
         except Exception as ex:
             raise Exception(ex)
+    
+    @classmethod
+    def obtener_TicketsAdmin(self):
+        try:
+            connection = get_connection()
+            tickets = []
+            with connection.cursor() as cursor:
+                cursor.execute("""SELECT T.IdTicket,T.Codigo, T.Numero, LA.Nombre, TE.FechaHoraReservacion, A.Nombre, T.Estado, T.FechaRegistro, TE.IdUsuarioRegistro
+                                    FROM UTicket T
+                                    LEFT JOIN UTicketEnLinea TE ON TE.IdTicket=T.IdTicket
+                                    INNER JOIN ULugarAtencion LA ON LA.IdLugarAtencion=T.IdLugarAtencion
+                                    INNER JOIN UArea A ON A.IdArea=LA.IdArea 
+                                """)
+                for row in cursor.fetchall():
+                    tickets.append(TicketUsuario(idTicket=row[0], Codigo=row[1], Numero=row[2], NombreLugar=row[3], FechaHoraReservacion=row[4],NombreArea=row[5], Estado=row[6], FechaRegistro=row[7], Atenciones=AtencionModelo.obtenerAtencionHistorial(row[0])).to_JSON())
+            connection.close()
+            return tickets
+        except Exception as ex:
+            raise Exception(ex)
+
 
 
 
