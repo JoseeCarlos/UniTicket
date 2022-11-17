@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
@@ -14,24 +14,30 @@ import { ListBox } from "primereact/listbox";
 import { Calendar } from "primereact/calendar";
 import { LugarAtencionServicio } from "../servicios/LugarAtencionServicio";
 import { ServicioMesa } from "../servicios/ServicioMesa";
+import { Toast } from "primereact/toast";
 
 const Asignacion = () => {
   let asignacionVacia = {
+    IdAsignacion: null,
     IdEmpleado: null,
     IdMesa: null,
+    FechaInicio: null,
+    FechaFin: null,
+    IdUsuarioRegistro: parseInt(sessionStorage.getItem('userId')),
     Estado: "",
-    FechaCreacion: "",
-    FechaActualizacion: "",
-    IdUsuarioRegistro: sessionStorage.getItem('userId'),
-    IdUsuarioModificacion: "",
+    FechaRegistro: "",
+    FechaModificacion: "",
   };
 
+  const toast = useRef(null);
   const [fechaInicioAsignacion, establecerFechaInicioAsignacion] =
-    useState(null);
-  const [fechaFinAsignacion, establecerFechaFinAsignacion] = useState(null);
+    useState([]);
+  const [fechaFinAsignacion, establecerFechaFinAsignacion] = useState([]);
   const [enviado, establecerEnvio] = useState(false);
   const [valorDropdown, establecerValorDropdown] = useState(null);
   const [valorLugar, establecerValorLugar] = useState([]);
+  const [valorFechaInicio, establecerValorFechaInicio] = useState([]);
+  const [valorFechaFin, establecerValorFechaFin] = useState([]);
   const [valorMesa, establecerValorMesa] = useState([]);
   const [empleadoSeleccionado, establecerEmpleadoSeleccionado] = useState([]);
   const [filtroAsignacion, establecerFiltroAsignacion] = useState(null);
@@ -97,10 +103,16 @@ const Asignacion = () => {
     servicioAsignacion.agregarAsignacion(asignacion)
     .then((data) => {
       console.log(data);
-      // establecerAsignaciones([...asignaciones, data]);
-      // establecerDialogoInsercionAsignacion(false);
-      // establecerAsignacion(asignacionVacia);
+      if(data.status === 200){
+        toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Asignación agregada correctamente', life: 3000 });
+       
+      }
+      else{
+        toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error al agregar asignación', life: 3000 });
+      }
     });
+    establecerDialogoInsercionAsignacion(false);
+    establecerAsignacion(asignacionVacia);
   };
   const insercionAsignacion = () => {
     establecerAsignacion(asignacionVacia);
@@ -201,6 +213,19 @@ const Asignacion = () => {
         establecerObtenerMesas(data)
       });
   }
+  function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [day, month, year].join('-');
+}
 
   const guardarEmpleado = (empleado) => {
     let _asignacion = asignacion
@@ -212,6 +237,12 @@ const Asignacion = () => {
     _asignacion.IdMesa = mesa.IdMesa
     establecerAsignacion(_asignacion)
   }
+  const guardarFecha = (e, name) => {
+    let _asignacion = asignacion
+    _asignacion[name] = formatDate(e.value)
+    establecerAsignacion(_asignacion)
+  }
+
   const encabezado = (
     <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
       <h5 className="m-0">
@@ -241,6 +272,7 @@ const Asignacion = () => {
   );
   return (
     <div className="grid crud-demo">
+      <Toast ref={toast} />
       <div className="col-12">
         <div className="card">
           <DataTable
@@ -313,7 +345,10 @@ const Asignacion = () => {
                   <Calendar
                     id="fechaInicioAsignacion"
                     value={fechaInicioAsignacion}
-                    onChange={(e) => establecerFechaInicioAsignacion(e.value)}
+                    onChange={(e) => {
+                      console.log(e.value)
+                      guardarFecha(e, "FechaInicio")
+                      establecerFechaInicioAsignacion(e.value)}}
                     required
                     placeholder="Seleccione la fecha de inicio"
                   />
@@ -326,7 +361,9 @@ const Asignacion = () => {
                     id="fechaFinAsignacion"
                     value={fechaFinAsignacion}
                     placeholder="Seleccione la fecha de finalizacion"
-                    onChange={(e) => establecerFechaFinAsignacion(e.value)}
+                    onChange={(e) => {
+                      guardarFecha(e, "FechaFin")
+                      establecerFechaFinAsignacion(e.value)}}
                     optionLabel="Nombres"
                   />
                 </div>
@@ -388,12 +425,12 @@ const Asignacion = () => {
                     <p id="numeroMesaSeleccionado">{valorMesa.Numero ? ""+valorMesa.Numero : 'Seleccione una Mesa' }</p>
                   </div>
                   <div className="field">
-                    <label htmlFor="fechaInicio">Fecha de Inicio</label>
-                    <p id="fechaInicio">24/10/2022</p>
+                    <label htmlFor="fechaInicio">Fecha Inicio</label>
+                    <p id="fechaInicio">{ fechaInicioAsignacion != "" ? formatDate(fechaInicioAsignacion.toString()) : 'Selecciones una fecha de inicio' }</p>
                   </div>
                   <div className="field">
-                    <label htmlFor="fechaFin">Fecha de Finalizacion</label>
-                    <p id="fechaFin">No definido</p>
+                    <label htmlFor="fechaFin">Fecha Finalizacion</label>
+                    <p id="fechaFin">{ fechaFinAsignacion != ""  ? formatDate(fechaFinAsignacion.toString()) : 'Seleccione una fecha de finalizacion'}</p>
                   </div>
                 </div>
               </div>
@@ -458,7 +495,9 @@ const Asignacion = () => {
                   <Calendar
                     id="fechaInicioAsignacion"
                     value={fechaInicioAsignacion}
-                    onChange={(e) => establecerFechaInicioAsignacion(e.value)}
+                    onChange={(e) => {
+                      guardarFecha(e,"FechaInicio");
+                      establecerFechaInicioAsignacion(e.value)}}
                     required
                     placeholder="Seleccione la fecha de inicio"
                   />
@@ -471,7 +510,9 @@ const Asignacion = () => {
                     id="fechaFinAsignacion"
                     value={fechaFinAsignacion}
                     placeholder="Seleccione la fecha de finalizacion"
-                    onChange={(e) => establecerFechaFinAsignacion(e.value)}
+                    onChange={(e) => {
+                      guardarFecha(e,"FechaFin");
+                      establecerFechaFinAsignacion(e.value)}}
                   />
                 </div>
               </div>

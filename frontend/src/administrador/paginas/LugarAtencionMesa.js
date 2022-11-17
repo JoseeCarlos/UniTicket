@@ -112,9 +112,6 @@ const LugarAtencionMesa = () => {
   }, []); 
 
   const expandirTodo = () => {
-    // let _filasExpandidas = {};
-    // productos.forEach((p) => (_filasExpandidas[`${p.id}`] = true));
-
     establecerFilasExpandidas(true);
   };
 

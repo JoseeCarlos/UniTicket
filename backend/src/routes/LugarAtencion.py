@@ -4,13 +4,13 @@ from models.UEntidades.LugarAtencion import LugarAtencion
 
 lugarAtencion = Blueprint('lugarAtencion', __name__)
 
-# @lugarAtencion.route('/', methods=['GET'])
-# def get_lugarAtencion():
-#     try:
-#         lugarAtencion = LugarAtencionModelo.obtener_LugarAtencion()
-#         return jsonify(lugarAtencion)
-#     except Exception as ex:
-#         return jsonify({'error': str(ex)}), 500
+@lugarAtencion.route('/', methods=['GET'])
+def get_lugarAtencion():
+    try:
+        lugarAtencion = LugarAtencionModelo.obtener_LugarAtenciones()
+        return jsonify(lugarAtencion)
+    except Exception as ex:
+        return jsonify({'error': str(ex)}), 500
 
 # @lugarAtencion.route('/<id>', methods=['GET'])
 # def get_lugarAtencion(id):

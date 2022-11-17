@@ -14,7 +14,7 @@ class QuejaModelo():
             quejas = []
             with connection.cursor() as cursor:
                 cursor.execute("""select Q.IdQueja, RQ.Nombre,
-                                    IIF(Q.TipoQueja=0,0, TL.IdUsuario) 'nombreUsuario',
+                                    IIF(Q.TipoQueja=0,0, TL.IdUsuarioRegistro) 'nombreUsuario',
                                     isnull(QL.Descripcion, RQ.Descripcion) 'description',
                                     Q.TipoQueja,
                                     IIF(Q.IdAtencion = null, 0 , A.TipoAtencion) 'attentionType',
@@ -22,16 +22,17 @@ class QuejaModelo():
                                     A.FechaRegistro,
                                     A.FechaModificacion,
                                     Q.FechaRegistro,
-                                    A.IdEmpleado                         
+                                    UA.IdEmpleado
                                     from UQueja Q
                                     left join UAtencion A on A.IdAtencion=Q.IdAtencion
-                                    left join UMesa ME on ME.IdMesa=A.IdMesa	
+                                    left join UAsignacion UA on UA.IdAsignacion=A.IdAsignacion
+                                    left join UMesa ME on ME.IdMesa=UA.IdMesa
                                     left join ULugarAtencion LU on LU.IdLugarAtencion=ME.IdLugarAtencion
                                     left join UTicket T on T.IdTIcket=A.IdTicket
                                     left join UTicketEnlinea TL on TL.IdTicket=T.IdTIcket
                                     left join URazonQueja RQ on RQ.IdRazonQueja=Q.IdRazonQueja
-									left join UQuejaEnLinea QL ON QL.IdQueja=Q.IdQueja
-									left join UQuejaPresencial QP ON QP.IdQueja=Q.IdQueja
+                                    left join UQuejaEnLinea QL ON QL.IdQueja=Q.IdQueja
+                                    left join UQuejaPresencial QP ON QP.IdQueja=Q.IdQueja
                                     order by Q.FechaRegistro desc
                                 """)
                 for row in cursor.fetchall():

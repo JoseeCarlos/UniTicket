@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from models.QuejaModelo import QuejaModelo 
 from models.UEntidades.Queja import Queja
 from models.UEntidades.QuejaEnLinea import QuejaEnLinea
-
+from datetime import datetime
 
 queja = Blueprint('queja', __name__)
 

@@ -7,6 +7,8 @@ import { Button } from "primereact/button";
 import { ServicioMesa } from "../servicios/ServicioMesa";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
+import { TicketServicio } from "../servicios/TicketServicio";
+
 const TicketTransferencia = () => {
   let ticketVacio = {
     IdTicket: null,
@@ -37,10 +39,15 @@ const TicketTransferencia = () => {
   const [productos, establecerProducto] = useState([]);
   const [filasExpandidas, establecerFilasExpandidas] = useState(null);
   const servicioMesa = new ServicioMesa();
+  const servicioTicket = new TicketServicio();
   useEffect(() => {
-    servicioMesa
-      .getProductsWithOrdersSmall()
-      .then((dato) => establecerProducto(dato));
+    servicioTicket.obtenerTicketsAdmin().then(datos => {
+      console.log(datos);
+      establecerProducto(datos);
+    })
+    // servicioMesa
+    //   .getProductsWithOrdersSmall()
+    //   .then((dato) => establecerProducto(dato));
       establecerValorFiltroLugarAtencion([
         { id: 1, nombre: "Cajas tiquipaya" },
         { id: 2, nombre: "Bienestar tiquipaya" },
@@ -63,55 +70,55 @@ const TicketTransferencia = () => {
     return (
       <div className="orders-subtable">
         <DataTable
-          value={dato.orders}
+          value={dato.Atenciones}
           responsiveLayout="scroll"
           header={"Atenciones y transferencias de " + dato.name}
           emptyMessage={"No se encontraron atenciones al ticket "+dato.name}
         >
         <Column
-          field="productCode"
+          field="IdEmpleado"
           header="Empleado de atencion"
           sortable
           headerStyle={{ width: "4rem" }}
         ></Column>
         <Column
-          field="id"
+          field="Numero"
           header="Mesa de atencion"
           sortable
           headerStyle={{ width: "4rem" }}
         ></Column>
         <Column
-          field="id"
+          field="LugarAtencion"
           header="Lugar de atencion"
           sortable
           headerStyle={{ width: "4rem" }}
         ></Column>
         <Column
-          field="id"
+          field="LugarAtencionDestino"
           header="Lugar de atencion de destino"
           sortable
           headerStyle={{ width: "4rem" }}
         ></Column>
         <Column
-          field="id"
+          field="AreaDestino"
           header="Area de destino"
           sortable
           headerStyle={{ width: "4rem" }}
         ></Column>
         <Column
-          field="estado"
+          field="Estado"
           header="Estado"
           sortable
           headerStyle={{ width: "4rem" }}
         ></Column>
         <Column
-          field="fechaRegistro"
+          field="FechaRegistro"
           header="Fecha de registro"
           sortable
           headerStyle={{ width: "4rem" }}
         ></Column>
         <Column
-          field="usuarioRegistro"
+          field="IdUsuarioRegistro"
           header="Usuario"
           sortable
           headerStyle={{ width: "4rem" }}
@@ -174,14 +181,14 @@ const TicketTransferencia = () => {
         emptyMessage="No hay lugares de atención."
       >
         <Column expander style={{ width: "1em" }} />
-        <Column field="name" header="Codigo" sortable />
-        <Column field="id" header="Numero" sortable />
-        <Column field="lugaraAtencion" header="Lugar atencion" sortable />
-        <Column field="reserva" header="Hora Reserva" sortable />
-        <Column field="area" header="Area Origen" sortable />
-        <Column field="estado" header="Estado" sortable />
-        <Column field="fechaRegistro" header="Fecha Registro" sortable />
-        <Column field="usuarioRegistro" header="Usuario" sortable />
+        <Column field="Codigo" header="Codigo" sortable />
+        <Column field="Numero" header="Numero" sortable />
+        <Column field="NombreLugar" header="Lugar atencion" sortable />
+        <Column field="FechaHoraReservacion" header="Hora Reserva" sortable />
+        <Column field="Nombre" header="Area Origen" sortable />
+        <Column field="Estado" header="Estado" sortable />
+        <Column field="FechaRegistro" header="Fecha Registro" sortable />
+        <Column field="IdUsuarioRegistro" header="Usuario" sortable />
       </DataTable>
     </div>
   );
