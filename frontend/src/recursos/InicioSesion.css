@@ -1,0 +1,38 @@
+.grid {
+  width: 100%;
+}
+
+.col-5:nth-child(3) {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contenedor-carrusel {
+  overflow: hidden;
+  position: relative;
+}
+
+.carrusel {
+  width: 1200%;
+  margin-left: 0px;
+  transition: all 1000ms ease;
+}
+
+.carrusel-imagen {
+  width: 700px;
+  float: left;
+  display: block;
+}
+
+.carrusel-imagen .imagen {
+  width: 700px;
+  height: 500px;
+}
+
+.p-carousel-content ul {
+  display: none;
+}
+
+/* RESPONSIVE */
