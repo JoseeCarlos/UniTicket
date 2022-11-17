@@ -14,7 +14,7 @@ import Principal from './cliente/componentes/PaginaPrincipal';
 ReactDOM.render(
     <HashRouter>
         <ScrollToTop>
-            <Principal></Principal>
+            <App></App>
         </ScrollToTop>
     </HashRouter>,
     document.getElementById('root')

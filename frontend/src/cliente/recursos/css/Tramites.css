@@ -80,3 +80,78 @@ ol li {
   border-top: 2px var(--primary-uni);
 }
 
+/* ====== RESPONSIVE ====== */
+@media screen and (max-width: 550px) {
+  .contenedor-tramites {
+    width: 100vw;
+  }
+
+  .seleccionar-tramite {
+    width: 100vw;
+    margin: 20px 0 5px 0;
+    padding: 0 15px;
+    gap: 5px;
+    justify-items: center;
+  }
+
+  .seleccionar-tramite .seleccionar-lugar {
+    width: 50%;
+  }
+
+  .tarjetas-tramites {
+    width: 100vw;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(auto, 1fr);
+  }
+
+  .tarjeta-tramite {
+    width: 330px;
+    height: auto;
+    border-radius: 0 !important;
+    overflow: hidden;
+  }
+
+  .tarjetas-tramites .p-card-header {
+    height: 135px;
+  }
+
+  .tarjetas-tramites .p-card-body {
+    padding: 0 !important;
+  }
+
+  .tarjetas-tramites .p-card-title {
+    background-color: var(--primary-uni);
+    color: white;
+    padding: 8px;
+  }
+
+  .tarjetas-tramites .p-card-content {
+    padding: 5px 10px !important;
+    font-size: 12px;
+  }
+
+  .tarjetas-tramites .p-card-header img {
+    height: 100%;
+    object-fit: fill;
+  }
+
+  ol span {
+    font-weight: 600;
+  }
+
+  ol li {
+    margin-left: 20px;
+  }
+
+  .contenedor-tramites .p-divider {
+    width: 95%;
+  }
+
+  .contenedor-tramites .p-divider-dashed.p-divider-horizontal:before {
+    border-top-style: dashed !important;
+  }
+
+  .contenedor-tramites .p-divider.p-divider-horizontal:before {
+    border-top: 2px var(--primary-uni);
+  }
+}

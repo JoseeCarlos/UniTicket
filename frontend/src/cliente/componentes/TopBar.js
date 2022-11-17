@@ -8,16 +8,18 @@ export const TopBar = (props) => {
   useEffect(() => {
     let btn = document.querySelector('#boton');
     let enlaces = document.querySelector('#enlaces');
-    let enlace = document.querySelector('#enlace');
+    let enlace = document.querySelectorAll('#enlace');
     if (btn !== null || enlace !== null) {
       btn.addEventListener('click', function () {
         cambiarClases();
       });
 
-      enlace.addEventListener('click', function () {
-        cambiarClases();
+      enlace.forEach(function (elemento) {
+        elemento.addEventListener('click', function () {
+          cambiarClases();
+        });
       });
-      
+
       function cambiarClases() {
         if (btn.classList.contains('activo')) {
           btn.classList.remove('activo');
@@ -52,16 +54,16 @@ export const TopBar = (props) => {
 
       <div id='enlaces' className='enlaces-foto enlaces-no-activo'>
         <div className='enlaces'>
-          <NavLink to="/">
+          <NavLink id='enlace' to="/">
             INICIO
           </NavLink>
-          <NavLink to="/reservacionEnLinea">
+          <NavLink id='enlace' to="/reservacionEnLinea">
             MIS RESERVAS
           </NavLink>
-          <NavLink to="/tramites">
+          <NavLink id='enlace' to="/tramites">
             TRÁMITES
           </NavLink>
-          <NavLink to="/informacion">
+          <NavLink id='enlace' to="/informacion">
             INFORMACIÓN
           </NavLink>
           <NavLink id='enlace' to="/quejas">

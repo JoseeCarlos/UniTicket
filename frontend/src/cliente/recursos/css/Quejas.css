@@ -24,11 +24,10 @@
 }
 
 .contenedor-quejas .galeria-queja {
-  grid-column: 1;
   grid-row: 3 / 5;
 }
 
-.contenedor-quejas .razon{
+.contenedor-quejas .razon {
   grid-column: 2;
   grid-row: 3;
 }
@@ -40,12 +39,12 @@
 }
 
 .contenedor-quejas .tipo-atencion {
-  grid-column: 1;
+
   grid-row: 5;
 }
 
 .contenedor-quejas .resumen-atencion {
-  grid-column: 1;
+
   grid-row: 6;
   height: 265px;
 }
@@ -72,7 +71,69 @@ label span {
   font-weight: 600;
 }
 
+.resumen-queja label:last-child {
+  width: 350px;
+  height: 400px;
+  background-color: aqua;
+}
+
 .p-button {
   grid-column: 1 / 3;
   grid-row: 7;
+}
+
+/* ======== RESPONSIVE ==========*/
+@media screen and (max-width: 550px) {
+  .contenedor-quejas {
+    width: 100vw;
+    margin: 0;
+    padding: 10px 20px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .contenedor-quejas h1 {
+    text-align: center;
+    margin: 0;
+  }
+
+  .contenedor-quejas p {
+    font-size: 15px;
+    font-weight: 500;
+    text-align: justify;
+  }
+
+  .contenedor-quejas .galeria-queja{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .contenedor-quejas .galeria-queja .p-galleria-content {
+    width: 300px;
+  }
+
+  .contenedor-quejas .descripcion {
+    margin-top: 11px;
+    margin-bottom: 0;
+  }
+
+  .contenedor-quejas .descripcion #descripcion {
+    width: 100%;
+  }
+
+  .contenedor-quejas .resumen-atencion {
+    height: auto;
+  }
+
+  .contenedor-quejas .resumen-queja {
+    height: auto;
+  }
+
+  .contenedor-quejas .resumen-atencion,
+  .contenedor-quejas .resumen-queja {
+    font-size: 11px;
+  }
 }

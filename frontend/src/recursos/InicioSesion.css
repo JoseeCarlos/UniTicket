@@ -2,6 +2,80 @@
   width: 100%;
 }
 
+.rejilla-inicio-sesion {
+  height: 100%;
+}
+
+.rejilla-inicio-sesion .col-12 {
+  padding: 0 !important;
+}
+
+.tarjeta-inicio-sesion {
+  padding: 1.5rem;
+  height: 100vh;
+  display: flex;
+  justify-items: center;
+}
+
+.divisor::before {
+  box-shadow: 0 5px 10px rgba(255, 255, 255, 1);
+}
+
+.divisor .p-divider-content {
+  background-color: transparent !important;
+}
+
+.divisor i {
+  border: solid 2px var(--primary-uni);
+  padding: 5px;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 5px 10px rgba(255, 255, 255, 0.3);
+}
+
+.tarjeta-divisor,
+.tarjeta-divisor-inicio-sesion {
+  background-color: var(--white);
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 15px 7px rgb(255, 255, 255, 0.3);
+  font-size: 12.5px;
+}
+
+.tarjeta-divisor-inicio-sesion {
+  margin-left: 50px;
+  height: 350px;
+  width: 250px;
+  text-align: center;
+  height: auto;
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+.tarjeta-divisor-inicio-sesion h3 {
+  font-size: 25px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.tarjeta-divisor-inicio-sesion .form {
+  margin-top: 30px;
+}
+
+.tarjeta-divisor-inicio-sesion .form #user {
+  margin-bottom: 5px;
+}
+
+.tarjeta-divisor-inicio-sesion .field:nth-child(4) {
+  text-align: start;
+}
+
+.tarjeta-divisor-inicio-sesion p {
+  margin-top: 20px;
+}
+
 .col-5:nth-child(3) {
   width: 50%;
   display: flex;

@@ -58,7 +58,7 @@
   width: 40px;
 }
 
-/* RESPONSIVE */
+/* ======== RESPONSIVE ======== */
 @media screen and (max-width: 550px) {
   .disenio-bar {
     height: 55px;
@@ -175,7 +175,7 @@
     display: none;
   }
 
-  /* ANIMACIONES */
+  /* ======== ANIMACIONES ======== */
   @keyframes top {
     0% {
       top: 0;

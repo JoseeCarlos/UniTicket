@@ -99,18 +99,18 @@ function InicioSesion() {
               <div className="col-5 flex align-items-center justify-content-center">
                 <div className="p-fluid tarjeta-divisor-inicio-sesion">
                   <h3>Iniciar Sesión <br /> en UniTicket </h3>
-                  <form>
+                  <div className='form'>
                     <div className="field">
                       <span className="p-float-label">
-                        <InputText type="text" id="user" onChange={(e) => { setValueUser(e, "userName") }} className="p-invalid"></InputText>
-                        <label htmlFor="usuario">Usuario</label>
+                        <InputText type="text" id="user" onChange={(e) => { setValueUser(e, "userName") }} className="p-invalid" />
+                        <label htmlFor="user">Usuario</label>
                       </span>
                     </div>
 
                     <div className="field">
                       <span className="p-float-label">
-                        <Password inputId="password" onChange={(e) => { setValueUser(e, "password") }} className="p-invalid" feedback='false' />
-                        <label htmlFor="contrasenia">Contraseña</label>
+                        <Password inputId="password" onChange={(e) => { setValueUser(e, "password") }} className="p-invalid" feedback={false} />
+                        <label htmlFor="password">Contraseña</label>
                       </span>
                     </div>
 
@@ -130,7 +130,7 @@ function InicioSesion() {
                     <p className="forgot-password text-right">
                       <a href="#">Olvidaste tu contraseña?</a>
                     </p>
-                  </form>
+                  </div>
                 </div>
               </div>
 
