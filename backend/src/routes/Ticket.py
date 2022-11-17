@@ -68,3 +68,11 @@ def get_historial(id):
         return jsonify(ticket)
     except Exception as ex:
         return jsonify({'error': str(ex)}), 500
+
+@ticket.route('/admin', methods=['GET'])
+def get_ticket_admin():
+    try:
+        ticket = TicketModelo.obtener_TicketsAdmin()
+        return jsonify(ticket)
+    except Exception as ex:
+        return jsonify({'error': str(ex)}), 500

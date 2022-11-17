@@ -47,9 +47,9 @@ class AsignacionModelo():
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("""INSERT INTO UAsignacion (IdEmpleado, IdMesa, IdUsuarioRegistro)
-                                    VALUES (?, ?, ?)
-                                """, (asignacion.IdEmpleado, asignacion.IdMesa, asignacion.IdUsuarioRegistro))
+                cursor.execute("""INSERT INTO UAsignacion(IdEmpleado, IdMesa, FechaInicio, FechaFin, IdUsuarioRegistro)
+                                    VALUES (?, ?, ?, ?, ?)
+                                """, (asignacion.IdEmpleado, asignacion.IdMesa, asignacion.FechaInicio, asignacion.FechaFin, asignacion.IdUsuarioRegistro))
                 connection.commit()
                 filas_afectadas = cursor.rowcount
             connection.close()
