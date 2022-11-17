@@ -30,12 +30,12 @@ class LugarAtencionModelo():
             connection = get_connection()
             lugaresAtencion = []
             with connection.cursor() as cursor:
-                cursor.execute("""SELECT IdLugarAtencion, Nombre, NumeroMaximoReservasPorHora, IdSitio, Estado, FechaCreacion, FechaActualizacion, IdUsuarioCreacion, IdUsuarioActualizacion 
+                cursor.execute("""SELECT IdLugarAtencion, Nombre, NumeroMaximoReservaPorHora, Id_Sitio, Estado, FechaRegistro, FechaModificacion, IdUsuarioRegistro 
                                     FROM ULugarAtencion
-                                    WHERE Estado =1 AND IdSitio = ?
+                                    WHERE Estado =1 AND Id_Sitio = ?
                                 """, (sitioId,))
                 for row in cursor.fetchall():
-                    lugaresAtencion.append(LugarAtencion(IdLugarAtencion=row[0],Nombre=row[1],NumeroMaximoReservasPorHora=row[2], IdSitio=row[3], Estado=row[4], FechaCreacion=row[5], FechaActualizacion=row[6], IdUsuarioCreacion=row[7], IdUsuarioActualizacion=row[8]).to_JSON())
+                    lugaresAtencion.append(LugarAtencion(IdLugarAtencion=row[0],Nombre=row[1],NumeroMaximoReservasPorHora=row[2], Id_Sitio=row[3], Estado=row[4], FechaRegistro=row[5], FechaModifacion=row[6], IdUsuarioRegistro=row[7]).to_JSON())
             connection.close()
             return lugaresAtencion
         except Exception as ex:
