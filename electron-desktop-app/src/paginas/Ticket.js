@@ -57,6 +57,8 @@ const Ticket = () => {
   }
   const [ticket, setTicket] = useState(emptyTicket);
 
+  console.log('ID_SITIO, ID_AREA, ID_SEDEACADEMICA: ' + sessionStorage.getItem('sitioId') + ' ' + sessionStorage.getItem('areaId') + ' ' + sessionStorage.getItem('sedeAcademicaId'))
+
   const onChangeTipoAtencion = (item, name) => {
     const val = item.IdTipoAtencion
     let _ticket = { ...ticket };

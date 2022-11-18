@@ -2,8 +2,8 @@ import React from 'react';
 
 export const TopBar = (props) => {
 
-  var campus = 'Tiquipaya';
-  var lugarAtencion = 'Cajas';
+  var campus = '';
+  var lugarAtencion = sessionStorage.getItem('nombre');
 
   return (
     <div className="disenio-bar">
