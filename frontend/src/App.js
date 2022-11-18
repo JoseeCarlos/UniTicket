@@ -12,7 +12,7 @@ import EmpleadoAtencion from './empleado/paginas/EmpleadoAtencion';
 import InicioSesion from './inicio-sesion/InicioSesion';
 
 function App(){
-    if(sessionStorage.getItem('role') == "admin")
+    if(sessionStorage.getItem('role') === "admin")
     {
         return (
             <div className="App">
@@ -20,14 +20,14 @@ function App(){
             </div>
         );
     }
-    if (sessionStorage.getItem('role') == "Empleado") {
+    if (sessionStorage.getItem('role') === "Empleado") {
         return (
             <div className="App">
                 <EmpleadoAtencion />
             </div>
         );
     }
-    if(sessionStorage.getItem('role') == "Estudiante")
+    if(sessionStorage.getItem('role') === "Estudiante")
     {
         return (
             <div className="App">

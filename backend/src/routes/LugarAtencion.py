@@ -60,6 +60,13 @@ def get_lugarSito(id):
     except Exception as ex:
         return jsonify({'error': str(ex)}), 500
 
+@lugarAtencion.route('/lugarAtencionCodigo/<codigo>', methods=['GET'])
+def get_lugarAtencionCodigo(codigo):
+    try:
+        lugarAtencion = LugarAtencionModelo.obtenerLugarAtencion_Codigo(codigo)
+        return jsonify(lugarAtencion)
+    except Exception as ex:
+        return jsonify({'error': str(ex)}), 500
 
 
 

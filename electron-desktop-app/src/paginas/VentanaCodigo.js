@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../recursos/VentanaCodigo.css';
+import { TicketServicio } from "../servicio/TicketServicio";
 
 const Modal = ({ estado, cambiarEstadoDialogo }) => {
   const [estadoLabel, cambiarEstadoLabel] = useState(false);
@@ -9,7 +10,19 @@ const Modal = ({ estado, cambiarEstadoDialogo }) => {
     cambiarCodigo(event.target.value);
   }
 
-  const validarCodigo = () => codigo === "123" ? cambiarEstadoDialogo(false) : cambiarEstadoLabel(true);
+  const validarCodigo = () => {
+    const ticketServicio = new TicketServicio();
+    ticketServicio.obtenerLugarAtencionCodigo(codigo).then(datos => {
+      if (datos.IdLugarAtencion != null) {
+        sessionStorage.setItem('nombre', datos.Nombre)
+        sessionStorage.setItem('sitioId', datos.Id_Sitio)
+        sessionStorage.setItem('sedeAcademicaId', datos.Id_Sede_Academica);
+        sessionStorage.setItem('areaId', datos.IdArea);
+        cambiarEstadoDialogo(false);
+      } else cambiarEstadoLabel(true);
+      
+    });
+  }
 
   return (
     <>
