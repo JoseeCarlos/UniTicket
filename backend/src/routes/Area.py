@@ -17,7 +17,7 @@ def get_areas():
 @area.route('/<id>', methods=['GET'])
 def get_area(id):
     try:
-        area = AreaModel.get_area(id)
+        area = AreaModel.obtener_area(id)
         return jsonify(area)
     except Exception as ex:
         return jsonify({'error': str(ex)}), 500
