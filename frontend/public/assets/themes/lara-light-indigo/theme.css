@@ -7230,3 +7230,11 @@ input:focus {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.logo-inicio-sesion {
+  height: 90px;
+  width: 350px;
+  background-image: url(../../layout/images/uniticket-logo.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}

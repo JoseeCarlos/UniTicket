@@ -9,38 +9,38 @@ import { InicioSesionServicio } from '../servicios/InicioSesionServicio';
 import '../recursos/InicioSesion.css';
 
 function InicioSesion() {
-  let emptyUser = {
-    userName: '',
-    password: ''
+  let usuarioVacio = {
+    cuenta: '',
+    pin: ''
   }
 
-  const [dropdownValue, setDropdownValue] = useState(null);
+  const [usuarioSeleccion, usuarioSeleccionado] = useState(null);
   const [imagenes, establecerImagenes] = useState([]);
-  const [userSeleted, setUserSeleted] = useState(emptyUser);
+  const [usuarioIngresado, establecerUsuarioIngresado] = useState(usuarioVacio);
 
-  const dropdownValues = [
-    { name: 'Estudiante', code: '1' },
-    { name: 'Empleado', code: '2' },
-    { name: 'Padre', code: '3' }
+  const usuarios = [
+    { usuario: 'Estudiante', code: '1' },
+    { usuario: 'Empleado', code: '2' },
+    { usuario: 'Padre', code: '3' }
   ];
 
-  const setValueUser = (e, name) => {
-    let _user = { ...userSeleted };
-    _user[name] = e.target.value;
-    setUserSeleted(_user);
+  const setValueUser = (e, usuario) => {
+    let _usuario = { ...usuarioIngresado };
+    _usuario[usuario] = e.target.value;
+    establecerUsuarioIngresado(_usuario);
   }
 
   const login = () => {
-    const employeeService = new ServicioEmpleado();
-    employeeService.loginEstudent(userSeleted).then(data => {
+    const servicioEmpleado = new ServicioEmpleado();
+    servicioEmpleado.loginEstudent(usuarioIngresado).then(data => {
       // eslint-disable-next-line array-callback-return
-      data.map((item) => {
-        if (item.Usuario === userSeleted.userName && item.Contrasenia === userSeleted.password) {
-          sessionStorage.setItem('userId', item.idEstudiante);
-          sessionStorage.setItem('name', item.Nombres);
-          if (item.Rol === "Administrador" || item.Rol === "Supervisor") {
+      data.map((elemento) => {
+        if (elemento.Usuario === usuarioIngresado.cuenta && elemento.Contrasenia === usuarioIngresado.pin) {
+          sessionStorage.setItem('userId', elemento.idEstudiante);
+          sessionStorage.setItem('usuario', elemento.Nombres);
+          if (elemento.Rol === "Administrador" || elemento.Rol === "Supervisor") {
             sessionStorage.setItem('role', "admin");
-          } else if (item.Rol === "Empleado") {
+          } else if (elemento.Rol === "Empleado") {
             sessionStorage.setItem('role', "Empleado");
           } else {
             sessionStorage.setItem('role', "Estudiante");
@@ -58,29 +58,24 @@ function InicioSesion() {
     inicioSesionServicio.obtenerImagenes().then(data => establecerImagenes(data.slice(0, 9)));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  let anchoPantalla = window.innerWidth;
-
   useEffect(() => {
     let cont = 0;
     let px = -700.0;
 
     let loop = function () {
       const carrusel = document.querySelector('#carrusel');
-      let style = getComputedStyle(carrusel);
-      let mLeft = 0;
+      let estilo = getComputedStyle(carrusel);
+      let margenIzquierdo = 0;
 
       if (carrusel != null) {
-        mLeft = parseFloat(style.marginLeft);
-        console.log('LEFT ANTES DE ENTRAR AL IF: ' + mLeft + ' CONTADOR ' + cont)
-        if (cont === 6 || (mLeft * -1) > 4100) {
+        margenIzquierdo = parseFloat(estilo.marginLeft);
+        if (cont === 6 || (margenIzquierdo * -1) > 4100) {
           carrusel.style.marginLeft = '0px';
           cont = 0;
         }
         else {
-          console.log('pixels a sumar ' + px)
-          carrusel.style.marginLeft = (px + mLeft) + 'px';
+          carrusel.style.marginLeft = (px + margenIzquierdo) + 'px';
           cont++;
-          console.log('mleft: ' + mLeft + ' ---- sdf: ' + carrusel.style.marginLeft)
         }
       } else {
         alert('NO DEBERIAS DE ESTAR VIENDO ESTO, EN CASO DE QUE LO ESTE VIENDO INFORME A UN ENCARGADO DE NETVALLE, POR FAVOR')
@@ -90,119 +85,68 @@ function InicioSesion() {
     setInterval(loop, 3000);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (anchoPantalla > 700) {
-    return (
-      <div className="rejilla-inicio-sesion">
-        <div className="col-12">
-          <div className="tarjeta-inicio-sesion divisor-img">
-            <div className="grid">
-              <div className="col-5 flex align-items-center justify-content-center">
-                <div className="p-fluid tarjeta-divisor-inicio-sesion">
-                  <h3>Iniciar Sesión <br /> en UniTicket </h3>
-                  <div className='form'>
-                    <div className="field">
-                      <span className="p-float-label">
-                        <InputText type="text" id="user" onChange={(e) => { setValueUser(e, "userName") }} className="p-invalid" />
-                        <label htmlFor="user">Usuario</label>
-                      </span>
-                    </div>
-
-                    <div className="field">
-                      <span className="p-float-label">
-                        <Password inputId="password" onChange={(e) => { setValueUser(e, "password") }} className="p-invalid" feedback={false} />
-                        <label htmlFor="password">Contraseña</label>
-                      </span>
-                    </div>
-
-                    <div className="field">
-                      <span className="p-float-label">
-                        <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="name" placeholder="Seleccione una opción" />
-                      </span>
-                    </div>
-
-                    <div className="field">
-                      <input type="checkbox" name='recuerdame'></input>
-                      <label htmlFor="recuerdame">Recuerdame</label>
-                    </div>
-
-                    <Button label="Ingresar" onClick={login} ></Button>
-
-                    <p className="forgot-password text-right">
-                      <a href="#">Olvidaste tu contraseña?</a>
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-1">
-                <Divider layout="vertical" className='divisor'>
-                  <i className="pi pi-angle-double-right"></i>
-                </Divider>
-              </div>
-
-              <div className="col-5">
-                <div className='contenedor-carrusel'>
-                  <ul class="carrusel" id="carrusel">
-                    {
-                      imagenes.map((elemento, index) => {
-                        return (
-                          <li class="carrusel-imagen">
-                            <img src={`images/univalle/${elemento.imagen}`} alt='Imagen de Univalle' className="imagen" />
-                          </li>
-                        )
-                      })
-                    }
-                  </ul>
-                </div>
-              </div>
+  return (
+    <div className="grid divisor-img">
+      <div className="tarjeta-inicio">
+        <div className='logo-inicio-sesion-container'>
+          <div className='logo-inicio-sesion'></div>
+        </div>
+        <div className="p-fluid tarjeta-divisor-inicio-sesion">
+          <h3>Iniciar Sesión <br /> en UniTicket </h3>
+          <div className='form'>
+            <div className="field">
+              <span className="p-float-label">
+                <InputText type="text" id="usuario" onChange={(e) => { setValueUser(e, "cuenta") }} className="p-invalid" />
+                <label htmlFor="usuario">Usuario</label>
+              </span>
             </div>
+
+            <div className="field">
+              <span className="p-float-label">
+                <Password inputId="pin" onChange={(e) => { setValueUser(e, "pin") }} className="p-invalid" feedback={false} />
+                <label htmlFor="pin">Contraseña</label>
+              </span>
+            </div>
+
+            <div className="field">
+              <span className="p-float-label">
+                <Dropdown value={usuarioSeleccion} onChange={(e) => usuarioSeleccionado(e.value)} options={usuarios} optionLabel="usuario" placeholder="Seleccione una opción" />
+              </span>
+            </div>
+
+            <div className="field">
+              <input type="checkbox" usuario='recuerdame'></input>
+              <label htmlFor="recuerdame">Recuerdame</label>
+            </div>
+
+            <Button label="Ingresar" onClick={login} ></Button>
           </div>
         </div>
       </div>
-    );
-  } else {
-    return (
-      <div className="inicio-sesion">
-        <div className="logo"></div>
 
-        <div className="contenedor-inicio-sesion">
-          <h3>Iniciar Sesion <br /> en UniTicket </h3>
+      <div className="contenedor-divisor">
+        <Divider layout="vertical" className='divisor'>
+          <i className="pi pi-angle-double-right"></i>
+        </Divider>
+      </div>
 
-          <div className="field">
-            <span className="p-float-label">
-              <InputText type="text" id="user" onChange={(e) => { setValueUser(e, "userName") }} className="p-invalid" />
-              <label htmlFor="usuario">Usuario</label>
-            </span>
-          </div>
-
-          <div className="field">
-            <span className="p-float-label">
-              <Password inputId="password" onChange={(e) => { setValueUser(e, "password") }} className="p-invalid" feedback='false' />
-              <label htmlFor="contrasenia">Contraseña</label>
-            </span>
-          </div>
-
-          <div className="field">
-            <span className="p-float-label">
-              <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="name" placeholder="Seleccione una opción" />
-            </span>
-          </div>
-
-          <div className="field">
-            <input type="checkbox" name='recuerdame'></input>
-            <label htmlFor="recuerdame">Recuerdame</label>
-          </div>
-
-          <Button label="Ingresar" onClick={login} ></Button>
-
-          <p className="forgot-password text-right">
-            <a href="#">Olvidaste tu contraseña?</a>
-          </p>
-
+      <div className="tarjeta-carrusel">
+        <div className='contenedor-carrusel'>
+          <ul class="carrusel" id="carrusel">
+            {
+              imagenes.map((elemento, index) => {
+                return (
+                  <li class="carrusel-imagen">
+                    <img src={`images/univalle/${elemento.imagen}`} alt='Imagen de Univalle' className="imagen" />
+                  </li>
+                )
+              })
+            }
+          </ul>
         </div>
-      </div >
-    );
-  }
+      </div>
+    </div>
+  );
 }
 
 export default InicioSesion;

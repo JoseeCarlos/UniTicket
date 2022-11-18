@@ -1,20 +1,20 @@
 .grid {
+  margin: 0;
   width: 100%;
-}
-
-.rejilla-inicio-sesion {
-  height: 100%;
-}
-
-.rejilla-inicio-sesion .col-12 {
-  padding: 0 !important;
-}
-
-.tarjeta-inicio-sesion {
-  padding: 1.5rem;
   height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(3, 46% 4% 50%);
+}
+
+.logo-inicio-sesion-container {
+  display: none;
+}
+
+.tarjeta-inicio {
+  grid-column: 1;
   display: flex;
-  justify-items: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .divisor::before {
@@ -35,7 +35,6 @@
   box-shadow: 0 5px 10px rgba(255, 255, 255, 0.3);
 }
 
-.tarjeta-divisor,
 .tarjeta-divisor-inicio-sesion {
   background-color: var(--white);
   padding: 15px;
@@ -76,16 +75,25 @@
   margin-top: 20px;
 }
 
-.col-5:nth-child(3) {
-  width: 50%;
+.contenedor-divisor {
+  grid-column: 2;
+}
+
+.tarjeta-carrusel {
+  grid-column: 3;
+  width: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-right: 20px;
+  margin: 0 40px;
 }
 
 .contenedor-carrusel {
   overflow: hidden;
   position: relative;
+  border-radius: 10px;
+  box-shadow: 0px 0px 14px 2px rgb(255, 255, 255, 0.3);
 }
 
 .carrusel {
@@ -98,15 +106,58 @@
   width: 700px;
   float: left;
   display: block;
+  height: 500px;
 }
 
 .carrusel-imagen .imagen {
   width: 700px;
-  height: 500px;
+  height: 100%;
 }
 
-.p-carousel-content ul {
-  display: none;
-}
+/* ====== RESPONSIVE ====== */
+@media screen and (width <=550px) {
+  .grid {
+    display: flex;
+    margin: 0 !important;
+  }
 
-/* RESPONSIVE */
+  .logo-inicio-sesion-container {
+    display: inline;
+    background-color: white;
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px 7px rgb(255, 255, 255, 0.3);
+  }
+
+  .tarjeta-inicio {
+    width: 100vw;
+    display: grid;
+    grid-template-rows: repeat(2, auto auto);
+  }
+
+  .tarjeta-divisor-inicio-sesion {
+    background-color: var(--white);
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px 7px rgb(255, 255, 255, 0.3);
+    font-size: 12.5px;
+  }
+
+  .tarjeta-divisor-inicio-sesion {
+    margin-left: 50px;
+    height: 350px;
+    width: 250px;
+    text-align: center;
+    height: auto;
+    padding-bottom: 20px;
+    padding-top: 20px;
+  }
+
+  .contenedor-divisor {
+    display: none;
+  }
+
+  .tarjeta-carrusel {
+    display: none;
+  }
+}
