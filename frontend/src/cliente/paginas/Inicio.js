@@ -38,10 +38,10 @@ export const Inicio = (props) => {
       </div>
 
       <div className='seccion-informacion'>
-        <h2>Obtén <a href='/informacion'>Información</a> sobre los trámites.</h2>
+        <h2>Obtén Información sobre los <a href='/informacion'>trámites.</a></h2>
         <div className='descripcion'>
           <p>
-            En esta página encontraras información sobre algunos tipos de tramites que hay en la Universidad.
+            En UNITICKET, también encontrarás información sobre algunos tramites que hay en la Universidad.
             <ul>
               <li>Lista de tramites que puedes realizar.</li>
               <li>Requisitos para tus tramites.</li>

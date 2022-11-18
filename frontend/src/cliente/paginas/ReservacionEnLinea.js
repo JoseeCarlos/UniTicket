@@ -48,7 +48,7 @@ const ReservacionEnLinea = () => {
     // fotoServicio.getImages().then(datos =>  {
     //   console.log(datos)
     //   establecerImagenes(datos)});
-    ticketServicio.obtenerTicketsUsuario(parseInt( sessionStorage.getItem('userId'))).then(datos => {
+    ticketServicio.obtenerTicketsUsuario(parseInt(sessionStorage.getItem('userId'))).then(datos => {
       console.log(datos)
       establecerImagenes(datos)
     });
@@ -59,11 +59,11 @@ const ReservacionEnLinea = () => {
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
- 
+
   useEffect(() => {
     const reservaServicio = new ReservaServicio();
     reservaServicio.getProductsSmall().then(datos => establecerReservas(datos));
-    
+
   }, []);
 
   const abrirDialogo = () => {
@@ -118,8 +118,8 @@ const ReservacionEnLinea = () => {
         </div>
 
         <div className='detalle-ticket'>
-          <h3>Datos de la reserva</h3>
-          <label>Lugar de atención: <span>{ elemento.NombreLugar }</span> </label>
+          <h3>Datos de la reserva <span>Ticket {elemento.Codigo}-{elemento.Numero}</span> </h3>
+          <label>Lugar de atención: <span>{elemento.NombreLugar}</span> </label>
           <label>Área: <span>{elemento.Nombre}</span></label>
           <label>Fecha y Hora: <span>{elemento.FechaHoraReservacion}</span></label>
           <label>Sitio: <span>{elemento.Id_Sitio}</span></label>
@@ -136,7 +136,7 @@ const ReservacionEnLinea = () => {
 
   const botones = (
     <>
-      <Button label="Cancelar" icon="pi pi-times" className="p-button-text"  onClick={ocultarDialogo} />
+      <Button label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={ocultarDialogo} />
       <Button label="Reservar" icon="pi pi-check" className="p-button" onClick={reservarTicket} />
     </>
   );
@@ -154,19 +154,23 @@ const ReservacionEnLinea = () => {
   return (
     <div className='contenedor-reservacion'>
       <div className="galeria">
-        <Galleria value={imagenes} responsiveOptions={opcionesResponsivas} numVisible={7} circular style={{ maxWidth: '650px' }}
+        <Galleria value={imagenes} responsiveOptions={opcionesResponsivas} numVisible={3} circular style={{ maxWidth: '650px' }}
           item={elementoTemplate} thumbnail={carrusel} />
       </div>
       <div className='nuevo-ticket' onClick={abrirDialogo}>
         <img src='assets/layout/images/logo.svg' alt='Nuevo ticket' />
         <i className='pi pi-plus'></i>
       </div>
+      <div className='nuevo-ticket-flotante'>
+        <button onClick={abrirDialogo}>
+          <i className='pi pi-plus'></i>
+        </button>
+      </div>
       <h2>HISTORIAL DE TICKETS RESERVADOS</h2>
       <div className='historial-enLinea-ticket'>
         <Toast ref={toast} />
-        <DataTable value={historial} selectionMode="single"
-          selection={reservaSeleccionada} onSelectionChange={e => establecerReservaSeleccionada(e.value)}
-          dataKey="id" responsiveLayout="stack" breakpoint="960px" paginator
+        <DataTable value={historial} selection={reservaSeleccionada} onSelectionChange={e => establecerReservaSeleccionada(e.value)}
+          dataKey="id" responsiveLayout="stack" breakpoint="760px" paginator
           paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
           currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords}" rows={10} rowsPerPageOptions={[10, 20, 50]}>
           <Column field="Codigo" header="Ticket"></Column>
@@ -190,7 +194,7 @@ const ReservacionEnLinea = () => {
               <Dropdown className='dropdown' value={seleccionArea} options={citySelectItems} onChange={(e) => establecerSeleccionArea(e.value)} placeholder="Seleccione un Sitio" />
             </div>
 
-            <div className='agrupar'> 
+            <div className='agrupar'>
               <label>Área: </label>
               <Dropdown className='dropdown' value={seleccionArea} options={citySelectItems} onChange={(e) => establecerSeleccionArea(e.value)} placeholder="Seleccione un Área" />
             </div>
@@ -201,10 +205,10 @@ const ReservacionEnLinea = () => {
             </div>
           </div>
 
-          <DataTable  value={historial} className='datatable-horas' selectionMode="multiple" cellSelection 
-                     selection={horaSeleccionada} onSelectionChange={e => comprobarHoraSeleccionada(e.value)} 
-                     dataKey="id" responsiveLayout="scroll"
-                     emptyMessage="Sin atención.">
+          <DataTable value={historial} className='datatable-horas' selectionMode="multiple" cellSelection
+            selection={horaSeleccionada} onSelectionChange={e => comprobarHoraSeleccionada(e.value)}
+            dataKey="id" responsiveLayout="scroll"
+            emptyMessage="Sin atención.">
             <Column field="Codigo" header="Lunes"></Column>
             <Column field="martes" header="Martes"></Column>
             <Column field="miercoeles" header="Miercoles"></Column>

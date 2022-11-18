@@ -41,7 +41,7 @@ const Quejas = () => {
     IdAtencion: 0,
     Estado: 0,
     FechaRegistro: 0,
-    FechaModificacion:0,
+    FechaModificacion: 0,
     Descripcion: '',
     IdUsuarioRegistro: 1
   }
@@ -49,16 +49,16 @@ const Quejas = () => {
   const [queja, establecerQueja] = useState(quejaVacia);
 
   useEffect(() => {
-
     ticketServicio.obtenerTicketsUsuario(parseInt(sessionStorage.getItem('userId'))).then(datos => {
       console.log(datos)
       establecerImagenes(datos)
     });
-    quejasServicio.obtenerRazonQuejas().then(datos=>{
+
+    quejasServicio.obtenerRazonQuejas().then(datos => {
       console.log(datos);
       establecerRazonesQuejas(datos);
     })
-  }, []); 
+  }, []);
 
   const listaRazon = [
     { label: 'New York', value: 'NY' },
@@ -93,15 +93,15 @@ const Quejas = () => {
       if (datos.status === 200) {
         toast.current.show({ severity: 'success', summary: 'Queja', detail: 'Queja registrada', life: 3000 });
       }
-      else{
+      else {
         toast.current.show({ severity: 'error', summary: 'Queja', detail: 'Error al registrar queja', life: 3000 });
       }
     });
   }
 
-  const selecionarRazonQueja= (e) => {
+  const selecionarRazonQueja = (e) => {
     let _queja = queja;
-    
+
     queja.IdRazonQueja = e.value.IdRazonQueja;
     establecerQueja(_queja);
   }
@@ -122,16 +122,16 @@ const Quejas = () => {
   const carrusel = (elemento) => {
     establecerTicketSeleccionado(elemento);
     // console.log(elemento.idTicket)
-    
+
     return (
       <div className='numero-ticket-lista' onClick={() => {
-        console.log("Holaa")
-        atencionServicio.obtenerAtencionesTicket(elemento.idTicket).then(datos=>{
-          console.log(datos)
-          establecerAtenciones(datos)
+        atencionServicio.obtenerAtencionesTicket(elemento.idTicket).then(datos => {
+
+          console.log(datos + "Hola")
+          establecerAtenciones(datos);
         });
       }} >
-        <img src='assets/layout/images/logo.svg' alt='Número de ticket'  />
+        <img src='assets/layout/images/logo.svg' alt='Número de ticket' />
         <h5>{elemento.Codigo}-{elemento.Numero}</h5>
       </div>
     );
@@ -148,24 +148,25 @@ const Quejas = () => {
       </p>
 
       <div className="galeria-queja">
-        <Galleria value={imagenes} responsiveOptions={opcionesResponsivas} on  numVisible={3} circular style={{ maxWidth: '300px' }} thumbnail={carrusel} />
+        <Galleria value={imagenes} responsiveOptions={opcionesResponsivas} numVisible={2} circular style={{ maxWidth: '300px' }}
+          thumbnail={carrusel} />
       </div>
 
-      <Dropdown className='seleccionar-opcion razon' 
-            value={razonQuejas}
-            options={razonesQuejas}
-            optionLabel="Nombre"
-            placeholder="Razon de la queja"
-            onChange={(e) => {
-              establecerRazonQuejas(e.value);
-              selecionarRazonQueja(e);
-              // console.log(e.value.IdAtencion)
-              // atencionServicio.obtenerTipoAtencion(e.value.IdAtencion).then(datos =>{
-              //   console.log(datos)
-              //   establecerTipoAtencion(datos)
-              // })
-            }}
-          />
+      <Dropdown className='seleccionar-opcion razon'
+        value={razonQuejas}
+        options={razonesQuejas}
+        optionLabel="Nombre"
+        placeholder="Razon de la queja"
+        onChange={(e) => {
+          establecerRazonQuejas(e.value);
+          selecionarRazonQueja(e);
+          // console.log(e.value.IdAtencion)
+          // atencionServicio.obtenerTipoAtencion(e.value.IdAtencion).then(datos =>{
+          //   console.log(datos)
+          //   establecerTipoAtencion(datos)
+          // })
+        }}
+      />
 
       {/* <Dropdown className='seleccionar-opcion razon' value={dropdownValue} onChange={(e) => establecerArea(e.value)} options={listaRazon} placeholder="Razon de la queja" /> */}
 
@@ -174,29 +175,29 @@ const Quejas = () => {
           <InputTextarea id='descripcion' rows={5} cols={60} value={value2} onChange={(e) => {
             setValue2(e.target.value)
             guardarDescripcion(e);
-            }} autoResize />
+          }} autoResize />
           <label htmlFor="descripcion">Descripcion de la queja</label>
         </span>
       </div>
-      <Dropdown className='seleccionar-opcion tipo-atencion' 
-            value={atencion}
-            options={atenciones}
-            optionLabel="Atenciones"
-            placeholder="Lugares de atencion de un ticket"
-            onChange={(e) => {
-              establecerAtencion(e.value);
-              selecionarAtencion(e);
-              console.log(e.value.IdAtencion)
-              atencionServicio.obtenerTipoAtencion(e.value.IdAtencion).then(datos =>{
-                console.log(datos)
-                establecerTipoAtencion(datos)
-              })
-            }}
-          />
+      <Dropdown className='seleccionar-opcion tipo-atencion'
+        value={atencion}
+        options={atenciones}
+        optionLabel="Atenciones"
+        placeholder="Lugares de atencion de un ticket"
+        onChange={(e) => {
+          establecerAtencion(e.value);
+          selecionarAtencion(e);
+          console.log(e.value.IdAtencion)
+          atencionServicio.obtenerTipoAtencion(e.value.IdAtencion).then(datos => {
+            console.log(datos)
+            establecerTipoAtencion(datos)
+          })
+        }}
+      />
 
       {/* <Dropdown className='seleccionar-opcion tipo-atencion'  options={listaRazon}  label='Atenciones' placeholder="Seleccione un Lugar de Atención" /> */}
-      
-      
+
+
       <div className='resumen-atencion'>
         <h4>Resumen de la atencion</h4>
         <label><span>Area:</span> {tipoAtencion.NombreArea} </label>
@@ -212,7 +213,7 @@ const Quejas = () => {
         <label><span>Razon de la queja: </span>{razonQuejas.Nombre} </label>
         <label><span>Descripcion: </span>{value2}</label>
       </div>
-      <Button label="ENVIAR QUEJA" onClick={()=>{
+      <Button label="ENVIAR QUEJA" onClick={() => {
         console.log(queja)
         guardarQueja()
       }}></Button>

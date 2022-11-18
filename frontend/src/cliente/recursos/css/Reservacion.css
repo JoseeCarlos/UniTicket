@@ -11,12 +11,37 @@
 .galeria {
   grid-column: 1;
   grid-row-start: 1;
-  grid-row-end: 2;
-  height: 35%;
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.galeria .p-galleria-content {
+  display: flex !important;
+  justify-content: center !important;
+  max-width: 700px;
+}
+
+.galeria .p-galleria-thumbnail-wrapper {
+  align-items: flex-start;
+}
+
+.galeria .p-galleria-thumbnail-wrapper .p-galleria-thumbnail-container {
+  width: 400px !important;
+  max-width: 100%;
+}
+
+.p-galleria .p-galleria-thumbnail-container {
+  border: dashed 2px var(--primary-uni);
+  background-color: transparent !important;
+  border-radius: 15px;
+}
+
+.p-galleria-thumbnail-items-container {
+  border-left: solid 1px var(--primary-uni);
+  border-right: solid 1px var(--primary-uni);
 }
 
 .informacion-ticket {
@@ -29,14 +54,15 @@
 
 .informacion-ticket .numero-ticket {
   position: relative;
-  width: 40%;
+  width: 170px;
+  height: 283px;
   display: flex;
 }
 
 .informacion-ticket .numero-ticket h1 {
   position: absolute;
-  top: 48%;
-  left: 28%;
+  top: 44%;
+  left: 19%;
   font-size: 40px;
 }
 
@@ -56,12 +82,19 @@
 
 .informacion-ticket .detalle-ticket {
   background-color: var(--uni-background);
-  width: 100%;
+  width: 530px;
   padding: 20px;
+  margin-left: 5px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   font-size: 20px;
+  border-radius: 10px;
+  box-shadow: 2px 5px 10px rgba(0, 0, 0, .3);
+}
+
+.detalle-ticket h3 span {
+  display: none;
 }
 
 .detalle-ticket label {
@@ -81,7 +114,8 @@
 
 .nuevo-ticket {
   position: relative;
-  width: 35%;
+  width: 30%;
+  height: 73%;
   margin: 0 auto;
   grid-column: 2;
   grid-row-start: 1;
@@ -92,10 +126,14 @@
   transition: all 500ms ease;
 }
 
+.nuevo-ticket-flotante {
+  display: none;
+}
+
 .nuevo-ticket i {
   position: absolute;
   font-size: 50px;
-  top: 53%;
+  top: 50%;
 }
 
 .nuevo-ticket:hover {
@@ -105,7 +143,7 @@
 
 .contenedor-reservacion h2 {
   grid-column: span 2;
-  margin: 55px auto;
+  margin: 20px auto;
   font-size: 45px;
   font-weight: bold;
 }
@@ -116,16 +154,11 @@
   grid-row: 3;
 }
 
-.p-galleria .p-galleria-thumbnail-container {
-  border: dashed 2px var(--primary-uni);
-  background-color: transparent !important;
-  border-radius: 15px;
+.historial-enLinea-ticket table,
+.historial-enLinea-ticket .p-paginator {
+  font-size: 14px;
 }
 
-.p-galleria-thumbnail-items-container {
-  border-left: solid 1px var(--primary-uni);
-  border-right: solid 1px var(--primary-uni);
-}
 
 /* DIALOG NUEVA RESERVA */
 .contenedor-dialogo {
@@ -173,7 +206,8 @@
 
 .agrupar label {
   width: 70px;
-} 
+}
+
 .agrupar .dropdown {
   width: 160px;
 }
@@ -184,4 +218,166 @@
 
 .datatable-horas {
   border: 2px solid var(--primary-uni);
+}
+
+/* ====== RESPONSIVE ====== */
+@media screen and (max-width: 550px) {
+  .contenedor-reservacion {
+    width: 100vw;
+    margin: 0;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .galeria {
+    height: auto;
+    width: 100%;
+  }
+
+  .galeria .p-galleria {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+  }
+
+  .galeria .p-galleria-content {
+    width: 95%;
+    gap: 10px;
+  }
+
+  .informacion-ticket .numero-ticket {
+    display: none;
+  }
+
+  .informacion-ticket .detalle-ticket {
+    width: 100%;
+    padding: 0 0 5px 0;
+    border-radius: 0;
+    gap: 10px;
+    font-size: 18px;
+  }
+
+  .detalle-ticket h3 span {
+    display: inline;
+  }
+
+  .detalle-ticket label {
+    font-weight: bold;
+    margin-left: 5px;
+  }
+
+  .detalle-ticket label span {
+    font-weight: normal;
+  }
+
+  .detalle-ticket h3 {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    text-align: justify;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background-color: var(--primary-uni);
+  }
+
+  .contenedor-reservacion .nuevo-ticket {
+    display: none;
+  }
+
+  .contenedor-reservacion .nuevo-ticket-flotante {
+    display: inline;
+  }
+
+  .contenedor-reservacion .nuevo-ticket-flotante button {
+    height: 55px;
+    width: 55px;
+    background-color: var(--primary-uni);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, .4);
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2;
+  }
+
+  .contenedor-reservacion .nuevo-ticket-flotante button:hover {
+    background-color: var(--primary-uni-2);
+  }
+
+  .contenedor-reservacion h2 {
+    margin: 10px auto;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .historial-enLinea-ticket table,
+  .historial-enLinea-ticket .p-paginator {
+    font-size: 13px;
+  }
+
+  /* DIALOG NUEVA RESERVA */
+  .contenedor-dialogo {
+    display: grid;
+    grid-template-columns: 2;
+    grid-template-rows: 2;
+    gap: 20px;
+  }
+
+  .numero-ticket-reserva {
+    grid-column: 1;
+    grid-row: 1;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    height: 95px;
+    justify-content: center;
+  }
+
+  .numero-ticket-reserva h5 {
+    position: absolute;
+    top: 36%;
+    left: 35%;
+    font-weight: bold;
+  }
+
+  .datos-nueva-reserva {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .datatable-horas {
+    grid-column: span 2;
+    grid-row: 2;
+  }
+
+  .agrupar {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .agrupar label {
+    width: 70px;
+  }
+
+  .agrupar .dropdown {
+    width: 160px;
+  }
+
+  .agrupar h5 {
+    margin: 0 !important;
+  }
+
+  .datatable-horas {
+    border: 2px solid var(--primary-uni);
+  }
 }

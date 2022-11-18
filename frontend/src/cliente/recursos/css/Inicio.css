@@ -17,9 +17,7 @@
 .pancarta h1,
 .pancarta span {
   color: white;
-  filter: drop-shadow(-3px -3px 2px rgba(0, 0, 0, 0.3))
-          drop-shadow(5px 5px 5px rgba(255, 255, 255, 0.2))
-          drop-shadow(15px 15px 15px rgba(255, 255, 255, 0.2));
+  filter: drop-shadow(-3px -3px 2px rgba(0, 0, 0, 0.3)) drop-shadow(5px 5px 5px rgba(255, 255, 255, 0.2)) drop-shadow(15px 15px 15px rgba(255, 255, 255, 0.2));
 }
 
 .pancarta h1 {
@@ -175,4 +173,74 @@
 
 .seccion-informacion img:hover {
   transform: scale(1.1, 1.1);
+}
+
+/* RESPONSIVE */
+@media screen and (max-width: 550px) {
+  .inicio {
+    width: 100vw;
+  }
+
+  .pancarta {
+    height: 400px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../img/logo-uni.jpg);
+  }
+
+  .pancarta h1 {
+    font-size: 65px;
+  }
+
+  .pancarta span {
+    font-size: 20px;
+  }
+
+  .pasos h2 {
+    text-align: center;
+    font-size: 25px;
+    margin: 40px;
+  }
+
+  .pasos .tarjetas-pasos {
+    width: 100%;
+    flex-direction: column;
+    box-shadow: none !important;
+    border: none;
+    border-radius: 0;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 0;
+  }
+
+  .pasos .tarjetas-pasos .tarjeta {
+    margin: 5px;
+    width: 80%;
+    height: 300px;
+    border-right: 0;
+    box-shadow: 0px 3px 11px 0px #635e5e !important;
+  }
+
+  .seccion-informacion {
+    margin: 50px auto;
+    height: 300px;
+    width: 100%;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(2, 1fr 3fr);
+  }
+
+  .seccion-informacion .contenedor-img {
+    display: none;
+  }
+
+  .seccion-informacion h2 {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .seccion-informacion .descripcion {
+    font-size: 14px;
+  }
+
+  .descripcion ul {
+    margin-top: 10px;
+  }
 }
