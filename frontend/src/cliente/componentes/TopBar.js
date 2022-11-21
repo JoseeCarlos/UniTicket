@@ -72,7 +72,6 @@ export const TopBar = (props) => {
         </div>
 
         <div className="disenio-bar-foto">
-          <span>Ana contreras</span>
           <Avatar image='assets/demo/images/avatar/annafali.png' alt="Foto de perfil" />
         </div>
       </div>
