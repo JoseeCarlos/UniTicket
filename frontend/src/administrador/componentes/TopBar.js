@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
@@ -8,18 +8,18 @@ export const TopBar = (props) => {
         let foto = document.querySelector('#foto')
         let perfil = document.getElementById('perfil');
         if (foto != null)
-          foto.addEventListener('click', function () {
-            perfil.classList.toggle('abrir-menu');
-          });
-      }, []); // eslint-disable-line react-hooks/exhaustive-deps 
-    
-      useEffect(() => {
+            foto.addEventListener('click', function () {
+                perfil.classList.toggle('abrir-menu');
+            });
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps 
+
+    useEffect(() => {
         let cerrar = document.querySelector('#cerrar');
         if (cerrar != null)
-        cerrar.addEventListener('click', function () {
-            sessionStorage.clear();
-          });
-      }, []);
+            cerrar.addEventListener('click', function () {
+                sessionStorage.clear();
+            });
+    }, []);
 
     return (
         <div className="layout-topbar">
