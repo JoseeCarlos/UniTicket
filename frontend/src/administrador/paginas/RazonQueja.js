@@ -209,7 +209,7 @@ const RazonQueja = () => {
               <div className="flex-1 text-center md:text-left">
                 <div className="font-bold text-2xl">{dato.Nombre}</div>
                 <div className="mb-3">{dato.Descripcion}</div>
-                <div className="mb-3">{dato.Estado}</div>
+                <div className="mb-3">{dato.Estado === 0 ? 'ACTIVO' : 'INACTIVO'}</div>
               </div>
             </div>
             <span className="p-buttonset">

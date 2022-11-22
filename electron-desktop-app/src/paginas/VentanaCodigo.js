@@ -14,6 +14,7 @@ const Modal = ({ estado, cambiarEstadoDialogo }) => {
     const ticketServicio = new TicketServicio();
     ticketServicio.obtenerLugarAtencionCodigo(codigo).then(datos => {
       if (datos.IdLugarAtencion != null) {
+        sessionStorage.setItem('lugarAtencion', datos.IdLugarAtencion)
         sessionStorage.setItem('nombre', datos.Nombre)
         sessionStorage.setItem('sitioId', datos.Id_Sitio)
         sessionStorage.setItem('sedeAcademicaId', datos.Id_Sede_Academica);

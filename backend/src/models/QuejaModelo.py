@@ -83,3 +83,29 @@ class QuejaModelo():
             raise Exception(ex)
         finally:
             connection.close()
+
+    @classmethod
+    def crear_queja_presencial(self, queja, quejaPresencial):
+        try:
+            connection = get_connection()
+            with connection.cursor() as cursor:
+                id = ObtenerId.obtener_id('UQueja')
+                query1 = """
+                    INSERT INTO UQueja (TIpoQueja, IdRazonQueja, IdAtencion)
+                    VALUES (?, ?, ?)
+                """
+                cursor.execute(query1, (queja.TipoQueja, queja.IdRazonQueja, queja.IdAtencion))
+                connection.commit()
+                query2 = """
+                    INSERT INTO UQuejaPresencial (IdQueja, Nombre, Contacto)
+                    VALUES (?,?,?)
+                """
+                cursor.execute(query2, (id, quejaPresencial.Nombre, quejaPresencial.Contacto))
+                connection.commit()
+                affected_rows = cursor.rowcount
+            return affected_rows
+        except Exception as ex:
+            connection.rollback()
+            raise Exception(ex)
+        finally:
+            connection.close()
