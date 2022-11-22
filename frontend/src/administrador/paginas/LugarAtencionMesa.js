@@ -150,6 +150,16 @@ const LugarAtencionMesa = () => {
     establecerLugarAtencion(lugarAtencion);
     establecerDialogoBorradoLugarAtencion(true);
   };
+  const estadoPlantilla = (rowData) => {
+    return (
+        <>
+            <span className="p-column-title">Estado</span>
+            <span className={`provider-badge status-${ rowData.Estado === 0 ?  'outofstock' : 'instock' }`}>{ rowData.is_active === 0 ? 'INACTIVO' : 'ACTIVO' }</span>
+
+        </>
+    )
+}
+
   const baseExpancionFilas = (dato) => {
     return (
       <div className="orders-subtable">
@@ -175,6 +185,7 @@ const LugarAtencionMesa = () => {
             field="Estado"
             header="Estado"
             sortable
+            body={estadoPlantilla}
             headerStyle={{ width: "4rem" }}
           ></Column>
           <Column
@@ -486,7 +497,7 @@ const LugarAtencionMesa = () => {
             <Column field="Nombre" header="Nombre" sortable />
             <Column field="NombreArea" header="Area Actual" sortable />
             <Column field="IdSedeAcademica" header="Campus" sortable />
-            <Column field="Estado" header="Estado" sortable />
+            <Column field="Estado" header="Estado" body={estadoPlantilla} sortable />
             <Column
               header="Acciones"
               headerStyle={{ width: "12rem" }}

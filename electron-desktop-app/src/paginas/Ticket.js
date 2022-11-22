@@ -7,11 +7,7 @@ import { TicketServicio } from "../servicio/TicketServicio";
 const Ticket = () => {
 
   var tipoAtencion = true;
-  var tipoArea = false;
-  var tipoUsuario = false;
-  var columnas = false;
 
-  const [areaAttention, setAreaAttention] = React.useState(false);
   const [typeUser, setTypeUser] = React.useState(false);
   const [typoAttention, setTypoAttention] = React.useState(true);
   const [vistaInformacion,establecerVistaInformacion]= React.useState(false)
@@ -19,7 +15,26 @@ const Ticket = () => {
   const [lugaresAtention,establecerLugaresAtencion] = React.useState([]);
   const [tiposUsuarios,establecerTiposUsuarios] = React.useState([]);
 
+  const emptyTicket = {
+    IdTicket : '',
+    Codigo: sessionStorage.getItem("nombre").toString().slice(0,1),
+    Numero : '',
+    TipoTicket : 0,
+    IdTipoAtencion : '',
+    IdTipoUsuario : '',
+    IdLugarAtencion : parseInt(sessionStorage.getItem("lugarAtencion")),
+    IdArea : parseInt(sessionStorage.getItem("areaId")),
+    Id_Sitio : parseInt(sessionStorage.getItem("sitioId")),
+    Id_Sede_Academica: parseInt(sessionStorage.getItem("sedeAcademicaId")),
+    Estado: '',
+    FechaRegistro : '',
+    FechaModificacion : ''
+  }
+  const [ticket, setTicket] = useState(emptyTicket);
+
+
   useEffect(() => {
+    console.log(ticket)
     const ticketServicio = new TicketServicio();
     ticketServicio.obtenerTipoAtencion().then(datos => {
       establecerTiposAtenciones(datos);
@@ -40,27 +55,12 @@ const Ticket = () => {
     );    
   }, []);
 
-  const emptyTicket = {
-    IdTicket : '',
-    Codigo: '',
-    Numero : '',
-    TipoTicket : 0,
-    IdTipoAtencion : '',
-    IdTipoUsuario : '',
-    IdLugarAtencion : '',
-    IdArea : 1,
-    Id_Sitio : 1,
-    Id_Sede_Academica: 1,
-    Estado: '',
-    FechaRegistro : '',
-    FechaModificacion : ''
-  }
-  const [ticket, setTicket] = useState(emptyTicket);
-
+  
   const onChangeTipoAtencion = (item, name) => {
     const val = item.IdTipoAtencion
     let _ticket = { ...ticket };
     _ticket[name] = val;
+    _ticket['Codigo'] = _ticket['Codigo'] + item.Nombre.slice(0,1);
     console.log(_ticket);
     setTicket(_ticket);
   };
@@ -73,13 +73,20 @@ const Ticket = () => {
     setTicket(_ticket);
   };
 
-  const onChangeLugarAtencion = (item, name) => {
-    const val = item.IdLugarAtencion
-    let _ticket = { ...ticket };
-    _ticket[name] = val;
-    console.log(_ticket);
-    setTicket(_ticket);
-  };
+  const guardarTicket = () => {
+    const ticketServicio = new TicketServicio();
+    ticketServicio.guardarTicket(ticket).then(datos => {
+      console.log(datos);
+      if (datos.status === 200) {
+        alert("Ticket registrado correctamente");
+      }
+      else {
+        alert("Error al registrar el ticket");
+      }
+    }
+    );
+  }
+
 
   return (
     <div className='contenedor-ticket'>
@@ -98,7 +105,7 @@ const Ticket = () => {
                     return (
                       <div className='opcion' onClick={()=>{ 
                         onChangeTipoAtencion(item, 'IdTipoAtencion');
-                        setAreaAttention(true)
+                        setTypeUser(true)
                         setTypoAttention(false)
                         console.log(item)
                       }} >
@@ -110,33 +117,6 @@ const Ticket = () => {
                 }
               </div>
           </div>
-        }
-
-        {
-          areaAttention &&
-         
-            <div className={`tarjeta-ticket`}>
-              <h2>¿ÁREA DE ATENCIÓN?</h2>
-            <div className={`tarjeta-opciones`}>
-            {
-              lugaresAtention.map((item, index) => {
-                return (
-                  <div className='opcion' onClick={()=>{
-                    onChangeLugarAtencion(item, 'IdLugarAtencion');
-                    setTypeUser(true)
-                    setAreaAttention(false)
-                  }}>
-                    <img src="assets/layout/images/prov.jpg" />
-                    <h3>{item.Nombre}</h3>
-                  </div>
-                )
-              }
-
-              )
-            }
-          </div>
-        </div>
-          
         }
 
         {
@@ -176,6 +156,7 @@ const Ticket = () => {
           </div>
           <button onClick={()=>{
             console.log(ticket);
+            guardarTicket();
           }} >enviar</button>
         </div>
         }

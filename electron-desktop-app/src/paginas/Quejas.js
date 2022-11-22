@@ -1,9 +1,47 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { TopBar } from '../componentes/TopBar';
 import '../recursos/Quejas.css';
+import { RazonQuejaServicio } from '../servicio/RazonQuejaServicio';
+import Select from 'react-select'
 
 const Quejas = () => {
 
+
+  const quejaPresencialVacia = {
+    IdQueja : '',
+    TipoQueja : '',
+    IdRazonQueja : '',
+    IdAtencion : '',
+    Estado : '',
+    FechaRegistro : '',
+    FechaModificacion : '',
+    Nombre : '',
+    Contacto: ''
+  }
+  const [quejaPresencial, establecerQuejaPresencial] = useState(quejaPresencialVacia);
+  const [razonesQueja,establecerRazonesQueja] = React.useState([]);
+  const [razonQueja, establecerRazonQueja] = useState(null);
+
+
+  const razonQuejaServicio = new RazonQuejaServicio()
+  useEffect(() => {
+    razonQuejaServicio.obtenerRazonesQueja().then(datos => {
+      console.log(datos);
+      establecerRazonesQueja(datos);
+    }
+    );
+
+    
+  }, []);
+
+  
+  const onChangeContacto = (e, name) => {
+    let _quejaPresencial = {...quejaPresencial};
+    _quejaPresencial[name] = e.target.value;
+    establecerQuejaPresencial(_quejaPresencial);
+    console.log(e.target.value);
+  }
+  
   return (
     <div className='contenedor'>
       <TopBar></TopBar>
@@ -30,13 +68,19 @@ const Quejas = () => {
             </div>
           </div>
           <div className='campo'>
-            <input type='text' placeholder=' ' name='contacto' className='inpt' />
+            <input type='text' placeholder=' ' onChange={(e) => onChangeContacto(e,'Contacto')} name='contacto' className='inpt' />
             <label htmlFor='contacto' className='inpt_label'>Contacto</label>
           </div>
           <div className='campo'>
-            <select className='inpt' name='razon'>
-              <option>2</option>
-              <option>4</option>
+            <select className='inpt' name='razon' onChange={event => { 
+              establecerRazonQueja(event.target.value);
+              console.log(event.target.value)}}>
+              {
+                razonesQueja.map((razon, index) => {
+                  return <option key={index} value={razon.Nombre}>{razon.Nombre}</option>
+                  }
+                )
+              }
             </select>
             <label htmlFor='razon' className='inpt_label'>Razón de la queja</label>
           </div>
@@ -45,10 +89,14 @@ const Quejas = () => {
           <fieldset>
             <legend>RESUMEN DE LA QUEJA</legend>
             <label>Contacto</label>
+            <p>{quejaPresencial.Contacto}</p>
             <label>Razón</label>
+            <label> {razonQueja } </label>
           </fieldset>
         </div>
-        <button>ENVIAR QUEJA</button>
+        <button onClick={()=>{
+          console.log(quejaPresencial);
+        }} >ENVIAR QUEJA</button>
       </div>
     </div >
   );

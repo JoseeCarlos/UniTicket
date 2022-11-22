@@ -15,4 +15,15 @@ export class TicketServicio {
         return fetch('/api/lugarAtencion/lugarAtencionCodigo/' + codigo).then(res => res.json()).then(data => data);
     }
 
+    guardarTicket(ticket) {
+        return fetch('/api/ticket/addPresencial', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(ticket)
+        });
+    }
+
 }

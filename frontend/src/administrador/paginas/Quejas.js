@@ -44,8 +44,8 @@ const Quejas = () => {
     const baseExpansionFilas = (datos) => {
         return (
             <div className="orders-subtable">
-                <h5>{datos.name} {datos.price}</h5>
-                <p>{datos.description}</p>
+                <h5>{datos.Nombre} {datos.price}</h5>
+                <p>{datos.Descripcion}</p>
                 <p>Mucho me retaron *inserte carita triste*</p>
                 {/* Poner la razon */}
                 {datos.name === 'Bracelet' ? <Button type="button" icon="pi pi-check">Habilitar Tickect</Button> : ''  }
@@ -59,6 +59,33 @@ const Quejas = () => {
             <Button icon="pi pi-minus" label="Ocultar todo" onClick={colapsarTodo} className="mb-2" />
         </div>
     );
+    const nombrePlantilla = (rowData) => {
+        return (
+            <>
+                <span className="p-column-title">Nombre Usuario</span>
+                <span className={`provider-badge status-${ rowData.NombreUsuario === 0 ?  'Ticket Presencial' :  rowData.NombreUsuario }`}>{ rowData.NombreUsuario === 0 ?  'Ticket Presencial' :  rowData.NombreUsuario }</span>
+
+            </>
+        )
+    }
+    const tipoQuejaPlantilla = (rowData) => {
+        return (
+            <>
+                <span className="p-column-title">Nombre Usuario</span>
+                <span className={`provider-badge status-${ rowData.TipoQueja === 0 ?  'Queja Presencial' :  'Queja Online' }`}>{rowData.TipoQueja === 0 ?  'Queja Presencial' :  'Queja Online'}</span>
+
+            </>
+        )
+    }
+    const tipoAtencionTemplate = (rowData) => {
+        return (
+            <>
+                <span className="p-column-title">Tipo De Atencion</span>
+                <span className={`provider-badge status-${ rowData.TipoAtencion === 0 ?  'Ticket no atendido' :  'Ticket Atendido' }`}>{ rowData.TipoAtencion === 0 ?  'Ticket no atendido' :  'Ticket Atendido'}</span>
+
+            </>
+        )
+    }
     return (
         <div className="grid table-demo">
             <div className="col-12">
@@ -69,9 +96,9 @@ const Quejas = () => {
                         className="datatable-responsive" paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} Quejas" emptyMessage="No hay quejas :D.">
                         <Column expander style={{ width: '3em' }} />
-                        <Column field="NombreUsuario" header="nombre" sortable />
-                        <Column field="TipoQueja" header="Tipo" sortable />
-                        <Column field="TipoAtencion" header="Tipo de atención" sortable />
+                        <Column field="NombreUsuario" header="Nombre" body={nombrePlantilla} sortable />
+                        <Column field="TipoQueja" header="Tipo" body={tipoQuejaPlantilla} sortable />
+                        <Column field="TipoAtencion" header="Tipo de atención" body={tipoAtencionTemplate} sortable />
                         <Column field="LugarAtencion" header="Lugar de atención" sortable />
                         <Column field="FechaInicio" header="Inicio" sortable />
                         <Column field="FechaFin" header="Fin" sortable />

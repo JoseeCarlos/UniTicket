@@ -27,13 +27,15 @@ class AreaModel():
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("""SELECT IdArea, Nombre, Descripcion, Estado, FechaCreacion, FechaActualizacion, IdUsuarioCreacion, IdUsuarioActualizacion
+                cursor.execute("""SELECT IdArea, Nombre, Descripcion,NumeroMaximoTicketsPorEstudiantes, IdUsuarioRegistro, Estado, FechaRegistro, FechaModificacion
                                     FROM UArea
-                                    WHERE IdArea=%s
+                                    WHERE IdArea= ? 
                                 """, (areaId))
                 row = cursor.fetchone()
-                area = Area(IdArea=row[0],Nombre=row[1],Descripcion=row[2], Estado=row[3], FechaCreacion=row[4], FechaActualizacion=row[5], IdUsuarioCreacion=row[6], IdUsuarioActualizacion=row[7]).to_JSON()
-
+                if row :
+                    area = Area(IdArea=row[0],Nombre=row[1],Descripcion=row[2], NumeroMaximoTicketsParaEstudiantes=row[3], IdUsuarioRegistro=row[4], Estado=row[5], FechaRegistro=row[6], FechaModificacion=row[7]).to_JSON()
+                else: 
+                    area = Area().to_JSON()
             connection.close()
             return area
         except Exception as ex:

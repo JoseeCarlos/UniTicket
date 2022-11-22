@@ -35,7 +35,10 @@ class TicketModelo():
                                     WHERE IdTicket=%s
                                 """, (ticketId))
                 row = cursor.fetchone()
-                ticket = Ticket(IdTicket=row[0],IdUsuario=row[1],IdTipoAtencion=row[2], IdEstado=row[3], IdPrioridad=row[4], IdUsuarioAsignado=row[5], IdUsuarioRegistro=row[6], Estado=row[7], FechaRegistro=row[8], FechaModificacion=row[9]).to_JSON()
+                if row is None:
+                    return None
+                else:
+                    ticket = Ticket(IdTicket=row[0],IdUsuario=row[1],IdTipoAtencion=row[2], IdEstado=row[3], IdPrioridad=row[4], IdUsuarioAsignado=row[5], IdUsuarioRegistro=row[6], Estado=row[7], FechaRegistro=row[8], FechaModificacion=row[9]).to_JSON()
 
             connection.close()
             return ticket
@@ -55,6 +58,24 @@ class TicketModelo():
 
             connection.close()
             return ticketId
+        except Exception as ex:
+            raise Exception(ex)
+    
+    @classmethod
+    def crear_ticket_presencial(self, ticket):
+        try:
+            connection = get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute("""INSERT INTO UTicket (Codigo, Numero, TipoTicket, IdTipoAtencion, IdTipoUsuario, IdLugarAtencion, IdArea, Id_Sitio, Id_Sede_Academica)
+                                    VALUES(?, (SELECT IIF(ISNULL(MAX(T.Numero), 0) = 0, 1, MAX(T.Numero) + 1) NUM
+                                    FROM UTicket T
+                                    INNER JOIN ULugarAtencion LU ON LU.IdLugarAtencion=T.IdLugarAtencion
+                                    WHERE LU.IdLugarAtencion = ? ), ?, ?, ?, ?, ?, ?, ? )
+                                """, (ticket.Codigo, ticket.Numero, ticket.TipoTicket, ticket.IdTipoAtencion, ticket.IdTipoUsuario, ticket.IdLugarAtencion, ticket.IdArea, ticket.Id_Sitio, ticket.Id_Sede_Academica))
+                connection.commit()
+                filas_afectadas = cursor.rowcount
+            connection.close()
+            return filas_afectadas
         except Exception as ex:
             raise Exception(ex)
     
