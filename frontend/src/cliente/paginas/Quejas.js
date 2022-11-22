@@ -172,7 +172,7 @@ const Quejas = () => {
 
       <div className='field descripcion'>
         <span className='p-float-label'>
-          <InputTextarea id='descripcion' rows={5} cols={60} value={value2} onChange={(e) => {
+          <InputTextarea id='descripcion' rows={4} value={value2} onChange={(e) => {
             setValue2(e.target.value)
             guardarDescripcion(e);
           }} autoResize />
@@ -211,7 +211,8 @@ const Quejas = () => {
         <h4>Resumen de la Queja</h4>
         <label><span>Contacto:</span> juanperez@gmail.com</label>
         <label><span>Razon de la queja: </span>{razonQuejas.Nombre} </label>
-        <label><span>Descripcion: </span>{value2}</label>
+        <label><span>Descripcion: </span></label>
+        <InputTextarea rows={4} value={value2} autoResize readOnly='true'/>
       </div>
       <Button label="ENVIAR QUEJA" onClick={() => {
         console.log(queja)

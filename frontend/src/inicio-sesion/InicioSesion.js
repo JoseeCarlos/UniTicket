@@ -45,9 +45,7 @@ function InicioSesion() {
           } else {
             sessionStorage.setItem('role', "Estudiante");
           }
-        } else {
-          alert('Usuario y/o contrasenia no existen')
-        }
+        } 
       })
     });
   };
@@ -86,7 +84,7 @@ function InicioSesion() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="grid divisor-img">
+    <div className="grid-inicio divisor-img">
       <div className="tarjeta-inicio">
         <div className='logo-inicio-sesion-container'>
           <div className='logo-inicio-sesion'></div>

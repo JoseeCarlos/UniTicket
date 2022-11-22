@@ -1,4 +1,4 @@
-.disenio-bar {
+.disenio-bar-employe {
   height: 7rem;
   left: 0;
   top: 0;
@@ -12,7 +12,7 @@
   color: white;
 }
 
-.disenio-bar-logo {
+.disenio-bar-employe .disenio-bar-logo {
   color: var(--surface-900);
   font-size: 1.5rem;
   font-weight: 500;

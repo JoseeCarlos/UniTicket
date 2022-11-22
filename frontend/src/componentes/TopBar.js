@@ -6,7 +6,7 @@ export const TopBar = (props) => {
   let atencion = 'CAJA';
 
   return (
-    <div className="disenio-bar">
+    <div className="disenio-bar-employe">
       <img className="disenio-bar-logo" src='assets/layout/images/uniticket-logo-white.svg' alt="logo" />
 
       <div className="disenio-topbar-campus">

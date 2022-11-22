@@ -16,7 +16,7 @@ export const TopBar = (props) => {
             </button>
 
             <div className="layout-topbar-photo">
-                <span>{sessionStorage.getItem('name').toUpperCase()}</span>
+                <span>{sessionStorage.getItem('usuario').toUpperCase()}</span>
                 <Avatar image='assets/demo/images/avatar/annafali.png' className={classNames("layout-topbar-photo", { 'layout-topbar-menu-mobile-active': props.mobileTopbarMenuActive })} alt="Foto de perfil" />
             </div>
         </div>

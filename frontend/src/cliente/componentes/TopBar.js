@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory, Route } from 'react-router-dom';
 import '../recursos/css/TopBar.css';
-import { Avatar } from 'primereact/avatar';
 
 export const TopBar = (props) => {
+  let redirect = useHistory();
 
   useEffect(() => {
     let btn = document.querySelector('#boton');
@@ -40,6 +40,23 @@ export const TopBar = (props) => {
     } else alert('NO DEBERIAS ESTAR VIENDO ESTO, EN CASO DE QUE ASI SEA INFORMA DE ESTE ERROR A NETVALLE')
   }, []); // eslint-disable-line react-hooks/exhaustive-deps 
 
+  useEffect(() => {
+    let foto = document.querySelector('#foto')
+    let perfil = document.getElementById('perfil');
+    if (foto != null)
+      foto.addEventListener('click', function () {
+        perfil.classList.toggle('abrir-menu');
+      });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps 
+
+  useEffect(() => {
+    let cerrar = document.querySelector('#cerrar');
+    if (cerrar != null)
+    cerrar.addEventListener('click', function () {
+        sessionStorage.clear();
+      });
+  }, []); //
+
   return (
     <div className="disenio-bar">
       <img className="disenio-bar-logo" src='assets/layout/images/uniticket-logo-white.svg' alt="logo" />
@@ -72,8 +89,22 @@ export const TopBar = (props) => {
         </div>
 
         <div className="disenio-bar-foto">
-          <span>Ana contreras</span>
-          <Avatar image='assets/demo/images/avatar/annafali.png' alt="Foto de perfil" />
+          <img src='assets/demo/images/avatar/annafali.png' alt="Foto de perfil" id='foto' />
+        </div>
+
+        <div className='perfil-opciones' id='perfil'>
+          <div className='sub-menu'>
+            <div className='informacion'>
+              <img src='assets/demo/images/avatar/annafali.png' alt="Foto de perfil"></img>
+              <div>
+                <span>Susan Ahoria</span>
+                <hr></hr>
+                <span>Estudiante</span>
+              </div>
+            </div>
+            <hr></hr>
+            <button id='cerrar'>Cerrar Sesión</button>
+          </div>
         </div>
       </div>
     </div>
