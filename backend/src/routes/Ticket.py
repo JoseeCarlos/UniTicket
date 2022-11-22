@@ -32,6 +32,17 @@ def create_ticket():
     except Exception as ex:
         return jsonify({'error': str(ex)}), 500
 
+@ticket.route('/addPresencial', methods=['POST'])
+def crear_ticket_presencial():
+    try:
+        ticket = Ticket(Codigo=request.json['Codigo'], TipoTicket=request.json['TipoTicket'], IdTipoAtencion=request.json['IdTipoAtencion'], IdTipoUsuario=request.json['IdTipoUsuario'], IdLugarAtencion=request.json['IdLugarAtencion'], IdArea=request.json['IdArea'], Id_Sitio=request.json['Id_Sitio'], Id_Sede_Academica=request.json['Id_Sede_Academica'] )
+        filas_afectadas = TicketModelo.crear_ticket_presencial(ticket)
+        if filas_afectadas == 0:
+            return jsonify({'error': 'Ticket no registrado'}), 500
+        return jsonify({'message': 'Ticket registrado'}), 200  
+    except Exception as ex:
+        return jsonify({'error': str(ex)}), 500
+
 @ticket.route('/update/<int:id>', methods=['PUT'])
 def update_ticket(id):
     try:

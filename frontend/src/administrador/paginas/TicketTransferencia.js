@@ -66,14 +66,25 @@ const TicketTransferencia = () => {
       { id: 0, nombre: "En linea" },
     ]);
   }, []);
+
+
+  const estadoPlantilla = (rowData) => {
+    return (
+        <>
+            <span className="p-column-title">Estado</span>
+            <span className={`provider-badge status-${ rowData.Estado === 0 ?  'Deshabilitado' : 'Habilitado' }`}>{ rowData.Estado === 0 ? 'Inactivo' : 'Activo' }</span>
+        </>
+    )
+  }
+
   const baseExpancionFilas = (dato) => {
     return (
       <div className="orders-subtable">
         <DataTable
           value={dato.Atenciones}
           responsiveLayout="scroll"
-          header={"Atenciones y transferencias de " + dato.name}
-          emptyMessage={"No se encontraron atenciones al ticket "+dato.name}
+          header={"Atenciones y transferencias de " + dato.Nombre}
+          emptyMessage={"No se encontraron atenciones al ticket "+dato.Nombre}
         >
         <Column
           field="IdEmpleado"
@@ -109,6 +120,7 @@ const TicketTransferencia = () => {
           field="Estado"
           header="Estado"
           sortable
+          body={estadoPlantilla}
           headerStyle={{ width: "4rem" }}
         ></Column>
         <Column
@@ -186,7 +198,7 @@ const TicketTransferencia = () => {
         <Column field="NombreLugar" header="Lugar atencion" sortable />
         <Column field="FechaHoraReservacion" header="Hora Reserva" sortable />
         <Column field="Nombre" header="Area Origen" sortable />
-        <Column field="Estado" header="Estado" sortable />
+        <Column field="Estado" header="Estado" body={estadoPlantilla} sortable />
         <Column field="FechaRegistro" header="Fecha Registro" sortable />
         <Column field="IdUsuarioRegistro" header="Usuario" sortable />
       </DataTable>
