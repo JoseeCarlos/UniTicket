@@ -45,9 +45,7 @@ function InicioSesion() {
           } else {
             sessionStorage.setItem('role', "Estudiante");
           }
-        } else {
-          alert('Usuario y/o contrasenia no existen')
-        }
+        } 
       })
     });
   };
