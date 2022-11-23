@@ -1,15 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../recursos/Principal.css';
 import { NavLink } from 'react-router-dom';
-import Modal from './VentanaCodigo';
 
 const Principal = () => {
-
-  const [estadoDialogo, cambiarEstadoDialogo] = useState(true);
   
   return (
     <div className='contenedor-opciones'>
-      <Modal estado={estadoDialogo} cambiarEstadoDialogo={cambiarEstadoDialogo}></Modal>
       <NavLink to="/generarTicket" className='opcion'>
         <div className='imagen'>
           <img src='assets/layout/images/ticket.jpg' alt='Ticket'></img>

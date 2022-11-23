@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import { TopBar } from '../componentes/TopBar';
 import '../recursos/Quejas.css';
 import { RazonQuejaServicio } from '../servicio/RazonQuejaServicio';
-import Select from 'react-select'
 
 const Quejas = () => {
 
