@@ -52,6 +52,11 @@
 
 .disenio-bar-foto {
   cursor: pointer;
+  transition: all 600ms;
+}
+
+.disenio-bar-foto:hover {
+  transform: scale(1.1, 1.1);
 }
 
 .disenio-bar-foto img {

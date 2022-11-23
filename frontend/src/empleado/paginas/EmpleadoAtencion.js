@@ -5,6 +5,8 @@ import { Image } from 'primereact/image';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 import { Dialog } from 'primereact/dialog';
 
 const EmpleadoAtencion = () => {
@@ -14,8 +16,12 @@ const EmpleadoAtencion = () => {
   };
 
   const [ticket, establecerTransferenciaTicket] = useState(emptyTransfer);
+  const [ticketOtroDia, establecerTransferenciaTicketOtroDia] = useState(emptyTransfer);
   const [ticketDialogo, establecerTransferenciaTicketDialogo] = useState(false);
+  const [ticketDialogoOtroDia, establecerTransferenciaTicketDialogoOtroDia] = useState(false);
   const [dropdownValue, setDropdownValue] = useState(null);
+  const [horaSeleccionada, comprobarHoraSeleccionada] = useState(null);
+  const [horario, establecerHorario] = useState([]);
   const [enviado, establecerEnvio] = useState(false);
   const toast = useRef(null);
   const dt = useRef(null);
@@ -27,8 +33,14 @@ const EmpleadoAtencion = () => {
 
   const transferirTicket = () => {
     establecerTransferenciaTicket(ticket);
-    establecerTransferenciaTicketDialogo(true);
+    establecerTransferenciaTicketDialogo(false);
     toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Ticket Transferido', life: 3000 });
+  }
+
+  const transferirTicketOtroDia = () => {
+    establecerTransferenciaTicketOtroDia(ticketOtroDia);
+    establecerTransferenciaTicketDialogoOtroDia(false);
+    toast.current.show({ severity: 'success', summary: '¡Éxito!', detail: 'Ticket transferido al siguiente día', life: 3000 });
   }
 
   const onInputChange = (e, nombre) => {
@@ -38,11 +50,17 @@ const EmpleadoAtencion = () => {
   const ocultarDialogo = () => {
     establecerEnvio(false);
     establecerTransferenciaTicketDialogo(false);
+    establecerTransferenciaTicketDialogoOtroDia(false);
   }
 
   const abrirDialogo = (ticket) => {
     establecerTransferenciaTicket({ ...ticket });
     establecerTransferenciaTicketDialogo(true);
+  }
+
+  const abrirDialogoTransferir = (ticket) => {
+    establecerTransferenciaTicket({ ...ticket });
+    establecerTransferenciaTicketDialogoOtroDia(true);
   }
 
   const transferirTicketDialogoFooter = (
@@ -85,7 +103,8 @@ const EmpleadoAtencion = () => {
               </table>
             </div>
             <div className='acciones'>
-              <h1>Acciones</h1>
+              {/* <h1>Acciones</h1> */}
+              <Button className='btn' type="button" onClick={() => abrirDialogoTransferir()}>Transferir Mañana</Button>
               <Button className='btn' type="button">Atendido</Button>
               <Button className='btn' type="button">Siguiente</Button>
               <Button className='btn' type="button" onClick={() => abrirDialogo()}>Transferir</Button> {/*MANDAR LOS IDs Para la transferencia.... supongo.*/}
@@ -142,6 +161,23 @@ const EmpleadoAtencion = () => {
         </div>
       </Dialog>
 
+      <Dialog visible={ticketDialogoOtroDia} style={{ width: '450px' }} header="Transferencia de Ticket" modal className="p-fluid" footer={transferirTicketDialogoFooter} onHide={ocultarDialogo}>
+        <div className="campo">
+          <label htmlFor="transferir">Nuevo lugar de atención</label>
+          <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="transferir" placeholder="Seleccione el lugar de atención" />
+          <DataTable value={horario} className='datatable-horas' selectionMode="multiple" cellSelection
+            selection={horaSeleccionada} onSelectionChange={e => comprobarHoraSeleccionada(e.value)}
+            dataKey="id" responsiveLayout="scroll"
+            emptyMessage="Sin atención.">
+            <Column field="lunes" header="Lunes"></Column>
+            <Column field="martes" header="Martes"></Column>
+            <Column field="miercoeles" header="Miercoles"></Column>
+            <Column field="jueves" header="Jueves"></Column>
+            <Column field="viernes" header="Viernes"></Column>
+            <Column field="sabado" header="Sabado"></Column>
+          </DataTable>
+        </div>
+      </Dialog>
     </div >
   );
 }

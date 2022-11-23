@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FotoServicio } from '../servicio/FotoServicio';
 import { Galleria } from 'primereact/galleria';
 import '../recursos/css/Reservacion.css';
 import { Column } from 'primereact/column';
@@ -41,13 +40,12 @@ const ReservacionEnLinea = () => {
   const [horaSeleccionada, comprobarHoraSeleccionada] = useState(null);
   const [seleccionArea, establecerSeleccionArea] = useState(null);
   const toast = useRef(null);
-  const [historial, establecerHistorial] = useState([])
+  const [historial, establecerHistorial] = useState([]);
+  const [horario, establecerHorario] = useState([]);
 
   const ticketServicio = new TicketServicio();
+
   useEffect(() => {
-    // fotoServicio.getImages().then(datos =>  {
-    //   console.log(datos)
-    //   establecerImagenes(datos)});
     ticketServicio.obtenerTicketsUsuario(parseInt(sessionStorage.getItem('userId'))).then(datos => {
       console.log(datos)
       establecerImagenes(datos)
@@ -63,8 +61,18 @@ const ReservacionEnLinea = () => {
   useEffect(() => {
     const reservaServicio = new ReservaServicio();
     reservaServicio.getProductsSmall().then(datos => establecerReservas(datos));
-
   }, []);
+
+  // useEffect(() => {
+
+  //   var now = new Date('2018-09-28T10:00:00');
+  //   for (var i = 0; i < 19; i++) {
+  //     now.setMinutes(now.getMinutes() + 30);
+  //     console.log(now.getHours() + ":" + ("00" + now.getMinutes()).slice(-2));
+  //   }
+  //   const reservaServicio = new ReservaServicio();
+  //   reservaServicio.getProductsSmall().then(datos => establecerReservas(datos));
+  // }, []);
 
   const abrirDialogo = () => {
     establecerEnvio(false);
@@ -86,8 +94,6 @@ const ReservacionEnLinea = () => {
       establecerReserva(reservaVacia);
     }
   }
-
-  const fotoServicio = new FotoServicio();
 
   const opcionesResponsivas = [
     {
@@ -205,11 +211,11 @@ const ReservacionEnLinea = () => {
             </div>
           </div>
 
-          <DataTable value={historial} className='datatable-horas' selectionMode="multiple" cellSelection
+          <DataTable value={horario} className='datatable-horas' selectionMode="multiple" cellSelection
             selection={horaSeleccionada} onSelectionChange={e => comprobarHoraSeleccionada(e.value)}
             dataKey="id" responsiveLayout="scroll"
             emptyMessage="Sin atención.">
-            <Column field="Codigo" header="Lunes"></Column>
+            <Column field="lunes" header="Lunes"></Column>
             <Column field="martes" header="Martes"></Column>
             <Column field="miercoeles" header="Miercoles"></Column>
             <Column field="jueves" header="Jueves"></Column>
