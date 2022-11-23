@@ -73,10 +73,16 @@
         flex-direction: row;
         align-items: center;
         gap: .7rem;
+        transition: all 600ms;
+        cursor: pointer;
 
         .photo {
             height: 50px;
             width: 50px;
+        }
+
+        &:hover {
+            transform: scale(1.02, 1.02);
         }
     }
 }

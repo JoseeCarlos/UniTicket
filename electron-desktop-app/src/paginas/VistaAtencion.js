@@ -32,8 +32,8 @@ const VistaAtencion = () => {
       <TopBar></TopBar>
       <div className='contenedor-vista-atencion'>
         <div className='video-atencion'>
-          <iframe className='video' src="https://www.youtube.com/embed/dWcwY8VWXf0?autoplay=1&controls=1" title="Patito Bailando" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          {/* <iframe className='video' src="https://www.youtube.com/embed/3J1O-vOa71s?autoplay=1&controls=1" title="Patito Bailando" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> */}
+          {/* <iframe className='video' src="https://www.youtube.com/embed/dWcwY8VWXf0?autoplay=1&controls=1" title="Patito Bailando" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> */}
+          <iframe className='video' src="https://www.youtube.com/embed/3J1O-vOa71s?autoplay=1&controls=1" title="Patito Bailando" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           <div className='seccion-atencion'>
             <div className='titulo'><h1>EN ATENCIÓN</h1></div>
             <div className='lista-atencion'>
