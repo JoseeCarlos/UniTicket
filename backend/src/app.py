@@ -3,7 +3,38 @@ from unicodedata import name
 from flask import Flask
 from config import config
 from routes import  Queja, Area, TipoAtencion, LugarAtencion, TipoUsuario, LugarAtencionArea, Asignacion, Mesa, Requisito, Tramites, Bitacora, Ticket, Atencion, RazonQueja
+from flask_socketio import SocketIO,send
 app = Flask(__name__)
+
+app.config['SECRET_KEY']='secret'
+socketio=SocketIO(app)
+socketio.init_app(app, cors_allowed_origins="*")
+lugaresAtencion=[]
+colaTIckets=[]
+
+def obtenerSiguienteTicket():
+    return colaTIckets[0]
+
+@socketio.on('siguienteTicket')
+def handleMessage(msg):
+    print("siguienteTicket: "+msg['tipoCliente']+" Sid: "+msg['sid'])
+    socketio.emit('siguienteTicket',obtenerSiguienteTicket(),room=msg['sid'])
+    actualizarCola()
+
+@socketio.on('nuevoTicket')
+def handleMessage(msg):
+    print(" Sid: "+msg['sid'])
+    print(msg['nuevoTicket'])
+    colaTIckets.append(msg['nuevoTicket'])
+    actualizarCola()
+
+@socketio.on('registroLugarAtencion')
+def handleMessage(msg):
+    lugaresAtencion.append({"sid":msg['sid'],"id":msg['idLugarAtencion']})
+    print("NuevoLugarAtencion: Sid: "+msg['sid']+" Id: "+str(msg['idLugarAtencion']))
+
+def actualizarCola():
+    socketio.emit('actualizarTickets',colaTIckets,room=lugaresAtencion[0]['sid'])
 
 def page_not_found(e):
     return 'This page does not exist', 404
