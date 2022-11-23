@@ -4,7 +4,7 @@ import '../recursos/css/TopBar.css';
 
 export const TopBar = (props) => {
   let redirect = useHistory();
-
+  let history = useHistory();
   useEffect(() => {
     let btn = document.querySelector('#boton');
     let enlaces = document.querySelector('#enlaces');
@@ -54,6 +54,8 @@ export const TopBar = (props) => {
     if (cerrar != null)
     cerrar.addEventListener('click', function () {
         sessionStorage.clear();
+        history.push("/inicio");
+        console.log('peter gay');
       });
   }, []); //
 

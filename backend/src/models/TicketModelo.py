@@ -172,6 +172,26 @@ class TicketModelo():
             return tickets
         except Exception as ex:
             raise Exception(ex)
+    
+    @classmethod
+    def obtener_TicketNumero(self, numero):
+        try:
+            connection = get_connection()
+            tickets = []
+            with connection.cursor() as cursor:
+                cursor.execute("""SELECT T.IdTicket, T.Codigo, T.Numero, T.Id_Sitio, A.Nombre, LA.Nombre, TL.FechaHoraReservacion
+                                    FROM UTicket T
+                                    INNER JOIN UTicketEnLinea TL ON TL.IdTicket = T.IdTicket
+                                    INNER JOIN UArea A ON A.IdArea = T.IdArea
+                                    INNER JOIN ULugarAtencion LA ON LA.IdLugarAtencion = T.IdLugarAtencion 
+                                    WHERE T.Numero = ?
+                                """, (numero))
+                for row in cursor.fetchall():
+                    tickets.append(TicketUsuario(idTicket=row[0],Codigo=row[1], Numero=row[2], Id_Sitio=row[3], NombreArea=row[4], NombreLugar=row[5], FechaHoraReservacion=row[6]).to_JSON())
+            connection.close()
+            return tickets
+        except Exception as ex:
+            raise Exception(ex)
 
 
 

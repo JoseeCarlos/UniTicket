@@ -1,9 +1,8 @@
 class LugarAtencion():
-    def __init__(self,IdLugarAtencion=None,Nombre=None,NumeroMaximoReservasPorHora=None, CodigoAccesoAtencion=None, HoraInicioAtencion=None, HoraFinAtencion=None, HoraInicioReceso=None, HoraFinReceso=None, HoraInicioAtencionFinSemana=None, HoraFinAtencionFinSemana=None ,Id_Sitio=None, Id_Sede_Academica=None, IdArea=None, IdUsuarioRegistro=None, Estado=None, FechaRegistro=None, FechaModifacion=None):
+    def __init__(self,IdLugarAtencion=None,Nombre=None,NumeroMaximoReservasPorHora=None, HoraInicioAtencion=None, HoraFinAtencion=None, HoraInicioReceso=None, HoraFinReceso=None, HoraInicioAtencionFinSemana=None, HoraFinAtencionFinSemana=None ,Id_Sitio=None, Id_Sede_Academica=None, IdArea=None, IdUsuarioRegistro=None, Estado=None, FechaRegistro=None, FechaModifacion=None):
         self.IdLugarAtencion = IdLugarAtencion
         self.Nombre = Nombre
         self.NumeroMaximoReservasPorHora = NumeroMaximoReservasPorHora
-        self.CodigoAccesoAtencion = CodigoAccesoAtencion
         self.HoraInicioAtencion = HoraInicioAtencion
         self.HoraFinAtencion = HoraFinAtencion
         self.HoraInicioReceso = HoraInicioReceso
@@ -24,7 +23,6 @@ class LugarAtencion():
             'IdLugarAtencion': self.IdLugarAtencion,
             'Nombre': self.Nombre,
             'NumeroMaximoReservasPorHora': self.NumeroMaximoReservasPorHora,
-            'CodigoAccesoAtencion': self.CodigoAccesoAtencion,
             'HoraInicioAtencion': self.HoraInicioAtencion,
             'HoraFinAtencion': self.HoraFinAtencion,
             'HoraInicioReceso': self.HoraInicioReceso,
