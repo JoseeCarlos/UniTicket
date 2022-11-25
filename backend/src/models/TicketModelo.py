@@ -32,7 +32,7 @@ class TicketModelo():
             with connection.cursor() as cursor:
                 cursor.execute("""SELECT IdTicket, IdUsuario, IdTipoAtencion, IdEstado, IdPrioridad, IdUsuarioAsignado, IdUsuarioRegistro, Estado, FechaRegistro, FechaModificacion
                                     FROM UTicket
-                                    WHERE IdTicket=%s
+                                    WHERE IdTicket = ? AND Estado = 1
                                 """, (ticketId))
                 row = cursor.fetchone()
                 if row is None:
@@ -71,7 +71,7 @@ class TicketModelo():
                                     FROM UTicket T
                                     INNER JOIN ULugarAtencion LU ON LU.IdLugarAtencion=T.IdLugarAtencion
                                     WHERE LU.IdLugarAtencion = ? ), ?, ?, ?, ?, ?, ?, ? )
-                                """, (ticket.Codigo, ticket.Numero, ticket.TipoTicket, ticket.IdTipoAtencion, ticket.IdTipoUsuario, ticket.IdLugarAtencion, ticket.IdArea, ticket.Id_Sitio, ticket.Id_Sede_Academica))
+                                """, (ticket.Codigo, ticket.IdLugarAtencion, ticket.TipoTicket, ticket.IdTipoAtencion, ticket.IdTipoUsuario, ticket.IdLugarAtencion, ticket.IdArea, ticket.Id_Sitio, ticket.Id_Sede_Academica))
                 connection.commit()
                 filas_afectadas = cursor.rowcount
             connection.close()

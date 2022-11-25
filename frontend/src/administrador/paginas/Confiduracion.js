@@ -39,9 +39,21 @@ const Configuraciones = () => {
 
 
   const agregarVideo = () =>   {
-    let _listaVideo = listaVideo;
-    establecerVideoSeleccionado(_listaVideo.push(video))
+    console.log('video', video);
+    //key enlace
+    //value video
+    let lista = listaVideo;
+    lista.push({'enlace': video});
+    establecerListaVideo(lista);
+    establecerVideo(null);
   }
+
+  const eliminar = (enlace) => {
+    let lista = listaVideo;
+    lista = lista.filter((item) => item.enlace !== enlace);
+    establecerListaVideo(lista);
+  }
+
 
   useEffect(() => {
     // let quitarVideo = document.querySelector('#quitarVideo');
@@ -319,9 +331,11 @@ const Configuraciones = () => {
 
               <div className="p-inputgroup">
                 <Button icon="pi pi-trash" className="p-button" id="quitarVideo" onClick={()=>{
-                  console.log(listaVideo)
+                  console.log(videoSeleccionado)
+                  eliminar(videoSeleccionado.enlace);
                 }}/>
-                <InputText id='enlace' value={video} onChange={(e)=>{console.log(e.target.value)}} />
+                <InputText id='enlace' value={video} onChange={(e)=>{console.log(e.target.value) 
+                establecerVideo(e.target.value)}}/>
                 <Button icon="pi pi-check" className="p-button" id="aniadirVideo" onClick={agregarVideo} />
               </div>
 
@@ -337,7 +351,11 @@ const Configuraciones = () => {
             </div>
 
             <div className="field">
-              {/* <ListBox value={videoSeleccionado} options={listaVideo} onChange={(e) => establecerVideoSeleccionado(e.value)} optionLabel="enlace" style={{ width: '94%' }} /> */}
+              <ListBox value={videoSeleccionado} options={listaVideo} onClick={()=>{
+                console.log(videoSeleccionado)  
+              }} onChange={(e) => {establecerVideoSeleccionado(e.value)
+              console.log(e.value);
+              }} optionLabel="enlace" style={{ width: '94%' }} />
             </div>
           </div>
         </div>

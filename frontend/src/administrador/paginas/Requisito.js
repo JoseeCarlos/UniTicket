@@ -219,10 +219,7 @@ const Requisito = () => {
             </div>
             <span className="p-buttonset">
               <Button icon="pi pi-eye" onClick={() => vistaRequisito(dato)} />
-              <Button
-                icon="pi pi-pencil"
-                onClick={() => editarRequisito(dato)}
-              />
+              <Button icon="pi pi-pencil" onClick={() => editarRequisito(dato)}/>
               <Button
                 icon="pi pi-trash"
                 onClick={() => borrarRequisito(dato)}
