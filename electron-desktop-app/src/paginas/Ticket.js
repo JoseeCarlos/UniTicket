@@ -17,7 +17,7 @@ const Ticket = () => {
 
   const emptyTicket = {
     IdTicket : '',
-    Codigo: sessionStorage.getItem("nombre").toString().slice(0,1),
+    Codigo: 's',
     Numero : '',
     TipoTicket : 0,
     IdTipoAtencion : '',
