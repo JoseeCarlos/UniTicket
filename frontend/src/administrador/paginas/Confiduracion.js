@@ -30,18 +30,41 @@ const Configuraciones = () => {
   const [valorLeyenda, establecerLeyenda] = useState('');
   const [sedeNacional, establecerSedeNacional] = useState('1');
   const [videoSedeNacional, establecerVideoSedeNacional] = useState('1');
-  const [video, establecerVideo] = useState(null);
   const [videoSeleccionado, establecerVideoSeleccionado] = useState(null);
 
   const lugarAtencionServicio = new LugarAtencionServicio();
   const areaService = new AreaService();
-  const videos = [
-    { enlace: 'yuyusdjfksdf' },
-    { enlace: 'yuyusdjsdffksdf' },
-    { enlace: 'yuyusdjsdffksdf' },
-    { enlace: 'yuyusdjsdffksdf' },
-    { enlace: 'yuyusdjfksdfdf' }
-  ];
+  const [video, establecerVideo] = useState(null);
+  const [listaVideo, establecerListaVideo] = useState([]);
+
+
+  const agregarVideo = () =>   {
+    let _listaVideo = listaVideo;
+    establecerVideoSeleccionado(_listaVideo.push(video))
+  }
+
+  useEffect(() => {
+    // let quitarVideo = document.querySelector('#quitarVideo');
+    // let aniadirVideo = document.querySelector('#aniadirVideo');
+    // let enlace = document.getElementById('enlace').value;
+
+    // if (aniadirVideo != null) {
+    //   aniadirVideo.addEventListener('click', function () {
+    //     let videos = [];
+    //     console.log('Estoy aqui', enlace);
+    //     videos.push({ enlace: enlace });
+    //     establecerListaVideo(videos);
+    //     document.getElementById('enlace').value = '';
+    //     console.log(videos, ' ahsldkfj ', enlace);
+    //   });
+    // }
+
+    // if (quitarVideo != null) {
+    //   quitarVideo.addEventListener('click', function () {
+
+    //   });
+    // }
+  });
 
   useEffect(() => {
 
@@ -65,6 +88,7 @@ const Configuraciones = () => {
       </span>
     </div>
   );
+
   const pieArea = (
     <div className="flex flex-end">
       <span className="p-buttonset">
@@ -73,6 +97,7 @@ const Configuraciones = () => {
       </span>
     </div>
   );
+
   return (
     <React.Fragment>
       <Card
@@ -291,7 +316,16 @@ const Configuraciones = () => {
               <label htmlFor="video">
                 Video para la vista de atención (Ingresar un link de YouTube)
               </label>
-              <InputText value={video} onChange={(e) => establecerVideo(e.target.value)} />
+
+              <div className="p-inputgroup">
+                <Button icon="pi pi-trash" className="p-button" id="quitarVideo" onClick={()=>{
+                  console.log(listaVideo)
+                }}/>
+                <InputText id='enlace' value={video} onChange={(e)=>{console.log(e.target.value)}} />
+                <Button icon="pi pi-check" className="p-button" id="aniadirVideo" onClick={agregarVideo} />
+              </div>
+
+
             </div>
           </div>
 
@@ -299,11 +333,11 @@ const Configuraciones = () => {
 
           <div className="p-fluid col-6">
             <div className="field">
-algo
+              <iframe width="94%" height="315" src="https://www.youtube.com/embed/m3bN6yDX3sA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
 
             <div className="field">
-              <ListBox value={videoSeleccionado} options={videos} onChange={(e) => establecerVideoSeleccionado(e.value)} optionLabel="listaVideos" style={{ width: '94%' }} />
+              {/* <ListBox value={videoSeleccionado} options={listaVideo} onChange={(e) => establecerVideoSeleccionado(e.value)} optionLabel="enlace" style={{ width: '94%' }} /> */}
             </div>
           </div>
         </div>
