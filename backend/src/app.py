@@ -10,31 +10,42 @@ app.config['SECRET_KEY']='secret'
 socketio=SocketIO(app)
 socketio.init_app(app, cors_allowed_origins="*")
 lugaresAtencion=[]
-colaTIckets=[]
+colasTickets=[]
 
-def obtenerSiguienteTicket():
-    return colaTIckets[0]
+def obtenerCola(idLugarAtencion):
+    i=0
+    for cola in colasTickets:
+        if cola['idLugarAtencion']==idLugarAtencion:
+            return i
+        else:
+            i=i+1
 
+def obtenerSiguienteTicket(idLugarAtencion):
+    return {'ticket':'nuevoticket'}
+#busca aquello que te hace feliz
 @socketio.on('siguienteTicket')
 def handleMessage(msg):
-    print("siguienteTicket: "+msg['tipoCliente']+" Sid: "+msg['sid'])
-    socketio.emit('siguienteTicket',obtenerSiguienteTicket(),room=msg['sid'])
-    actualizarCola()
+    print(" Sid: "+msg['sid'],'id : ',msg['idLugarAtencion'])
+    #socketio.emit('siguienteTicket',obtenerSiguienteTicket(msg['idLugarAtencion']),room=msg['sid'])
+    socketio.emit('siguienteTicket',msg['idLugarAtencion'],room=msg['sid'])
+    actualizarCola(msg['idLugarAtencion'])
 
 @socketio.on('nuevoTicket')
 def handleMessage(msg):
-    print(" Sid: "+msg['sid'])
-    print(msg['nuevoTicket'])
-    colaTIckets.append(msg['nuevoTicket'])
-    actualizarCola()
+    colasTickets[obtenerCola(msg['idLugarAtencion'])]['cola'].append(msg['nuevoTicket'])
+    actualizarCola(msg['idLugarAtencion'])
 
 @socketio.on('registroLugarAtencion')
 def handleMessage(msg):
     lugaresAtencion.append({"sid":msg['sid'],"id":msg['idLugarAtencion']})
-    print("NuevoLugarAtencion: Sid: "+msg['sid']+" Id: "+str(msg['idLugarAtencion']))
+    if obtenerCola(msg['idLugarAtencion'])==None:
+        colasTickets.append({'idLugarAtencion':msg['idLugarAtencion'],'cola':[]})
 
-def actualizarCola():
-    socketio.emit('actualizarTickets',colaTIckets,room=lugaresAtencion[0]['sid'])
+def actualizarCola(idLugarAtencion):
+    cola=colasTickets[obtenerCola(idLugarAtencion)]
+    for lugar in lugaresAtencion:
+        if lugar['id']==idLugarAtencion:
+            socketio.emit('actualizarTickets',cola,room=lugar['sid'])
 
 def page_not_found(e):
     return 'This page does not exist', 404

@@ -17,15 +17,15 @@ const Ticket = () => {
 
   const emptyTicket = {
     IdTicket : '',
-    Codigo: sessionStorage.getItem("nombre").toString().slice(0,1),
+    Codigo: 'C',
     Numero : '',
     TipoTicket : 0,
     IdTipoAtencion : '',
     IdTipoUsuario : '',
-    IdLugarAtencion : parseInt(sessionStorage.getItem("lugarAtencion")),
-    IdArea : parseInt(sessionStorage.getItem("areaId")),
-    Id_Sitio : parseInt(sessionStorage.getItem("sitioId")),
-    Id_Sede_Academica: parseInt(sessionStorage.getItem("sedeAcademicaId")),
+    IdLugarAtencion : 2,
+    IdArea : 1,
+    Id_Sitio : 1,
+    Id_Sede_Academica:1,
     Estado: '',
     FechaRegistro : '',
     FechaModificacion : ''
