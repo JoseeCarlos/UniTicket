@@ -8,12 +8,21 @@ import { Dropdown } from 'primereact/dropdown';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Dialog } from 'primereact/dialog';
+import { Calendar } from 'primereact/calendar';
 
 const EmpleadoAtencion = () => {
   let emptyTransfer = {
     id: null,
     id_2: ''
   };
+
+  const citySelectItems = [
+    { label: 'New York', value: 'NY' },
+    { label: 'Rome', value: 'RM' },
+    { label: 'London', value: 'LDN' },
+    { label: 'Istanbul', value: 'IST' },
+    { label: 'Paris', value: 'PRS' }
+  ];
 
   const [ticket, establecerTransferenciaTicket] = useState(emptyTransfer);
   const [ticketOtroDia, establecerTransferenciaTicketOtroDia] = useState(emptyTransfer);
@@ -23,6 +32,9 @@ const EmpleadoAtencion = () => {
   const [horaSeleccionada, comprobarHoraSeleccionada] = useState(null);
   const [horario, establecerHorario] = useState([]);
   const [enviado, establecerEnvio] = useState(false);
+  const [seleccionArea, establecerSeleccionArea] = useState(null);
+  const [dates2, setDates2] = useState(null);
+  const [date7, setDate7] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
 
@@ -66,7 +78,7 @@ const EmpleadoAtencion = () => {
   const transferirTicketDialogoFooter = (
     <>
       <Button label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={ocultarDialogo} />
-      <Button label="Transferir" icon="pi pi-check" className="p-button-text" onClick={transferirTicket} />
+      <Button label="Transferir" icon="pi pi-check" className="p-button" onClick={transferirTicket} />
     </>
   );
 
@@ -162,23 +174,29 @@ const EmpleadoAtencion = () => {
       </Dialog>
 
       <Dialog visible={ticketDialogoOtroDia} style={{ width: '450px' }} header="Transferencia de Ticket" modal className="p-fluid" footer={transferirTicketDialogoFooter} onHide={ocultarDialogo}>
-        <div className="campo">
-          <label htmlFor="transferir">Nuevo lugar de atención</label>
-          <Dropdown value={dropdownValue} onChange={(e) => setDropdownValue(e.value)} options={dropdownValues} optionLabel="transferir" placeholder="Seleccione el lugar de atención" />
-          <DataTable value={horario} className='datatable-horas' selectionMode="multiple" cellSelection
-            selection={horaSeleccionada} onSelectionChange={e => comprobarHoraSeleccionada(e.value)}
-            dataKey="id" responsiveLayout="scroll"
-            emptyMessage="Sin atención.">
-            <Column field="lunes" header="Lunes"></Column>
-            <Column field="martes" header="Martes"></Column>
-            <Column field="miercoeles" header="Miercoles"></Column>
-            <Column field="jueves" header="Jueves"></Column>
-            <Column field="viernes" header="Viernes"></Column>
-            <Column field="sabado" header="Sabado"></Column>
-          </DataTable>
+        <div className="campo dialogo-ticket">
+          <div className='agrupar'>
+            <label>Sitio: </label>
+            <Dropdown className='dropdown' value={seleccionArea} options={citySelectItems} onChange={(e) => establecerSeleccionArea(e.value)} placeholder="Seleccione un Sitio" />
+          </div>
+
+          <div className='agrupar'>
+            <label>Área: </label>
+            <Dropdown className='dropdown' value={seleccionArea} options={citySelectItems} onChange={(e) => establecerSeleccionArea(e.value)} placeholder="Seleccione un Área" />
+          </div>
+
+          <div className="agrupar">
+            <label htmlFor="range">Fecha y Hora:</label>
+            <Calendar id="range" value={dates2} onChange={(e) => setDates2(e.value)} className='calendario' />
+          </div>
+
+          <div className="agrupar">
+            <label htmlFor="time24">Hora de reserva: </label>
+            <Calendar id="time24" value={date7} onChange={(e) => setDate7(e.value)} timeOnly hourFormat="12" className='calendario' />
+          </div>
         </div>
       </Dialog>
-    </div >
+    </div>
   );
 }
 export default EmpleadoAtencion;
