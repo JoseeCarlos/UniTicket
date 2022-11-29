@@ -13,4 +13,8 @@ export class ReservaServicio {
     getProductsWithOrdersSmall() {
         return axios.get('assets/demo/data/products-orders-small.json').then(res => res.data.data);
     }
+
+    obtenerHora() {
+        return axios.get('assets/demo/data/horas.json').then(res => res.data.data);
+    }
 }

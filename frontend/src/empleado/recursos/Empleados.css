@@ -59,7 +59,7 @@
 
 .en-atencion,
 .historial {
-  display: flex !important; 
+  display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   font-weight: bold !important;
@@ -94,7 +94,7 @@
   width: 100%;
 }
 
-.en-atencion .detalle-acciones .detalle table td{
+.en-atencion .detalle-acciones .detalle table td {
   padding: 10px;
   font-size: 18px;
 }
@@ -168,6 +168,16 @@ h1 {
   align-items: center;
 }
 
+.dialogo-ticket {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dialogo-ticket .agrupar label {
+  width: 120px;
+}
+
 .historial .buscar .buscar-entrada {
   width: 220px;
   font-size: 14px;
@@ -188,7 +198,7 @@ h1 {
   margin-right: 20px !important;
 }
 
-@media screen and (max-width: 3025px) and (min-width: 1600px){
+@media screen and (max-width: 3025px) and (min-width: 1600px) {
   .contenedor-atencion .actual-ticket h1 {
     position: absolute;
     bottom: 53.5%;
