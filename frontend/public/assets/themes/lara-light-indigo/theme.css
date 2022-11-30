@@ -259,6 +259,7 @@
   --orange-900: #642e09;
   --red-100: #fac7c7;
   --red-500: #f9151d;
+  --red-600: #982428;
   --bluegray-50: #f7f8f9;
   --bluegray-100: #dadee3;
   --bluegray-200: #bcc3cd;
@@ -7237,4 +7238,30 @@ input:focus {
   background-image: url(../../layout/images/uniticket-logo.svg);
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.datos-equipo {
+  display: flex;
+  gap: 5px;
+  padding: 15px;
+  border: 1px dashed var(--uni-background);
+}
+
+.estado-inactivo {
+  background-color: var(--red-600);
+}
+
+.estado-activo {
+  background-color: var(--green-600);
+}
+
+.estado-activo,
+.estado-inactivo {
+  width: 100px;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
 }
