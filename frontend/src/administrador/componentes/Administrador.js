@@ -14,7 +14,7 @@ import GenerarReporte from '../paginas/GenerarReporte';
 import LugarAtencionMesa from '../paginas/LugarAtencionMesa';
 import Area from '../paginas/Area';
 import Asignacion from '../paginas/Asignacion';
-import Confiduracion from '../paginas/Confiduracion';
+import Configuracion from '../paginas/Configuracion';
 import Tramite from '../paginas/Tramite';
 import Requisito from '../paginas/Requisito';
 import RazonQueja from '../paginas/RazonQueja';
@@ -219,7 +219,7 @@ const Administrador = () => {
                     <Route path="/lugarAtencionMesa" component={LugarAtencionMesa} />
                     <Route path="/area" component={Area} />
                     <Route path="/asignacion" component={Asignacion} />
-                    <Route path="/configuracion" component={Confiduracion} />
+                    <Route path="/configuracion" component={Configuracion} />
                     <Route path="/tramite" component={Tramite} />
                     <Route path="/requisito" component={Requisito} />
                     <Route path="/razonQueja" component={RazonQueja} />

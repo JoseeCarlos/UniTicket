@@ -3,7 +3,49 @@ from unicodedata import name
 from flask import Flask
 from config import config
 from routes import  Queja, Area, TipoAtencion, LugarAtencion, TipoUsuario, LugarAtencionArea, Asignacion, Mesa, Requisito, Tramites, Bitacora, Ticket, Atencion, RazonQueja
+from flask_socketio import SocketIO,send
 app = Flask(__name__)
+
+app.config['SECRET_KEY']='secret'
+socketio=SocketIO(app)
+socketio.init_app(app, cors_allowed_origins="*")
+lugaresAtencion=[]
+colasTickets=[]
+
+def obtenerCola(idLugarAtencion):
+    i=0
+    for cola in colasTickets:
+        if cola['idLugarAtencion']==idLugarAtencion:
+            return i
+        else:
+            i=i+1
+
+def obtenerSiguienteTicket(idLugarAtencion):
+    return {'ticket':'nuevoticket'}
+#busca aquello que te hace feliz
+@socketio.on('siguienteTicket')
+def handleMessage(msg):
+    print(" Sid: "+msg['sid'],'id : ',msg['idLugarAtencion'])
+    #socketio.emit('siguienteTicket',obtenerSiguienteTicket(msg['idLugarAtencion']),room=msg['sid'])
+    socketio.emit('siguienteTicket',msg['idLugarAtencion'],room=msg['sid'])
+    actualizarCola(msg['idLugarAtencion'])
+
+@socketio.on('nuevoTicket')
+def handleMessage(msg):
+    colasTickets[obtenerCola(msg['idLugarAtencion'])]['cola'].append(msg['nuevoTicket'])
+    actualizarCola(msg['idLugarAtencion'])
+
+@socketio.on('registroLugarAtencion')
+def handleMessage(msg):
+    lugaresAtencion.append({"sid":msg['sid'],"id":msg['idLugarAtencion']})
+    if obtenerCola(msg['idLugarAtencion'])==None:
+        colasTickets.append({'idLugarAtencion':msg['idLugarAtencion'],'cola':[]})
+
+def actualizarCola(idLugarAtencion):
+    cola=colasTickets[obtenerCola(idLugarAtencion)]
+    for lugar in lugaresAtencion:
+        if lugar['id']==idLugarAtencion:
+            socketio.emit('actualizarTickets',cola,room=lugar['sid'])
 
 def page_not_found(e):
     return 'This page does not exist', 404
