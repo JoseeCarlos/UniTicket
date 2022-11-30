@@ -163,26 +163,29 @@
 /* DIALOG NUEVA RESERVA */
 .contenedor-dialogo {
   display: grid;
-  grid-template-columns: 2;
-  grid-template-rows: 2;
-  gap: 20px;
+  grid-template-columns: repeat(2, 20% 75%);
+  gap: 15px;
 }
 
 .numero-ticket-reserva {
   grid-column: 1;
-  grid-row: 1;
   position: relative;
   display: flex;
   flex-direction: row;
-  height: 95px;
+  height: 100%;
   justify-content: center;
+}
+
+.numero-ticket-reserva .imagen-ticket {
+  height: 180px;
 }
 
 .numero-ticket-reserva h5 {
   position: absolute;
-  top: 36%;
-  left: 35%;
+  top: 43%;
+  left: 28%;
   font-weight: bold;
+  font-size: 16px;
 }
 
 .datos-nueva-reserva {
@@ -205,11 +208,15 @@
 }
 
 .agrupar label {
-  width: 70px;
+  width: 120px;
 }
 
 .agrupar .dropdown {
-  width: 160px;
+  width: 100%;
+}
+
+.agrupar .calendario {
+  width: 100%;
 }
 
 .agrupar h5 {

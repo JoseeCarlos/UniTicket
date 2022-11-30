@@ -9,6 +9,7 @@ import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { TicketServicio } from '../servicio/TicketServicio';
+import { Calendar } from 'primereact/calendar';
 
 const ReservacionEnLinea = () => {
   let reservaVacia = {
@@ -42,6 +43,8 @@ const ReservacionEnLinea = () => {
   const toast = useRef(null);
   const [historial, establecerHistorial] = useState([]);
   const [horario, establecerHorario] = useState([]);
+  const [dates2, setDates2] = useState(null);
+  const [date7, setDate7] = useState(null);
 
   const ticketServicio = new TicketServicio();
 
@@ -63,16 +66,6 @@ const ReservacionEnLinea = () => {
     reservaServicio.getProductsSmall().then(datos => establecerReservas(datos));
   }, []);
 
-  // useEffect(() => {
-
-  //   var now = new Date('2018-09-28T10:00:00');
-  //   for (var i = 0; i < 19; i++) {
-  //     now.setMinutes(now.getMinutes() + 30);
-  //     console.log(now.getHours() + ":" + ("00" + now.getMinutes()).slice(-2));
-  //   }
-  //   const reservaServicio = new ReservaServicio();
-  //   reservaServicio.getProductsSmall().then(datos => establecerReservas(datos));
-  // }, []);
 
   const abrirDialogo = () => {
     establecerEnvio(false);
@@ -186,15 +179,19 @@ const ReservacionEnLinea = () => {
         </DataTable>
       </div>
 
-      <Dialog visible={reservacionDialogo} style={{ width: '450px' }} header={titulo} modal className="p-fluid" footer={botones} onHide={ocultarDialogo}>
-
+      <Dialog visible={reservacionDialogo} style={{ width: '550px' }} header={titulo} modal className="p-fluid" footer={botones} onHide={ocultarDialogo}>
         <div className='contenedor-dialogo'>
           <div className='numero-ticket-reserva'>
-            <img src='assets/layout/images/logo.svg' alt='Número de ticket' />
+            <img className='imagen-ticket' src='assets/layout/images/logo.svg' alt='Número de ticket' />
             <h5>R-06</h5>
           </div>
 
           <div className='datos-nueva-reserva'>
+            <div className='agrupar'>
+              <label>Sede Académica: </label>
+              <Dropdown className='dropdown' value={seleccionArea} options={citySelectItems} onChange={(e) => establecerSeleccionArea(e.value)} placeholder="Seleccione una sede" />
+            </div>
+
             <div className='agrupar'>
               <label>Sitio: </label>
               <Dropdown className='dropdown' value={seleccionArea} options={citySelectItems} onChange={(e) => establecerSeleccionArea(e.value)} placeholder="Seleccione un Sitio" />
@@ -205,25 +202,17 @@ const ReservacionEnLinea = () => {
               <Dropdown className='dropdown' value={seleccionArea} options={citySelectItems} onChange={(e) => establecerSeleccionArea(e.value)} placeholder="Seleccione un Área" />
             </div>
 
-            <div className='agrupar'>
-              <label>Fecha y Hora: </label>
-              <h5>12/21/2343 17:34</h5>
+            <div className="agrupar">
+              <label htmlFor="range">Fecha y Hora:</label>
+              <Calendar id="range" value={dates2} onChange={(e) => setDates2(e.value)} className='calendario' />
+            </div>
+
+            <div className="agrupar">
+              <label htmlFor="time24">Hora de reserva: </label>
+              <Calendar id="time24" value={date7} onChange={(e) => setDate7(e.value)} timeOnly hourFormat="12" className='calendario' />
             </div>
           </div>
-
-          <DataTable value={horario} className='datatable-horas' selectionMode="multiple" cellSelection
-            selection={horaSeleccionada} onSelectionChange={e => comprobarHoraSeleccionada(e.value)}
-            dataKey="id" responsiveLayout="scroll"
-            emptyMessage="Sin atención.">
-            <Column field="lunes" header="Lunes"></Column>
-            <Column field="martes" header="Martes"></Column>
-            <Column field="miercoeles" header="Miercoles"></Column>
-            <Column field="jueves" header="Jueves"></Column>
-            <Column field="viernes" header="Viernes"></Column>
-            <Column field="sabado" header="Sabado"></Column>
-          </DataTable>
         </div>
-
       </Dialog>
     </div >
   );
