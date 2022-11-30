@@ -3,7 +3,7 @@ class EquipoAtencion():
     def __init__(self, IdEquipoAtencion=None, Ip=None, NombreEquipo=None, Mac=None, IdLugarAtencion=None, Funcion=None, IdUsuarioRegistro=None, Estado=None, FechaRegistro=None, FechaModificacion=None):
         self.IdEquipoAtencion = IdEquipoAtencion
         self.Ip = Ip
-        self.Nombre = NombreEquipo
+        self.NombreEquipo = NombreEquipo
         self.Mac = Mac
         self.IdLugarAtencion = IdLugarAtencion
         self.Funcion = Funcion
@@ -17,7 +17,7 @@ class EquipoAtencion():
         return {
             'IdEquipoAtencion': self.IdEquipoAtencion,
             'Ip': self.Ip,
-            'Nombre': self.Nombre,
+            'NombreEquipo': self.NombreEquipo,
             'Mac': self.Mac,
             'IdLugarAtencion': self.IdLugarAtencion,
             'Funcion': self.Funcion,

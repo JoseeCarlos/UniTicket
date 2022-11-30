@@ -44,9 +44,9 @@ class EquipoAtencionModelo():
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("""INSERT INTO UEquipoAtencion (Ip, NombreEquipo, Mac, IdLugarAtencion, Funcion, IdUsuarioRegistro, Estado, FechaRegistro, FechaModificacion)
-                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                                """, (equipo_atencion['Ip'], equipo_atencion['Nombre'], equipo_atencion['Mac'], equipo_atencion['IdLugarAtencion'], equipo_atencion['Funcion'], equipo_atencion['IdUsuarioRegistro'], equipo_atencion['Estado'], datetime.now(), datetime.now()))
+                cursor.execute("""INSERT INTO UEquipoAtencion (Ip, NombreEquipo, Mac, IdLugarAtencion, Funcion, IdUsuarioRegistro)
+                                    VALUES (?, ?, ?, ?, ?, ?)
+                                """, (equipo_atencion.Ip, equipo_atencion.NombreEquipo, equipo_atencion.Mac, equipo_atencion.IdLugarAtencion, equipo_atencion.Funcion, equipo_atencion.IdUsuarioRegistro))
                 connection.commit()
                 filas_afectadas = cursor.rowcount
             connection.close()
@@ -60,9 +60,9 @@ class EquipoAtencionModelo():
             connection = get_connection()
             with connection.cursor() as cursor:
                 cursor.execute("""UPDATE UEquipoAtencion
-                                    SET Ip = ?, NombreEquipo = ?, Mac = ?, IdLugarAtencion = ?, Funcion = ?, IdUsuarioRegistro = ?, Estado = ?, FechaModificacion = ?
+                                    SET Ip = ?, NombreEquipo = ?, Mac = ?, IdLugarAtencion = ?, Funcion = ?, FechaModificacion = ?
                                     WHERE IdEquipoAtencion = ?
-                                """, (equipo_atencion['Ip'], equipo_atencion['Nombre'], equipo_atencion['Mac'], equipo_atencion['IdLugarAtencion'], equipo_atencion['Funcion'], equipo_atencion['IdUsuarioRegistro'], equipo_atencion['Estado'], datetime.now(), equipo_atencion['IdEquipoAtencion']))
+                                """, (equipo_atencion.Ip, equipo_atencion.NombreEquipo, equipo_atencion.Mac, equipo_atencion.IdLugarAtencion, equipo_atencion.Funcion, datetime.now(), equipo_atencion.IdEquipoAtencion))
                 connection.commit()
                 filas_afectadas = cursor.rowcount
             connection.close()

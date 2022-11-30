@@ -11,6 +11,7 @@ import { AreaService } from "../servicios/AreaService";
 import { RadioButton } from 'primereact/radiobutton';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { ListBox } from 'primereact/listbox';
+import { SedeAcademicaServicio } from "../servicios/SedeAcademicaServicio";
 
 const Configuraciones = () => {
   const [horaInicioAtencion, establecerHoraInicioAtencion] = useState(null);
@@ -31,21 +32,35 @@ const Configuraciones = () => {
   const [sedeNacional, establecerSedeNacional] = useState('1');
   const [videoSedeNacional, establecerVideoSedeNacional] = useState('1');
   const [videoSeleccionado, establecerVideoSeleccionado] = useState(null);
+  const [sedeAcademica, establecerSedeAcademica] = useState([]);
 
   const lugarAtencionServicio = new LugarAtencionServicio();
   const areaService = new AreaService();
+  const sedeAcedemicaServicio = new SedeAcademicaServicio();
   const [video, establecerVideo] = useState(null);
   const [listaVideo, establecerListaVideo] = useState([]);
+  const [enlaceVideo, establecerEnlaceVideo] = useState('');
 
+  let leyendaVacia = {
+    IdLeyendaVistaAtencion: null,
+    IdSedeAcademica: null,
+    Leyenda: '',
+    Estado: ''
+  }
+
+  let videoVistaAtencionVacia = {
+    IdVideoVistaAtencion : null,
+    IdSedeAcademica: null,
+    Url: null,
+    Estado: ''
+  }
 
   const agregarVideo = () =>   {
     console.log('video', video);
-    //key enlace
-    //value video
     let lista = listaVideo;
     lista.push({'enlace': video});
     establecerListaVideo(lista);
-    establecerVideo(null);
+    establecerVideo('');
   }
 
   const eliminar = (enlace) => {
@@ -54,29 +69,6 @@ const Configuraciones = () => {
     establecerListaVideo(lista);
   }
 
-
-  useEffect(() => {
-    // let quitarVideo = document.querySelector('#quitarVideo');
-    // let aniadirVideo = document.querySelector('#aniadirVideo');
-    // let enlace = document.getElementById('enlace').value;
-
-    // if (aniadirVideo != null) {
-    //   aniadirVideo.addEventListener('click', function () {
-    //     let videos = [];
-    //     console.log('Estoy aqui', enlace);
-    //     videos.push({ enlace: enlace });
-    //     establecerListaVideo(videos);
-    //     document.getElementById('enlace').value = '';
-    //     console.log(videos, ' ahsldkfj ', enlace);
-    //   });
-    // }
-
-    // if (quitarVideo != null) {
-    //   quitarVideo.addEventListener('click', function () {
-
-    //   });
-    // }
-  });
 
   useEffect(() => {
 
@@ -89,6 +81,13 @@ const Configuraciones = () => {
       console.log("data", data);
       establecerLugaresAtencion(data);
     });
+
+    sedeAcedemicaServicio.obtenerSedesAcademicas().then((data) => {
+      console.log("data", data);
+      establecerSedeAcademica(data)
+      // establecerSedes(data);
+    }
+    );
 
   }, []);
 
@@ -262,11 +261,11 @@ const Configuraciones = () => {
               placeholder="Seleccione la Sede Académica"
               required
               emptyMessage="No se encontraron sedes"
-              options={sedes}
+              options={sedeAcademica}
               value={valorSede}
               onChange={(e) => {
                 console.log(e.value)
-                establecerValorArea(e.value)
+                establecerValorSede(e.value)
               }}
               optionLabel="Nombre"
               label="Nombre"
@@ -312,11 +311,11 @@ const Configuraciones = () => {
                   placeholder="Seleccione la Sede Académica"
                   required
                   emptyMessage="No se encontraron sedes"
-                  options={sedes}
+                  options={sedeAcademica}
                   value={valorSede}
                   onChange={(e) => {
                     console.log(e.value)
-                    establecerValorArea(e.value)
+                    establecerValorSede(e.value)
                   }}
                   optionLabel="Nombre"
                   label="Nombre"
@@ -335,11 +334,9 @@ const Configuraciones = () => {
                   eliminar(videoSeleccionado.enlace);
                 }}/>
                 <InputText id='enlace' value={video} onChange={(e)=>{console.log(e.target.value) 
-                establecerVideo(e.target.value)}}/>
+                  establecerVideo(e.target.value)}}/>
                 <Button icon="pi pi-check" className="p-button" id="aniadirVideo" onClick={agregarVideo} />
               </div>
-
-
             </div>
           </div>
 
@@ -347,7 +344,7 @@ const Configuraciones = () => {
 
           <div className="p-fluid col-6">
             <div className="field">
-              <iframe width="94%" height="315" src="https://www.youtube.com/embed/m3bN6yDX3sA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <iframe width="94%" height="315" src={enlaceVideo} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
 
             <div className="field">
@@ -355,6 +352,7 @@ const Configuraciones = () => {
                 console.log(videoSeleccionado)  
               }} onChange={(e) => {establecerVideoSeleccionado(e.value)
               console.log(e.value);
+              establecerEnlaceVideo(e.value.enlace)
               }} optionLabel="enlace" style={{ width: '94%' }} />
             </div>
           </div>

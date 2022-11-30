@@ -14,7 +14,7 @@ class VideoVistaAtencionModelo():
             with connection.cursor() as cursor:
                 cursor.execute("""SELECT IdVideoVistaAtencion, IdSedeAcademica, Url, Estado
                                     FROM UVideoVistaAtencion
-                                WHERE Estado=1  
+                                    WHERE Estado=1  
                                 """)
                 for row in cursor.fetchall():
                     videos.append(VideoVistaAtencion(IdVideoVistaAtencion=row[0],Descripcion=row[1],Url=row[2], IdUsuarioRegistro=row[3], Estado=row[4], FechaRegistro=row[5], FechaModificacion=row[6]).to_JSON())
@@ -30,7 +30,7 @@ class VideoVistaAtencionModelo():
             with connection.cursor() as cursor:
                 cursor.execute("""SELECT IdVideoVistaAtencion, IdSedeAcademica, Url, Estado
                                     FROM UVideoVistaAtencion
-                                WHERE IdVideoVistaAtencion=%s AND Estado=1  
+                                    WHERE IdVideoVistaAtencion = ? AND Estado = 1  
                                 """, (IdVideoVistaAtencion))
                 row = cursor.fetchone()
                 if row is None:
@@ -42,15 +42,28 @@ class VideoVistaAtencionModelo():
             raise Exception(ex)
     
     @classmethod
-    def registrar_video(self, video):
+    def registrar_video(self, videos):
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("""INSERT INTO UVideoVistaAtencion(IdSedeAcademica, Url, Estado, IdUsuarioRegistro, FechaRegistro)
-                                    VALUES (%s, %s, %s, %s, %s)
-                                """, (video.IdSedeAcademica, video.Url, video.Estado, video.IdUsuarioRegistro, video.FechaRegistro))
+                for video in videos:
+                    cursor.execute("""INSERT INTO UVideoVistaAtencion(IdSedeAcademica, Url)
+                                    VALUES(?, ?)""", (video.IdSedeAcademica, video.Url))
                 connection.commit()
-                video.IdVideoVistaAtencion = cursor.lastrowid
+            connection.close()
+            return video
+        except Exception as ex:
+            raise Exception(ex)
+    
+    @classmethod 
+    def registrar_video_nacional(self, videos):
+        try:
+            connection = get_connection()
+            with connection.cursor() as cursor:
+                for video in videos:
+                    cursor.execute("""INSERT INTO UVideoVistaAtencion(Url)
+                                    VALUES(?)""", (video.Url))
+                connection.commit()
             connection.close()
             return video
         except Exception as ex:
@@ -62,8 +75,8 @@ class VideoVistaAtencionModelo():
             connection = get_connection()
             with connection.cursor() as cursor:
                 cursor.execute("""UPDATE UVideoVistaAtencion
-                                    SET IdSedeAcademica=%s, Url=%s, Estado=%s, IdUsuarioModificacion=%s, FechaModificacion=%s
-                                WHERE IdVideoVistaAtencion=%s
+                                    SET IdSedeAcademica = ?, Url = ?, Estado = ?, IdUsuarioModificacion = ?, FechaModificacion = ?
+                                    WHERE IdVideoVistaAtencion= ?
                                 """, (video.IdSedeAcademica, video.Url, video.Estado, video.IdUsuarioModificacion, video.FechaModificacion, video.IdVideoVistaAtencion))
                 connection.commit()
             connection.close()
@@ -78,7 +91,7 @@ class VideoVistaAtencionModelo():
             with connection.cursor() as cursor:
                 cursor.execute("""UPDATE UVideoVistaAtencion
                                     SET Estado=0
-                                WHERE IdVideoVistaAtencion=%s
+                                    WHERE IdVideoVistaAtencion = ?
                                 """, (IdVideoVistaAtencion))
                 connection.commit()
             connection.close()

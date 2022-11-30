@@ -46,13 +46,14 @@ class LeyendaVistaAtencionModelo():
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("""INSERT INTO ULeyendaVistaAtencion(IdSedeAcademica, Leyenda, Estado, FechaRegistro, FechaModificacion)
-                                    VALUES(?, ?, ?, ?, ?)
-                                """, (leyenda_vista_atencion.IdSedeAcademica, leyenda_vista_atencion.Leyenda, leyenda_vista_atencion.Estado, datetime.now(), datetime.now()))
+                cursor.execute("""INSERT INTO ULeyendaVistaAtencion(IdSedeAcademica, Leyenda)
+                                    VALUES(?, ?)
+                                """, (leyenda_vista_atencion.IdSedeAcademica, leyenda_vista_atencion.Leyenda))
                 connection.commit()
-                leyenda_vista_atencion.IdLeyendaVistaAtencion = cursor.lastrowid
+                filas_afectadas = cursor.rowcount
+
             connection.close()
-            return leyenda_vista_atencion
+            return filas_afectadas
         except Exception as ex:
             raise Exception(ex)
     
