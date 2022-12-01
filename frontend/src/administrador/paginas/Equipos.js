@@ -159,7 +159,7 @@ const Equipos = () => {
     </>
   );
 
-  const listaElementoDataView = (dato) => { 
+  const listaElementoDataView = (dato) => {
     let estadoEquipo = dato.Estado === 0 ? 'inactivo' : 'activo';
     return (
       <>
@@ -167,10 +167,10 @@ const Equipos = () => {
           <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <div className="flex flex-column md:flex-row align-items-center p-3">
               <div className="flex-1 text-center md:text-left">
-                <div className="font-bold text-2xl mb-2">{"Equipo: " + dato.Nombre}</div>
-                <div className="mb-2">{"IP: " + dato.Importancia}</div>
-                <div className="mb-2">{"MAC: " + dato.Importancia}</div>
-                <div className={`mb-2 estado-${estadoEquipo}`}>{estadoEquipo}</div>
+                <div className="font-bold text-2xl mb-2">{ "Equipo: " + dato.Nombre }</div>
+                <div className="mb-2">{ "IP: " + dato.Importancia }</div>
+                <div className="mb-2">{ "MAC: " + dato.Importancia }</div>
+                <div className={`mb-2 estado-${ estadoEquipo }`}>{ estadoEquipo }</div>
               </div>
             </div>
             <span className="p-buttonset">
