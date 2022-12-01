@@ -72,7 +72,7 @@ const TicketTransferencia = () => {
     return (
         <>
             <span className="p-column-title">Estado</span>
-            <span className={`provider-badge status-${ rowData.Estado === 0 ?  'Deshabilitado' : 'Habilitado' }`}>{ rowData.Estado === 0 ? 'Inactivo' : 'Activo' }</span>
+            <span className={`mb-2 estado-${ rowData.Estado === 0 ? 'inactico' : 'activo'}`}>{ rowData.Estado === 0 ? 'Inactivo' : 'Activo' }</span>
         </>
     )
   }

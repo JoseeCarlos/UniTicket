@@ -9,6 +9,7 @@ import { Button } from "primereact/button";
 import { InputNumber } from "primereact/inputnumber";
 import { TipoAtencionServicio } from "../servicios/TipoAtencionServicio";
 import { Toast } from "primereact/toast";
+
 const TipoAtencion = () => {
   let tipoAtencionVacio = { 
     IdTipoAtencion: null,
@@ -19,6 +20,7 @@ const TipoAtencion = () => {
     FechaRegistro: null,
     FechaModificacion: null,
   };
+  
   const toast = useRef(null);
   const [valorDataview, establecerValorDataview] = useState(null);
   const [tipoAtencion, establecerTipoAtencion] = useState(tipoAtencionVacio);
@@ -192,7 +194,7 @@ const TipoAtencion = () => {
               <div className="flex-1 text-center md:text-left">
                 <div className="font-bold text-2xl">{dato.Nombre}</div>
                 <div className="mb-3">{"Nivel de importancia: "+dato.Importancia}</div>
-                <div className="mb-3">{dato.Estado === 0 ? 'INACTIVO' : 'ACTIVO'}</div>
+                <div className={`mb-2 estado-${ dato.Estado === 0 ? 'inactico' : 'activo'}`} >{dato.Estado === 0 ? 'INACTIVO' : 'ACTIVO'}</div>
               </div>
             </div>
             <span className="p-buttonset">

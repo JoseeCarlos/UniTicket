@@ -5,7 +5,6 @@ from .UEntidades.LugarAtencion import LugarAtencion
 import json
 import time
 
-
 class LugarAtencionModelo():
 
     @classmethod

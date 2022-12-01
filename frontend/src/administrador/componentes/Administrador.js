@@ -14,7 +14,7 @@ import GenerarReporte from '../paginas/GenerarReporte';
 import LugarAtencionMesa from '../paginas/LugarAtencionMesa';
 import Area from '../paginas/Area';
 import Asignacion from '../paginas/Asignacion';
-import Confiduracion from '../paginas/Confiduracion';
+import Configuracion from '../paginas/Configuracion';
 import Tramite from '../paginas/Tramite';
 import Requisito from '../paginas/Requisito';
 import RazonQueja from '../paginas/RazonQueja';
@@ -22,7 +22,7 @@ import TicketTransferencia from '../paginas/TicketTransferencia';
 import TipoAtencion from '../paginas/TipoAtencion';
 import TipoUsuario from '../paginas/TipoUsuario';
 import Bitacora from '../paginas/Bitacora';
-
+import Equipos from '../paginas/Equipos';
 
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
@@ -168,6 +168,7 @@ const Administrador = () => {
                 { label: 'Razones de Quejas', icon: 'pi pi-fw pi-comment', to: '/razonQueja' },
                 { label: 'Tramites', icon: "pi pi-fw pi-file", to: "/tramite" },
                 { label: 'Requisitos', icon: "pi pi-fw pi-copy", to: "/requisito" },
+                { label: 'Equipos', icon: "pi pi-fw pi-desktop", to: "/equipos" },
                 { label: 'Configuraciones', icon: "pi pi-fw pi-cog", to: "/configuracion" }
             ]
         }
@@ -218,7 +219,7 @@ const Administrador = () => {
                     <Route path="/lugarAtencionMesa" component={LugarAtencionMesa} />
                     <Route path="/area" component={Area} />
                     <Route path="/asignacion" component={Asignacion} />
-                    <Route path="/configuracion" component={Confiduracion} />
+                    <Route path="/configuracion" component={Configuracion} />
                     <Route path="/tramite" component={Tramite} />
                     <Route path="/requisito" component={Requisito} />
                     <Route path="/razonQueja" component={RazonQueja} />
@@ -226,6 +227,7 @@ const Administrador = () => {
                     <Route path="/tipoAtencion" component={TipoAtencion} />
                     <Route path="/tipoUsuario" component={TipoUsuario} />
                     <Route path="/bitacora" component={Bitacora} />
+                    <Route path="/equipos" component={Equipos} />
                 </div>
 
                 <Footer disenioColorModo={disenioColorModo} />
