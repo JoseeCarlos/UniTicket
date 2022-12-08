@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { TopBar } from "../../componentes/TopBar";
 import "../recursos/Empleados.css";
 import { Image } from "primereact/image";
@@ -113,6 +113,30 @@ const EmpleadoAtencion = () => {
       />
     </>
   );
+
+  useEffect(() => {
+    let hora = document.querySelectorAll('#hora');
+    console.log(hora)
+    if (hora !== null) {
+      hora.forEach(function (elemento) {
+        elemento.addEventListener('click', function () {
+          cambiarClases();
+          elemento.classList.add('hora-seleccionada');
+          let horaSelec = elemento.innerHTML;
+        });
+      });
+
+      function cambiarClases() {
+        if (hora.classList.contains('hora-seleccionada')) {
+          hora.classList.remove('hora-seleccionada');
+          hora.classList.add('hora-no-seleccionada');
+        } else {
+          hora.classList.add('hora-seleccionada');
+          hora.classList.remove('hora-no-seleccionada');
+        }
+      }
+    } else alert('NO DEBERIAS ESTAR VIENDO ESTO, EN CASO DE QUE ASI SEA INFORMA DE ESTE ERROR A NETVALLE')
+  }, []);
 
   return (
     <div className="contenedor-empleado">
@@ -304,7 +328,7 @@ const EmpleadoAtencion = () => {
           </div>
 
           <div className="agrupar">
-            <label htmlFor="range">Fecha y Hora:</label>
+            <label htmlFor="range">Fecha:</label>
             <Calendar
               id="range"
               value={dates2}
@@ -315,14 +339,24 @@ const EmpleadoAtencion = () => {
 
           <div className="agrupar">
             <label htmlFor="time24">Hora de reserva: </label>
-            <Calendar
-              id="time24"
-              value={date7}
-              onChange={(e) => setDate7(e.value)}
-              timeOnly
-              hourFormat="12"
-              className="calendario"
-            />
+            <div className='horas'>
+              <span className='hora llena'
+              id='hora'>08:00</span>
+              <span className='hora
+              vacia' id='hora'>08:00</span>
+              <span className='hora casilleno'
+              id='hora'>08:00</span>
+              <span className='hora llena' id='hora'>08:00</span>
+              <span className='hora llena'
+              id='hora'>08:00</span>
+              <span className='hora casilleno'
+              id='hora'>08:00</span>
+              <span className='hora llena' id='hora'>08:00</span>
+              <span
+              className="hora casilleno' id='hora'>08:00</span>
+              <span className='hora llena' id='hora"
+           >08:00</span>
+            </div>
           </div>
         </div>
       </Dialog>
