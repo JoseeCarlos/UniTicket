@@ -22,30 +22,30 @@ def obtenerCola(idLugarAtencion):
 
 def obtenerSiguienteTicket(idLugarAtencion):
     return {'ticket':'nuevoticket'}
-#busca aquello que te hace feliz
+    
 @socketio.on('siguienteTicket')
-def handleMessage(msg):
-    print(" Sid: "+msg['sid'],'id : ',msg['idLugarAtencion'])
-    #socketio.emit('siguienteTicket',obtenerSiguienteTicket(msg['idLugarAtencion']),room=msg['sid'])
-    socketio.emit('siguienteTicket',msg['idLugarAtencion'],room=msg['sid'])
-    actualizarCola(msg['idLugarAtencion'])
+def siguienteTicket(mensaje):
+    print(" Sid: "+mensaje['sid'],'id : ',mensaje['idLugarAtencion'])
+    actualizarCola(mensaje['idLugarAtencion'])
 
-@socketio.on('nuevoTicket')
-def handleMessage(msg):
-    colasTickets[obtenerCola(msg['idLugarAtencion'])]['cola'].append(msg['nuevoTicket'])
-    actualizarCola(msg['idLugarAtencion'])
+# @socketio.on('nuevoTicket')
+# def handleMessage(mensaje):
+#     colasTickets[obtenerCola(mensaje['idLugarAtencion'])]['cola'].append(mensaje['nuevoTicket'])
+#     actualizarCola(mensaje['idLugarAtencion'])
 
 @socketio.on('registroLugarAtencion')
-def handleMessage(msg):
-    lugaresAtencion.append({"sid":msg['sid'],"id":msg['idLugarAtencion']})
-    if obtenerCola(msg['idLugarAtencion'])==None:
-        colasTickets.append({'idLugarAtencion':msg['idLugarAtencion'],'cola':[]})
+def registroLugarAtencion(mensaje):
+    print({"sid":mensaje['sid'],"id":mensaje['idLugarAtencion']})
+    lugaresAtencion.append({"sid":mensaje['sid'],"id":mensaje['idLugarAtencion']})
+    if obtenerCola(mensaje['idLugarAtencion'])==None:
+        colasTickets.append({'idLugarAtencion':mensaje['idLugarAtencion'],'cola':[]})
 
 def actualizarCola(idLugarAtencion):
-    cola=colasTickets[obtenerCola(idLugarAtencion)]
-    for lugar in lugaresAtencion:
-        if lugar['id']==idLugarAtencion:
-            socketio.emit('actualizarTickets',cola,room=lugar['sid'])
+    print('actializar cola: ',idLugarAtencion)
+    # cola=colasTickets[obtenerCola(idLugarAtencion)]
+    # for lugar in lugaresAtencion:
+    #     if lugar['id']==idLugarAtencion:
+    #         socketio.emit('actualizarTickets',cola,room=lugar['sid'])
 
 def page_not_found(e):
     return 'This page does not exist', 404

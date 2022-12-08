@@ -38,6 +38,7 @@ function InicioSesion() {
         if (elemento.Usuario === usuarioIngresado.cuenta && elemento.Contrasenia === usuarioIngresado.pin) {
           sessionStorage.setItem('userId', elemento.idEstudiante);
           sessionStorage.setItem('usuario', elemento.Nombres);
+          sessionStorage.setItem('idLugarAtencion', 1);
           if (elemento.Rol === "Administrador" || elemento.Rol === "Supervisor") {
             sessionStorage.setItem('role', "admin");
           } else if (elemento.Rol === "Empleado") {

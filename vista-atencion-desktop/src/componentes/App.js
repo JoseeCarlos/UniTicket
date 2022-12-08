@@ -1,10 +1,26 @@
 import React from 'react';
+import { useState, useEffect } from "react";
 import { TopBar } from '../componentes/TopBar';
 import { Footer } from '../componentes/Footer';
 import '../recursos/VistaAtencion.css';
 import '../recursos/App.css'
+import { io } from 'socket.io-client';
 
 const App = () => {
+  const socket = io("http://localhost:5000/");
+  const idLugarAtencion=1
+
+  const registroLugarAtencion = () => {
+    socket.emit("registroLugarAtencion", { sid: socket.id, idLugarAtencion:idLugarAtencion });
+  };
+
+  useEffect(() => {
+    socket.on("actualizarTickets", (message) => console.log(message));
+    return () => {
+      socket.off("actualizarTickets");
+    };
+  });
+  
   function reloj() {
     let fecha = document.getElementById('fecha');
     let tiempo = document.getElementById('tiempo');
@@ -24,7 +40,8 @@ const App = () => {
   }
 
   setInterval(reloj, 1000);
-
+  
+  
   let filas = 3;
 
   return (
@@ -32,7 +49,7 @@ const App = () => {
       <TopBar></TopBar>
       <div className='contenedor-vista-atencion'>
         <div className='video-atencion'>
-          {/* <iframe className='video' src="https://www.youtube.com/embed/dWcwY8VWXf0?autoplay=1&controls=1" title="Patito Bailando" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> */}
+          {/* <iframe className='video' src="https://www.youtube.com/embed/dWcwY8VWXf0?autoplay=1&controls=1" title="Patito Bailando" frameborder="0" allow="accelerometr; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> */}
           <iframe className='video' src="https://www.youtube.com/embed/3J1O-vOa71s?autoplay=1&controls=1" title="Patito Bailando" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           <div className='seccion-atencion'>
             <div className='titulo'><h1>EN ATENCIÓN</h1></div>
