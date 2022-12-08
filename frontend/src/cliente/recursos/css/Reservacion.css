@@ -182,7 +182,7 @@
 
 .numero-ticket-reserva h5 {
   position: absolute;
-  top: 43%;
+  top: 30%;
   left: 28%;
   font-weight: bold;
   font-size: 16px;
@@ -225,6 +225,30 @@
 
 .datatable-horas {
   border: 2px solid var(--primary-uni);
+}
+
+.datos-nueva-reserva .agrupar .horas {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--uni-background);
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.datos-nueva-reserva .agrupar .horas .hora {
+  width: auto;
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.datos-nueva-reserva .agrupar .horas .hora:hover {
+  opacity: 0.6;
 }
 
 /* ====== RESPONSIVE ====== */
