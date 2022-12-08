@@ -4,12 +4,13 @@ import '../recursos/css/Reservacion.css';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Toast } from 'primereact/toast';
-import { ReservaServicio } from '../servicio/ReservacionEnLineaServicio';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
-import { TicketServicio } from '../servicio/TicketServicio';
 import { Calendar } from 'primereact/calendar';
+import { InputText } from 'primereact/inputtext';
+import { TicketServicio } from '../servicio/TicketServicio';
+import { ReservaServicio } from '../servicio/ReservacionEnLineaServicio';
 
 const ReservacionEnLinea = () => {
   let reservaVacia = {
@@ -32,18 +33,20 @@ const ReservacionEnLinea = () => {
     { label: 'Paris', value: 'PRS' }
   ];
 
+  let fechaHoy = new Date();
+
   const [imagenes, establecerImagenes] = useState(null);
   const [reservacionDialogo, establecerReservacionDialogo] = useState(false);
   const [reserva, establecerReserva] = useState(reservaVacia);
   const [reservas, establecerReservas] = useState(null);
   const [reservaSeleccionada, establecerReservaSeleccionada] = useState(null);
   const [envio, establecerEnvio] = useState(false);
-  const [horaSeleccionada, comprobarHoraSeleccionada] = useState(null);
+  const [horaSeleccionada, establecerHoraSeleccionada] = useState(null);
   const [seleccionArea, establecerSeleccionArea] = useState(null);
   const toast = useRef(null);
   const [historial, establecerHistorial] = useState([]);
   const [horario, establecerHorario] = useState([]);
-  const [dates2, setDates2] = useState(null);
+  const [fecha, establecerFecha] = useState(new Date(fechaHoy.setDate(fechaHoy.getDate())));
   const [date7, setDate7] = useState(null);
 
   const ticketServicio = new TicketServicio();
@@ -203,14 +206,30 @@ const ReservacionEnLinea = () => {
             </div>
 
             <div className="agrupar">
-              <label htmlFor="range">Fecha y Hora:</label>
-              <Calendar id="range" value={dates2} onChange={(e) => setDates2(e.value)} className='calendario' />
+              <label htmlFor="range">Fecha:</label>
+              <Calendar id="range" value={fecha} minDate={new Date()} onChange={(e) => establecerFecha(e.value)} className='calendario' />
             </div>
 
             <div className="agrupar">
-              <label htmlFor="time24">Hora de reserva: </label>
-              <Calendar id="time24" value={date7} onChange={(e) => setDate7(e.value)} timeOnly hourFormat="12" className='calendario' />
+              <label htmlFor="range">Hora:</label>
+              <InputText value={horaSeleccionada} readOnly />
             </div>
+
+            <div className="agrupar">
+              <label htmlFor="time24">Horas disponibles: </label>
+              <div className='horas'>
+                <span className='hora llena' onClick={() => establecerHoraSeleccionada('08:00')}>08:00</span>
+                <span className='hora vacia' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+                <span className='hora casilleno' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+                <span className='hora llena' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+                <span className='hora llena' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+                <span className='hora casilleno' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+                <span className='hora llena' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+                <span className='hora casilleno' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+                <span className='hora llena' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+              </div>
+            </div>
+
           </div>
         </div>
       </Dialog>
