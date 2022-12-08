@@ -10,7 +10,7 @@ function crearVentana() {
         }
     })
 
-    ventanaPrincipal.loadURL('http://localhost:3000')
+    ventanaPrincipal.loadURL('http://localhost:3003')
 }
 
 app.whenReady().then(() => {
