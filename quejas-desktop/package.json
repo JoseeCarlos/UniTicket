@@ -20,11 +20,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "SET PORT=3001 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron-react": "concurrently \"SET BROWSER=none && yarn start\" \"wait-on http://localhost:3000 && electron .\""
+    "electron-react": "concurrently \"SET BROWSER=none && yarn start\" \"wait-on http://localhost:3001 && electron .\""
   },
   "eslintConfig": {
     "extends": [

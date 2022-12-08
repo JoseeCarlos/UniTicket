@@ -10,6 +10,7 @@ import { Column } from 'primereact/column';
 import { Dialog } from 'primereact/dialog';
 import { Calendar } from 'primereact/calendar';
 
+
 const EmpleadoAtencion = () => {
   let emptyTransfer = {
     id: null,
@@ -24,17 +25,16 @@ const EmpleadoAtencion = () => {
     { label: 'Paris', value: 'PRS' }
   ];
 
+  let fechaHoy = new Date();
   const [ticket, establecerTransferenciaTicket] = useState(emptyTransfer);
   const [ticketOtroDia, establecerTransferenciaTicketOtroDia] = useState(emptyTransfer);
   const [ticketDialogo, establecerTransferenciaTicketDialogo] = useState(false);
   const [ticketDialogoOtroDia, establecerTransferenciaTicketDialogoOtroDia] = useState(false);
   const [dropdownValue, setDropdownValue] = useState(null);
-  const [horaSeleccionada, comprobarHoraSeleccionada] = useState(null);
-  const [horario, establecerHorario] = useState([]);
+  const [horaSeleccionada, establecerHoraSeleccionada] = useState(null);
   const [enviado, establecerEnvio] = useState(false);
   const [seleccionArea, establecerSeleccionArea] = useState(null);
-  const [dates2, setDates2] = useState(null);
-  const [date7, setDate7] = useState(null);
+  const [fecha, establecerFecha] = useState(new Date(fechaHoy.setDate(fechaHoy.getDate() + 1)));
   const toast = useRef(null);
   const dt = useRef(null);
 
@@ -42,6 +42,8 @@ const EmpleadoAtencion = () => {
     { nombre: 'Habilitado', code: '1' },
     { nombre: 'Inhabilitado', code: '0' }
   ];
+
+  console.log(fecha)
 
   const transferirTicket = () => {
     establecerTransferenciaTicket(ticket);
@@ -105,6 +107,10 @@ const EmpleadoAtencion = () => {
       }
     } else alert('NO DEBERIAS ESTAR VIENDO ESTO, EN CASO DE QUE ASI SEA INFORMA DE ESTE ERROR A NETVALLE')
   }, []);
+
+  function habilitarHoras() {
+    
+  }
 
   return (
     <div className='contenedor-empleado'>
@@ -211,21 +217,26 @@ const EmpleadoAtencion = () => {
 
           <div className="agrupar">
             <label htmlFor="range">Fecha:</label>
-            <Calendar id="range" value={dates2} onChange={(e) => setDates2(e.value)} className='calendario' />
+            <Calendar id="range" value={fecha} minDate={fechaHoy} onChange={(e) => establecerFecha(e.value)} className='calendario' />
           </div>
 
           <div className="agrupar">
-            <label htmlFor="time24">Hora de reserva: </label>
+            <label htmlFor="range">Hora:</label>
+            <InputText value={horaSeleccionada} readOnly/>
+          </div>
+
+          <div className="agrupar">
+            <label htmlFor="time24">Horas disponibles: </label>
             <div className='horas'>
-              <span className='hora llena' id='hora'>08:00</span>
-              <span className='hora vacia' id='hora'>08:00</span>
-              <span className='hora casilleno' id='hora'>08:00</span>
-              <span className='hora llena' id='hora'>08:00</span>
-              <span className='hora llena' id='hora'>08:00</span>
-              <span className='hora casilleno' id='hora'>08:00</span>
-              <span className='hora llena' id='hora'>08:00</span>
-              <span className='hora casilleno' id='hora'>08:00</span>
-              <span className='hora llena' id='hora'>08:00</span>
+              <span className='hora llena' onClick={() => establecerHoraSeleccionada('08:00')}>08:00</span>
+              <span className='hora vacia' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+              <span className='hora casilleno' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+              <span className='hora llena' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+              <span className='hora llena' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+              <span className='hora casilleno' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+              <span className='hora llena' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+              <span className='hora casilleno' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
+              <span className='hora llena' onClick={() => establecerHoraSeleccionada('09:00')}>08:00</span>
             </div>
           </div>
         </div>
