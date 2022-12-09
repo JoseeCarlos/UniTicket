@@ -34,6 +34,7 @@
   font-size: 22px;
   color: white;
 }
+
 /* Style of Card */
 
 .col-true {
@@ -112,4 +113,27 @@
 
 .tarjetas-ticket .true {
   display: block;
+}
+
+.vista-informacion {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.vista-informacion label {
+  border: 2px solid var(--primary-uni);
+  border-radius: 5px;
+  background-color: white;
+  padding: 10px;
+  text-align: start;
+}
+
+.vista-informacion label span {
+  font-weight: 500;
+}
+
+.vista-informacion~button:hover {
+  cursor: pointer;
 }

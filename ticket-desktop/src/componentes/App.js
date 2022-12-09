@@ -143,20 +143,14 @@ const App = () => {
 
         {
           vistaInformacion &&
-          <div className={`tarjeta-ticket`}>
-            <h2>¿QUÉ USUARIO ES?</h2>
-            <div className='tarjeta-opciones'>
-              <label>Tipo de Atencion</label>
-              <label>{ticket.IdTipoAtencion}</label>
-              <label>Area de Atencion</label>
-              <label>{ticket.IdLugarAtencion}</label>
-              <label>Tipo de Usuario</label>
-              <label>{ticket.IdLugarAtencion}</label>
+          <div className='tarjeta-ticket'>
+            <h2>RESUMEN DEL TICKET</h2>
+            <div className='vista-informacion'>
+              <label>Tipo de Atención: <span>{ticket.IdTipoAtencion}</span></label>
+              <label>Area de Atención: <span>{ticket.IdLugarAtencion}</span></label>
+              <label>Tipo de Usuario: <span>{ticket.IdLugarAtencion}</span></label>
             </div>
-            <button onClick={() => {
-              console.log(ticket);
-              guardarTicket();
-            }} >enviar</button>
+            <button className='p-button' onClick={() => guardarTicket()}>IMPRIMIR</button>
           </div>
         }
       </div>
