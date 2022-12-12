@@ -44,20 +44,18 @@ const EmpleadoAtencion = () => {
   const socket = io("http://localhost:5000/");
   const idLugarAtencion=sessionStorage.getItem('idLugarAtencion')
 
-  const siguienteTicket = () => {
-    socket.emit("siguienteTicket", {
-      sid: socket.id,
-      idLugarAtencion: idLugarAtencion,
-    });
+  const siguienteTicket = (lugarAtencion) => {
+    socket.emit("siguienteTicket", lugarAtencion);
   };
   const dropdownValues = [
     { nombre: "Habilitado", code: "1" },
     { nombre: "Inhabilitado", code: "0" },
   ];
 
-  const transferirTicket = () => {
+  const transferirTicket = (lugarAtencion) => {
     establecerTransferenciaTicket(ticket);
     establecerTransferenciaTicketDialogo(false);
+    siguienteTicket(lugarAtencion)
     toast.current.show({
       severity: "success",
       summary: "¡Éxito!",
@@ -109,7 +107,7 @@ const EmpleadoAtencion = () => {
         label="Transferir"
         icon="pi pi-check"
         className="p-button"
-        onClick={transferirTicket}
+        onClick={()=>transferirTicket(2)}
       />
     </>
   );
@@ -195,7 +193,7 @@ const EmpleadoAtencion = () => {
               <Button
                 className="btn"
                 type="button"
-                onClick={() => siguienteTicket()}
+                onClick={() => siguienteTicket(idLugarAtencion)}
               >
                 Siguiente
               </Button>

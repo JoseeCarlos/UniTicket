@@ -3,7 +3,7 @@ from unicodedata import name
 from flask import Flask
 from config import config
 from routes import  Queja, Area, TipoAtencion, LugarAtencion, TipoUsuario, LugarAtencionArea, Asignacion, Mesa, Requisito, Tramites, Bitacora, Ticket, Atencion, RazonQueja
-from flask_socketio import SocketIO,send
+from flask_socketio import SocketIO,send,join_room
 app = Flask(__name__)
 
 app.config['SECRET_KEY']='secret'
@@ -12,40 +12,19 @@ socketio.init_app(app, cors_allowed_origins="*")
 lugaresAtencion=[]
 colasTickets=[]
 
-def obtenerCola(idLugarAtencion):
-    i=0
-    for cola in colasTickets:
-        if cola['idLugarAtencion']==idLugarAtencion:
-            return i
-        else:
-            i=i+1
-
-def obtenerSiguienteTicket(idLugarAtencion):
-    return {'ticket':'nuevoticket'}
-    
 @socketio.on('siguienteTicket')
-def siguienteTicket(mensaje):
-    print(" Sid: "+mensaje['sid'],'id : ',mensaje['idLugarAtencion'])
-    actualizarCola(mensaje['idLugarAtencion'])
-
-# @socketio.on('nuevoTicket')
-# def handleMessage(mensaje):
-#     colasTickets[obtenerCola(mensaje['idLugarAtencion'])]['cola'].append(mensaje['nuevoTicket'])
-#     actualizarCola(mensaje['idLugarAtencion'])
+def siguienteTicket(lugarAtencion):
+    actualizarCola(lugarAtencion)
 
 @socketio.on('registroLugarAtencion')
-def registroLugarAtencion(mensaje):
-    print({"sid":mensaje['sid'],"id":mensaje['idLugarAtencion']})
-    lugaresAtencion.append({"sid":mensaje['sid'],"id":mensaje['idLugarAtencion']})
-    if obtenerCola(mensaje['idLugarAtencion'])==None:
-        colasTickets.append({'idLugarAtencion':mensaje['idLugarAtencion'],'cola':[]})
+def registroLugarAtencion(lugarAtencion):
+    join_room(lugarAtencion)
+    actualizarCola(lugarAtencion)
 
-def actualizarCola(idLugarAtencion):
-    print('actializar cola: ',idLugarAtencion)
-    # cola=colasTickets[obtenerCola(idLugarAtencion)]
-    # for lugar in lugaresAtencion:
-    #     if lugar['id']==idLugarAtencion:
-    #         socketio.emit('actualizarTickets',cola,room=lugar['sid'])
+def actualizarCola(lugarAtencion):
+    print(lugarAtencion)
+    socketio.emit('actualizarTickets','actualizarTickets',broadcast=True,room=lugarAtencion)
+
 
 def page_not_found(e):
     return 'This page does not exist', 404

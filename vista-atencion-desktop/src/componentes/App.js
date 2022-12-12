@@ -11,7 +11,7 @@ const App = () => {
   const idLugarAtencion=1
 
   const registroLugarAtencion = () => {
-    socket.emit("registroLugarAtencion", { sid: socket.id, idLugarAtencion:idLugarAtencion });
+    socket.emit("registroLugarAtencion",idLugarAtencion);
   };
 
   useEffect(() => {
@@ -39,6 +39,7 @@ const App = () => {
     tiempo.innerHTML = hora.toLocaleTimeString();
   }
 
+  registroLugarAtencion()
   setInterval(reloj, 1000);
   
   
