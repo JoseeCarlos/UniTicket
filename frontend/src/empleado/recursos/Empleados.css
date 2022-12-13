@@ -198,6 +198,50 @@ h1 {
   margin-right: 20px !important;
 }
 
+.dialogo-ticket .agrupar .horas {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--uni-background);
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.dialogo-ticket .agrupar .horas .hora {
+  width: auto;
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.llena {
+  background-color: var(--red-600);
+}
+
+.casilleno {
+  background-color: var(--yellow-600);
+}
+
+.vacia {
+  background-color: var(--green-500);
+}
+
+.hora-seleccionada {
+  opacity: 0.6;
+}
+
+.hora-no-seleccionada {
+  opacity: 1;
+}
+
+.dialogo-ticket .agrupar .horas .hora:hover {
+  opacity: 0.6;
+}
+
 @media screen and (max-width: 3025px) and (min-width: 1600px) {
   .contenedor-atencion .actual-ticket h1 {
     position: absolute;

@@ -173,7 +173,7 @@ const Equipos = () => {
     </>
   );
 
-  const listaElementoDataView = (dato) => { 
+  const listaElementoDataView = (dato) => {
     let estadoEquipo = dato.Estado === 0 ? 'inactivo' : 'activo';
     return (
       <>
