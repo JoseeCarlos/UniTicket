@@ -18,12 +18,12 @@ def siguienteTicket(lugarAtencion):
 
 @socketio.on('registroLugarAtencion')
 def registroLugarAtencion(lugarAtencion):
-    join_room(lugarAtencion)
+    join_room(str(lugarAtencion))
     actualizarCola(lugarAtencion)
 
 def actualizarCola(lugarAtencion):
     print(lugarAtencion)
-    socketio.emit('actualizarTickets','actualizarTickets',broadcast=True,room=lugarAtencion)
+    socketio.emit('actualizarTickets','actualizarTickets',room=str(lugarAtencion))
 
 
 def page_not_found(e):
