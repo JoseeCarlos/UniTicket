@@ -8,6 +8,7 @@ import { ServicioMesa } from "../servicios/ServicioMesa";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { LugarAtencionServicio } from "../servicios/LugarAtencionServicio";
+import { AreaService } from "../servicios/AreaService";
 
 const LugarAtencionMesa = () => {
   let mesaVacia = {
@@ -22,14 +23,23 @@ const LugarAtencionMesa = () => {
     idUsuarioActualizacion: "",
   };
   let lugarAtencionVacio = {
-    idLugarAtencion: null,
-    nombre: "",
-    idCampus: "",
-    estado: "",
-    fechaCreacion: "",
-    fechaActualizacion: "",
-    idUsuarioCreacion: "",
-    idUsuarioActualizacion: "",
+    IdLugarAtencion: null,
+    Nombre: "",
+    NumeroMaximoReservaPorHora: "",
+    HoraInicioAtencion: "",
+    HoraFinAtencion: "",
+    HoraInicioReceso: "",
+    HoraFinReceso: "",
+    HoraInicioAtencionFinSemana: "",
+    HoraFinAtencionFinSemana: "",
+    Id_Sitio: "",
+    Id_Sede_Academica: "",
+    IdArea: "",
+    IdUsuarioRegistro: "",
+    Estado: "",
+    FechaRegistro: "",
+    FechaModificacion: "",
+
   };
   let lugarAtencionAreaVacia = {
     idLugarAtencion: null,
@@ -61,21 +71,27 @@ const LugarAtencionMesa = () => {
   const [dialogoEdicionLugarAtencion, establecerDialogoEdicionLugarAtencion] = useState(false);
   const [dialogoBorradoLugarAtencion, establecerDialogoBorradoLugarAtencion] = useState(false);
   const [valorDropdown, establecerValorDropdown] = useState(null);
+  const [valorCampus, establecerValorCampus ] = useState(null);
+  const [valorArea, establecerValorArea ] = useState(null);
+  const [valorSitio, establecerValorSitio ] = useState(null);
+  const [areas, establecerAreas] = useState([]);
+
 
   const servicioProducto = new ServicioMesa();
   const lugarAtencionServio = new LugarAtencionServicio();
+  const areaServicio = new AreaService();
 
   const valoresDropdown = [
     { nombre: "Cajas Tiquipaya", code: "1" },
     { nombre: "Bienestar Universitario Tiquipaya", code: "2" },
   ];
   const valoresDropdownCampus = [
-    { nombre: "Campus Tiquipaya", code: "1" },
-    { nombre: "Edificio America", code: "2" },
+    { nombre: "Campus Tiquipaya", IdCampus: "1" },
+    { nombre: "Edificio America", IdCampus: "2" },
   ];
-  const valoresDropdownArea = [
-    { nombre: "Caja", code: "1" },
-    { nombre: "Bienestar Universitario", code: "2" },
+  const valoresDropdownSitio = [
+    { nombre: "Tiquipaya", IdSitio: "1" },
+    { nombre: "Cochabamba", IdSitio: "2" },
   ];
   const ocultarDialogo = () => {
     establecerEnvioNumero(false);
@@ -89,6 +105,25 @@ const LugarAtencionMesa = () => {
     establecerDialogoVistaLugarAtencion(false);
     establecerDialogoEdicionLugarAtencion(false);
   };
+
+
+  const guardarLugarAtencion = () => {
+    
+      let _LugarAtencion = lugarAtencion
+
+    if(_LugarAtencion.IdLugarAtencion){
+      console.log("actualizar")
+    }else {
+      console.log(lugarAtencion);
+      // lugarAtencionServio.
+    }
+
+      
+      
+    
+    
+  }
+
   const cambioEntradaMesa = (e, numero) => {
     const val = (e.target && e.target.value) || "";
     let _Mesa = { ...mesa };
@@ -102,6 +137,28 @@ const LugarAtencionMesa = () => {
     _LugarAtencion[`${nombre}`] = val;
     establecerLugarAtencion(_LugarAtencion);
   };
+
+  const entradaSitio = (e, nombre) => {
+    const val = (e.target && e.target.value) || "";
+    let _LugarAtencion = { ...lugarAtencion };
+    _LugarAtencion[`${nombre}`] = parseInt(val.IdSitio) ;
+    establecerLugarAtencion(_LugarAtencion);
+  }
+
+  const entradaCampus = (e, nombre) => {
+    const val = (e.target && e.target.value) || "";
+    let _LugarAtencion = { ...lugarAtencion };
+    _LugarAtencion[`${nombre}`] = parseInt(val.IdCampus);
+    establecerLugarAtencion(_LugarAtencion);
+  }
+
+  const entradaArea = (e, nombre) => {
+    const val = (e.target && e.target.value) || "";
+    let _LugarAtencion = { ...lugarAtencion };
+    _LugarAtencion[`${nombre}`] = val.IdArea;
+    establecerLugarAtencion(_LugarAtencion);
+  }
+
   useEffect(() => {
     lugarAtencionServio
         .obtenerLugarAtencionArea()
@@ -109,6 +166,11 @@ const LugarAtencionMesa = () => {
           console.log(dato)
           establecerLugarAtencionAreas(dato)
         });
+    
+    areaServicio.getAreas().then((data) => {
+          console.log(data);
+          establecerAreas(data);
+          });
   }, []); 
 
   const expandirTodo = () => {
@@ -154,7 +216,7 @@ const LugarAtencionMesa = () => {
     return (
         <>
             <span className="p-column-title">Estado</span>
-            <span className={`provider-badge status-${ rowData.Estado === 0 ?  'outofstock' : 'instock' }`}>{ rowData.is_active === 0 ? 'INACTIVO' : 'ACTIVO' }</span>
+            <span className={`mb-2 estado-${ rowData.Estado === 0 ? 'inactico' : 'activo'}`}>{ rowData.is_active === 0 ? 'INACTIVO' : 'ACTIVO' }</span>
 
         </>
     )
@@ -387,7 +449,7 @@ const LugarAtencionMesa = () => {
         label="Guardar"
         icon="pi pi-check"
         className="p-button-text"
-        onClick={ocultarDialogo}
+        onClick={guardarLugarAtencion}
       />
       <Button
         label="Cancelar"
@@ -530,7 +592,7 @@ const LugarAtencionMesa = () => {
           <label htmlFor="nombre">Nombre</label>
           <InputText
             id="nombre"
-            onChange={(e) => cambioEntradaLugarAtencion(e, "nombre")}
+            onChange={(e) => cambioEntradaLugarAtencion(e, "Nombre")}
             required
             className={classNames({
               "p-invalid": nombre && !lugarAtencion.nombre,
@@ -541,10 +603,26 @@ const LugarAtencionMesa = () => {
           )}
         </div>
         <div className="field">
+          <label htmlFor="campus">Sitio</label>
+          <Dropdown
+            value={valorSitio}
+            onChange={(e) => {
+              establecerValorSitio(e.value);
+              entradaSitio(e, "Id_Sitio");
+            }}
+            options={valoresDropdownSitio}
+            optionLabel="nombre"
+            placeholder="Seleccione el campus"
+          />
+        </div>
+        <div className="field">
           <label htmlFor="campus">Campus</label>
           <Dropdown
-            value={valorDropdown}
-            onChange={(e) => establecerValorDropdown(e.value)}
+            value={valorCampus}
+            onChange={(e) => {
+              establecerValorCampus(e.value)
+              entradaCampus(e, "Id_Sede_Academica");
+            }}
             options={valoresDropdownCampus}
             optionLabel="nombre"
             placeholder="Seleccione el campus"
@@ -553,10 +631,14 @@ const LugarAtencionMesa = () => {
         <div className="field">
           <label htmlFor="area">Area</label>
           <Dropdown
-            value={valorDropdown}
-            onChange={(e) => establecerValorDropdown(e.value)}
-            options={valoresDropdownArea}
-            optionLabel="nombre"
+            value={valorArea}
+            onChange={(e) => {
+              establecerValorArea(e.value)
+              entradaArea(e, "IdArea");
+            
+            }}
+            options={areas}
+            optionLabel="Nombre"
             placeholder="Seleccione el area"
             required
           />
@@ -600,9 +682,9 @@ const LugarAtencionMesa = () => {
         <div className="field">
           <label htmlFor="area">Area</label>
           <Dropdown
-            value={valoresDropdownArea[0]}
+            value={valorArea}
             onChange={(e) => establecerValorDropdown(e.value)}
-            options={valoresDropdownArea}
+            options={areas}
             optionLabel="nombre"
             placeholder="Seleccione el area"
             disabled
@@ -647,9 +729,9 @@ const LugarAtencionMesa = () => {
         <div className="field">
           <label htmlFor="area">Area</label>
           <Dropdown
-            value={valorDropdown}
+            value={valorArea}
             onChange={(e) => establecerValorDropdown(e.value)}
-            options={valoresDropdownArea}
+            options={areas}
             optionLabel="nombre"
             placeholder="Seleccione el area"
             required

@@ -11,6 +11,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from "primereact/dropdown";
 import { RequisitoServicio } from "../servicios/RequisitoServicio";
 import { Toast } from "primereact/toast";
+
 const Requisito = () => {
   let requisitoVacio = {
     IdRequisito: null,
@@ -47,26 +48,7 @@ const Requisito = () => {
       { id: 1, nombre: "Activo" },
       { id: 0, nombre: "Inactivo" },
     ]);
-    // establecerValorDataview([
-    //   {
-    //     idRequisito: 1,
-    //     nombre: "Carnet",
-    //     descripcion: "Documento de identificacion personal",
-    //     estado: "Activo",
-    //   },
-    //   {
-    //     idRequisito: 2,
-    //     nombre: "Titulo Bachiller",
-    //     descripcion: "Titulo de culminacion de educacion",
-    //     estado: "Activo",
-    //   },
-    //   {
-    //     idRequisito: 1,
-    //     nombre: "Carnet de estudiante",
-    //     descripcion: "Documento de identificacion estudiantil",
-    //     estado: "Activo",
-    //   },
-    // ]);
+    
   }, []);
   const insercionRequisito = () => {
     establecerRequisito(requisitoVacio);
@@ -214,15 +196,12 @@ const Requisito = () => {
               <div className="flex-1 text-center md:text-left">
                 <div className="font-bold text-2xl">{dato.Nombre}</div>
                 <div className="mb-3">{dato.Descripcion}</div>
-                <div className="mb-3">{dato.Estado === 0 ? 'INACTIVO':'ACTIVO'}</div>
+                <div className={`mb-2 estado-${ dato.Estado === 0 ? 'inactico' : 'activo'}`}>{dato.Estado === 0 ? 'INACTIVO':'ACTIVO'}</div>
               </div>
             </div>
             <span className="p-buttonset">
               <Button icon="pi pi-eye" onClick={() => vistaRequisito(dato)} />
-              <Button
-                icon="pi pi-pencil"
-                onClick={() => editarRequisito(dato)}
-              />
+              <Button icon="pi pi-pencil" onClick={() => editarRequisito(dato)}/>
               <Button
                 icon="pi pi-trash"
                 onClick={() => borrarRequisito(dato)}
@@ -233,6 +212,8 @@ const Requisito = () => {
       </>
     );
   };
+  
+
   const cambioEntrada = (e, nombre) => {
     const valor = (e.target && e.target.value) || "";
     let _requisito = { ...requisito };

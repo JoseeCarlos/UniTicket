@@ -1,0 +1,14 @@
+{
+    "data":[
+
+        {"IdSedeAcademica":1,
+            "Nombre":"Sede 1"
+        },
+        {"IdSedeAcademica":2,
+            "Nombre":"Sede 2"
+        },
+        {"IdSedeAcademica":3,
+            "Nombre":"Sede 3"
+        }
+    ]
+}

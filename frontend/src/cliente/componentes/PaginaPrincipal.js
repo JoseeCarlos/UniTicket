@@ -9,6 +9,7 @@ import Informacion from '../paginas/Informacion';
 import Tramites from '../paginas/Tramites';
 import { Inicio } from '../paginas/Inicio';
 import Quejas from '../paginas/Quejas'
+import InicioSesion from '../../inicio-sesion/InicioSesion' 
 import '../recursos/css/PaginaPrincipal.css'
 
 import 'primereact/resources/primereact.css';

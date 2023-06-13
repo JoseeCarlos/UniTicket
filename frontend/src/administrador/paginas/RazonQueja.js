@@ -43,20 +43,6 @@ const RazonQueja = () => {
       { id: 1, nombre: "Activo" },
       { id: 0, nombre: "Inactivo" },
     ]);
-    // establecerValorDataview([
-    //   {
-    //     idRazonQueja: 1,
-    //     nombre: "Malos tratos",
-    //     descripcion: "Mala actitud por parte del empleado",
-    //     estado: "Activo",
-    //   },
-    //   {
-    //     idRazonQueja: 2,
-    //     nombre: "Largos tiempos de espera",
-    //     descripcion: "Mucho tiempo en espera para ser atendido",
-    //     estado: "Activo",
-    //   },
-    // ]);
   }, []);
   const verRazonQueja = (razonQueja) => {
     establecerRazonQueja({ ...razonQueja });
@@ -209,7 +195,7 @@ const RazonQueja = () => {
               <div className="flex-1 text-center md:text-left">
                 <div className="font-bold text-2xl">{dato.Nombre}</div>
                 <div className="mb-3">{dato.Descripcion}</div>
-                <div className="mb-3">{dato.Estado === 0 ? 'ACTIVO' : 'INACTIVO'}</div>
+                <div className={`mb-2 estado-${ dato.Estado === 0 ? 'inactico' : 'activo'}`}>{dato.Estado === 0 ? 'ACTIVO' : 'INACTIVO'}</div>
               </div>
             </div>
             <span className="p-buttonset">

@@ -2,8 +2,8 @@ from flask import Flask, request, jsonify
 from unicodedata import name
 from flask import Flask
 from config import config
-from routes import  Queja, Area, TipoAtencion, LugarAtencion, TipoUsuario, LugarAtencionArea, Asignacion, Mesa, Requisito, Tramites, Bitacora, Ticket, Atencion, RazonQueja
-from flask_socketio import SocketIO,send
+from routes import  Queja, Area, TipoAtencion, LugarAtencion, TipoUsuario, LugarAtencionArea, Asignacion, Mesa, Requisito, Tramites, Bitacora, Ticket, Atencion, RazonQueja, EquipoAtencion
+from flask_socketio import SocketIO, send
 app = Flask(__name__)
 
 app.config['SECRET_KEY']='secret'
@@ -67,6 +67,7 @@ if __name__ == '__main__':
     app.register_blueprint(Ticket.ticket, name='ticket',url_prefix='/api/ticket')
     app.register_blueprint(Atencion.atencion, name='atencion',url_prefix='/api/atencion')
     app.register_blueprint(RazonQueja.razonQueja, name='razonQueja',url_prefix='/api/razonQueja')
+    app.register_blueprint(EquipoAtencion.equipo_atencion , name='equipoAtencion',url_prefix='/api/equipoAtencion')
 
     app.register_error_handler(404, page_not_found)
     app.run(host='0.0.0.0',debug=True,port=5000)

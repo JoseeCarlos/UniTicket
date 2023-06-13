@@ -9,15 +9,17 @@ import { Button } from "primereact/button";
 import { InputNumber } from "primereact/inputnumber";
 import { TipoAtencionServicio } from "../servicios/TipoAtencionServicio";
 import { Toast } from "primereact/toast";
-
+import { EquipoAtencionServicio } from "../servicios/EquipoAtencionServicio";
 const Equipos = () => {
   let equipoVacio = {
-    IdEquipo: "",
-    Nombre: "",
-    IP: "",
-    MAC: "",
+    IdEquipoAtencion: "",
+    Ip: "",
+    NombreEquipo: "",
+    Mac: "",
+    IdLugarAtencion: "",
+    Funcion: "",
+    IdUsuarioRegistro: '',
     Estado: null,
-    UsuarioCreacion: '',
     FechaRegistro: null,
     FechaModificacion: null,
   };
@@ -32,18 +34,30 @@ const Equipos = () => {
   const [dialogoBorrarEquipo, establecerDialogoBorrarEquipo] = useState(false);
 
   const tipoAtencionServicio = new TipoAtencionServicio();
+  const equipoAtencionServicio = new EquipoAtencionServicio();
 
   useEffect(() => {
-    tipoAtencionServicio.obtenerTipoAtencion().then((datos) => {
+    // tipoAtencionServicio.obtenerTipoAtencion().then((datos) => {
+    //   console.log(datos);
+    //   establecerValorDataview(datos);
+    // });
+    equipoAtencionServicio.obtenerEquipoAtencion().then((datos) => {
       console.log(datos);
       establecerValorDataview(datos);
-    });
+    }
+    );
 
     establecerValorFiltroEstado([
       { id: 1, nombre: "Activo" },
       { id: 0, nombre: "Inactivo" },
     ]);
   }, []);
+
+  const valoresDropdown = [
+    { nombre: "Cola de tickets", codigo: "1" },
+    { nombre: "Generacion de tickets", codigo: "0" },
+    { nombre: "Quejas", codigo: "2" }
+  ];
 
   const insercionEquipo = () => {
     establecerEquipo(equipo);
@@ -144,7 +158,7 @@ const Equipos = () => {
   const pieDialogoEquipo = (
     <>
       <Button label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={ocultarDialogoEquipo} />
-      <Button label="Guardar" onClick={guardarEquipo} icon="pi pi-check" />
+      <Button label="Guardar" onClick={()=>console.log("hasids")} icon="pi pi-check" />
     </>
   );
   const pieDialogoVistaEquipo = (
@@ -167,10 +181,10 @@ const Equipos = () => {
           <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <div className="flex flex-column md:flex-row align-items-center p-3">
               <div className="flex-1 text-center md:text-left">
-                <div className="font-bold text-2xl mb-2">{ "Equipo: " + dato.Nombre }</div>
-                <div className="mb-2">{ "IP: " + dato.Importancia }</div>
-                <div className="mb-2">{ "MAC: " + dato.Importancia }</div>
-                <div className={`mb-2 estado-${ estadoEquipo }`}>{ estadoEquipo }</div>
+                <div className="font-bold text-2xl mb-2">{"Equipo: " + dato.NombreEquipo}</div>
+                <div className="mb-2">{"IP: " + dato.Ip}</div>
+                <div className="mb-2">{"MAC: " + dato.Mac}</div>
+                <div className={`mb-2 estado-${estadoEquipo}`}>{estadoEquipo}</div>
               </div>
             </div>
             <span className="p-buttonset">
@@ -209,36 +223,55 @@ const Equipos = () => {
         footer={pieDialogoEquipo} onHide={ocultarDialogoEquipo}>
         <div className="field">
           <label htmlFor="nombre">Nombre del Equipo:</label>
-          <InputText id="nombre" value={equipo.Nombre} onChange={(e) => cambioEntrada(e, "Nombre")} required autoFocus className={classNames({ "p-invalid": envio && !equipo.Nombre })} />
-          {envio && !equipo.Nombre && (<small className="p-invalid">El nombre es requerido.</small>)}
+          <InputText id="nombre" value={equipo.NombreEquipo} onChange={(e) => cambioEntrada(e, "NombreEquipo")} required autoFocus className={classNames({ "p-invalid": envio && !equipo.NombreEquipo })} />
+          {envio && !equipo.NombreEquipo && (<small className="p-invalid">El nombre es requerido.</small>)}
         </div>
 
         <div className="field">
           <label htmlFor="ip">IP:</label>
-          <InputText id="ip" value={equipo.IP} onChange={(e) => cambioEntradaNumero(e, "IP")} required className={classNames({ "p-invalid": envio && !equipo.IP })} />
-          {envio && !equipo.IP && (<small className="p-invalid">La importancia es requerida.</small>)}
+          <InputText id="ip" value={equipo.Ip} onChange={(e) => cambioEntradaNumero(e, "Ip")} required className={classNames({ "p-invalid": envio && !equipo.Ip })} />
+          {envio && !equipo.Ip && (<small className="p-invalid">La importancia es requerida.</small>)}
         </div>
 
         <div className="field">
           <label htmlFor="mac">MAC:</label>
-          <InputText id="mac" value={equipo.MAC} onChange={(e) => cambioEntradaNumero(e, "MAC")} required className={classNames({ "p-invalid": envio && !equipo.MAC })} />
-          {envio && !equipo.MAC && (<small className="p-invalid">La importancia es requerida.</small>)}
+          <InputText id="mac" value={equipo.Mac} onChange={(e) => cambioEntradaNumero(e, "Mac")} required className={classNames({ "p-invalid": envio && !equipo.Mac })} />
+          {envio && !equipo.Mac && (<small className="p-invalid">La importancia es requerida.</small>)}
         </div>
+
+        <div className="field">
+          <label htmlFor="mac">Funcion del Equipo:</label>
+          <Dropdown
+                id="lugarAtencion"
+                placeholder="Seleccione el lugar de atencion"
+                required
+                emptyMessage="No se encontraron lugares de atención"
+                options={valoresDropdown}
+                // value={valorLugar}
+                // onChange={(e) => {
+                //   console.log(e.value)
+                //   establecerValorLugar(e.value)
+                // }}
+                optionLabel="nombre"
+                label="nombre"
+              ></Dropdown>
+        </div>
+        
       </Dialog>
 
       <Dialog visible={dialogoVerEquipo} style={{ width: "450px" }} header="Datos del equipo" modal className="p-fluid"
         footer={pieDialogoEquipo} onHide={ocultarDialogoVistaEquipo} >
         <div className="datos-equipo">
           <i className="pi pi-desktop" />
-          <span>{equipo.Nombre}</span>
+          <span>{equipo.NombreEquipo}</span>
         </div>
         <div className="datos-equipo">
           <i className="pi pi-desktop" />
-          <span>{equipo.IP}</span>
+          <span>{equipo.Ip}</span>
         </div>
         <div className="datos-equipo">
           <i className="pi pi-desktop" />
-          <span>{equipo.MAC}</span>
+          <span>{equipo.Mac}</span>
         </div>
         <div className="datos-equipo">
           <i className="pi pi-desktop" />
@@ -246,7 +279,7 @@ const Equipos = () => {
         </div>
         <div className="datos-equipo">
           <i className="pi pi-desktop" />
-          <span>{equipo.UsuarioCreacion}</span>
+          <span>{equipo.IdUsuarioRegistro}</span>
         </div>
         <div className="datos-equipo">
           <i className="pi pi-desktop" />

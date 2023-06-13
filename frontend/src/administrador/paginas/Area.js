@@ -194,7 +194,7 @@ const Area = () => {
               <div className="flex-1 text-center md:text-left">
                 <div className="font-bold text-2xl">{data.Nombre}</div>
                 <div className="mb-3">{data.Descripcion}</div>
-                <div className="mb-3">{data.Estado == 1 ? 'Activo':'Inactivo'}</div>
+                <div className={`mb-2 estado-${ data.Estado === 0 ? 'inactico' : 'activo'}`}>{data.Estado == 1 ? 'Activo':'Inactivo'}</div>
               </div>
             </div>
             <span className="p-buttonset">
